@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/hospi"
+    android:clickable="true"
+    tools:context=".FullscreenActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/texmio"
+        android:textSize="30dp"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:layout_marginBottom="126dp"
+        android:layout_above="@+id/btnValidar"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Saltar"
+        android:id="@+id/btnValidar"
+        android:layout_marginBottom="129dp"
+        android:onClick="setContentView"
+        android:textSize="35dp"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:background="#00ffffff"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        tools:ignore="OnClick" />
+
+
+</RelativeLayout>

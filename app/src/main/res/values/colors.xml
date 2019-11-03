@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#63D81B</color>
+
+    <color name="black_overlay">#66000000</color>
+    <color name="colorAzul">#0000FF</color>
+    <color name="colorMio">#E4F0E2</color>
+    <color name="colorMioTrans">#56ffffff</color>
+    <color name="azulClaro">#7E7EEE</color>
+    <color name="magen">#682578</color>
+    <color name="blanco">#FFFFFF</color>
+    <color name="botonDes">#D1F3F3</color>
+    <color name="botnActivo">#3802DA</color>
+</resources>

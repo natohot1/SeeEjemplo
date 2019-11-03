@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/españa"
+        android:title="@string/banespa"
+        android:icon="@drawable/banespana"
+        android:orderInCategory="1"
+        tools:ignore="AppCompatResource"
+        android:showAsAction="always" />
+    <item
+        android:id="@+id/bolivia"
+        android:title="@string/banbolivia"
+        android:icon="@drawable/banbolivia"
+        android:orderInCategory="2"
+        app:showAsAction="always"
+        />
+
+</menu>

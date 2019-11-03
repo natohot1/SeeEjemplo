@@ -1,0 +1,893 @@
+package com.example.seeejemplo;
+
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Color;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.SeekBar;
+import android.widget.TextView;
+
+import java.text.DecimalFormat;
+import java.util.Vector;
+
+public class Main4Activity extends AppCompatActivity {
+    TextView txTitulo,txSubtitulo, txDosis, txeCada, txGravedad,txOtras,txdOtrasTexto, txPrecausiones, txPesoEdad,txedosis, txCantidad,txJarabe,txDosiFinal;
+    SeekBar seeDefi;
+    private String mediGenerico;
+    private String mediComercial;
+    DecimalFormat df = new DecimalFormat("0.0");
+    DecimalFormat d = new DecimalFormat("0");
+    private boolean banderaselec;
+
+    Button btUno, btDos, btTres, btCuatro, btCinco;
+    DatosReaderDbHelper manager;
+    Bundle datos;
+    Cursor cur_bandera;
+    String banString;
+    String arrayMedica[],arrayNombesComer[],graveAsma[],asmaArray[],arrayInhaladores[];
+    int control=0,peso,resolucion;
+    Double varibleSalbutamol=1.0;
+    ImageButton btdvolver,btdBandera;
+    String [][]array_datos=new String[20][10];
+    double cada_ped_ar[];
+
+    //******ARRAY JARABES
+    String jarabes_por5ml;
+    String [] array_jarabes=new String[5];
+    String[]jara_arraComercial;
+    String[]jaraDosis;
+    int cada_int,position=0;
+    String tipo;
+
+    int controla[]=new int[1];
+    //TAMAÑO DE LETRA BOTONES BALNCOS
+    int nio=14;
+
+    ///////////////  NUEVOS VALORES
+    Cursor datosMedicamento;
+    Cursor dosesp=null;
+    String arrayJarabesAmostrar[];
+    String cam="cambio", txtBotonMg=" mg";
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main4);
+
+        restaurarCampos(savedInstanceState);
+        //AVERIGUAMOS LA RESOLUCION DEL DISPOSIOTIVO
+        resolucion = multiplica();
+
+
+        datos = getIntent().getExtras();
+
+        mediGenerico = datos.getString("medigene");
+        // mediGenerico = datos.getString("medcinas");
+        mediComercial = datos.getString("obtenido");
+        //  mediComercial = datos.getString("obtenido");
+        manager = new DatosReaderDbHelper(this);
+        Context context=this;
+
+        inicilizarCompomentes();
+        banString=cur_bandera.getString(2);
+        manager.openDB();
+        try {
+            banderaselec=manager.validarBandera();
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
+
+        //*****EXTRAEMOS DATOSDE MEDICAMENTO
+
+
+        try {
+            array_datos=manager.sacar_datos_en_array(mediGenerico,banString);
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
+
+        /////////////*********11/01/17**********
+        //SACAR JARABES SEGUN PAIS//////
+        if(banString.equals("banespana.png")){
+            jarabes_por5ml =array_datos[10][0];
+        }
+        if(banString.equals("banbolivia.png")) {
+            jarabes_por5ml = array_datos[9][0];
+        }
+        ////// TODO PENDIENTE
+
+        array_jarabes=manager.sacar_numStrin(jarabes_por5ml);
+        final String cont_sacado;
+        cont_sacado=array_datos[3][0];
+
+        asignar_seekbar(cont_sacado);
+
+        //******SACACMOS JARABE SELECCIONADO
+        //escribimos indicaciones
+        String contraindaciones=array_datos[11][0];
+        String cada=array_datos[7][0];
+        cada_ped_ar=manager.sacar_num(cada);
+        cada_int = (int) cada_ped_ar[0];
+        //txeCada.setText("Cada " + cada_int + "/h");
+
+
+        Vector jarabes=new Vector(2);
+
+        jarabes=jarabes_No_Comer(mediGenerico, mediComercial, array_jarabes,array_datos);
+        jara_arraComercial=(String[])jarabes.elementAt(0);
+
+
+        //******************jara_arraComercial
+        int largo_jara_arraComercial=jara_arraComercial.length;
+        jaraDosis=(String[])jarabes.elementAt(1);
+        txJarabe.setText("Jarabe "+jaraDosis[position]+" mg/5cc");
+        txOtras.setText("" + jara_arraComercial[position]);
+        if (largo_jara_arraComercial==1){
+            txdOtrasTexto.setText("SOLO PRESENTACION DE");
+        }
+        txeCada.setText("Cada " + cada_int + "/h");
+        //GENERAMOS INDICACIONES EN WEV VIEW
+        indicaContraindicaciones(contraindaciones);
+        try {
+            update();
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        seeDefi.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                try {
+                    update();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        titulo(mediComercial);
+        subtitulo(mediGenerico);
+
+        configurarSegmento(jaraDosis);
+        //PARA MOSTAR LA DOSIS DE ENCABWEZADO
+        mostrar_dosis();
+    }
+
+
+
+    private void inicilizarCompomentes() {
+        txTitulo=findViewById(R.id.txdTitulo);
+        txSubtitulo = findViewById(R.id.txdSubtitulo);
+        txDosis = findViewById(R.id.txdDosis);
+        txeCada = findViewById(R.id.txdCada);
+        txGravedad = findViewById(R.id.txdGravedad);
+        txOtras = findViewById(R.id.txdOtras);
+        txdOtrasTexto=findViewById(R.id.txdOtrasPresenta);
+        txPrecausiones = findViewById(R.id.txdPrecausiones);
+        txPesoEdad = findViewById(R.id.txdPeso);
+        txDosiFinal = findViewById(R.id.txdDosisFinal);
+        txCantidad = findViewById(R.id.txdCantidad);
+        txJarabe=findViewById(R.id.txdJarabe);
+
+        btUno = findViewById(R.id.btdGrave);
+        btDos = findViewById(R.id.btdModerada);
+        btTres = findViewById(R.id.btdLeve);
+        btCuatro =findViewById(R.id.btdLeve2);
+        btCinco =findViewById(R.id.btdLeve3);
+        btdvolver =findViewById(R.id.btdVolver);
+        btdBandera = findViewById(R.id.btBandera);
+        txedosis=findViewById(R.id.txddosis);
+
+        seeDefi=findViewById(R.id.seebDefi);
+
+
+        //ESTABLECE BANDERA
+        try {
+            cur_bandera = manager.buscarMed("BANDERA");
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
+        banString=cur_bandera.getString(2);
+        cambioBandera(banString);
+
+
+
+        //BOTON GRAVE SELECIONADAO
+
+
+        btUno.setTextColor(Color.BLUE);
+        btUno.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
+
+        arrayMedica=arrayMedicamento(mediGenerico);
+        //  configurarSegmento();
+        txCantidad.setTextSize(25-resolucion);
+        txeCada.setTextSize(25-resolucion);
+        txDosiFinal.setTextSize(25-resolucion);
+
+    }
+    private int multiplica(){
+        int valor = 0;
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int width = metrics.widthPixels; // ancho absoluto en pixels
+        int height = metrics.heightPixels; // alto absoluto en pixels
+        if (width < 768){
+            valor = 7;
+        }
+        return valor;
+    }
+
+    //CAMBIO ICONO BANDERA
+    private void cambioBandera(String bandera){
+        if (bandera.contains("bolivia")){
+            btdBandera.setBackground(this.getResources().getDrawable(R.drawable.banbolivia));}
+        if (bandera.contains("espana")){
+            btdBandera.setBackground(this.getResources().getDrawable(R.drawable.banespana));}
+        if (bandera.contains("peru")){
+            btdBandera.setBackground(this.getResources().getDrawable(R.drawable.banperu));}
+        if (bandera.contains("chile")){
+            btdBandera.setBackground(this.getResources().getDrawable(R.drawable.banchile));}
+    }
+
+
+    private void titulo(String medi_introducido) {
+        int largo=medi_introducido.length();
+        if(largo>15){
+            txTitulo.setTextSize(18);
+        }
+        txTitulo.setText(medi_introducido);
+
+    }
+
+    private void subtitulo(String medicamen) {
+        if(medicamen.equals(mediComercial)){
+            txSubtitulo.setText("");}
+        else {
+            txSubtitulo.setText(medicamen);
+        }
+    }
+
+    private void indicaContraindicaciones (String comprimidos){
+        txPrecausiones.setText(comprimidos);
+
+    }
+
+    //FUNCION BOTONES PARA OTRAS PRESENTACIONES
+    public void onClickOtras(View view) throws java.sql.SQLException {
+        switch (view.getId()){
+            //BOTONES GRAVE A LEVE CONFIGURAR
+            case R.id.btdGrave:
+                configurarbtdGrave();
+                break;
+            case R.id.btdModerada:
+                configurarbtdModerada();
+                break;
+            case R.id.btdLeve:
+                configurarbtdLeve();
+                break;
+            case R.id.btdLeve2:
+                configurarbtdLeve2();
+                break;
+            case R.id.btdLeve3:
+                configurarbtdLeve3();
+                break;
+
+        }
+    }
+
+    private void configurarbtdGrave() throws java.sql.SQLException {
+        btUno.setTextColor(Color.BLUE);
+        btUno.setTextSize(nio);
+        btUno.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
+
+        btDos.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+        btDos.setTextSize(nio);
+        btDos.setTextColor(Color.WHITE);
+
+        btTres.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+        btTres.setTextColor(Color.WHITE);
+        btTres.setTextSize(nio);
+
+        btCuatro.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+        btCuatro.setTextColor(Color.WHITE);
+        btCuatro.setTextSize(nio);
+
+        btCinco.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+        btCinco.setTextColor(Color.WHITE);
+        btCinco.setTextSize(nio);
+        position=0;
+        txOtras.setText("" + jara_arraComercial[position]);
+        txJarabe.setText("Jarabe "+jaraDosis[position]+"  mg/5cc");
+        control=0;
+        try {
+            update();
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void configurarbtdModerada() throws java.sql.SQLException {
+        btDos.setTextColor(Color.BLUE);
+        btDos.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
+        btDos.setTextSize(nio);
+
+        btUno.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+        btUno.setTextColor(Color.WHITE);
+        btUno.setTextSize(nio);
+
+        btTres.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+        btTres.setTextColor(Color.WHITE);
+        btTres.setTextSize(nio);
+
+        btCuatro.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+        btCuatro.setTextColor(Color.WHITE);
+        btCuatro.setTextSize(nio);
+
+        btCinco.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+        btCinco.setTextColor(Color.WHITE);
+        btCinco.setTextSize(nio);
+        position=1;
+        txOtras.setText("" + jara_arraComercial[position]);
+        txJarabe.setText("Jarabe "+jaraDosis[position]+"  mg/5cc");
+        control=1;
+        try {
+            update();
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void configurarbtdLeve() throws java.sql.SQLException {
+        btTres.setTextColor(Color.BLUE);
+        btTres.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
+        btTres.setTextSize(nio);
+
+        btCuatro.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+        btCuatro.setTextColor(Color.WHITE);
+        btCuatro.setTextSize(nio);
+
+        btCinco.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+        btCinco.setTextColor(Color.WHITE);
+        btCinco.setTextSize(nio);
+
+        btUno.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+        btUno.setTextColor(Color.WHITE);
+        btUno.setTextSize(nio);
+        btDos.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+        btDos.setTextColor(Color.WHITE);
+        btDos.setTextSize(nio);
+        //  txGravedad.setText(graveAsma[2]);
+        position=2;
+        txOtras.setText("" + jara_arraComercial[position]);
+        txJarabe.setText("Jarabe "+jaraDosis[position]+"  mg/5cc");
+        // txeJarabe.setText("Jarabe "+jaraDosis[position]+"  mg/5cc");
+
+        control=2;
+        try {
+            update();
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void configurarbtdLeve2() throws java.sql.SQLException {
+        btCuatro.setTextColor(Color.BLUE);
+        btCuatro.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
+        btCuatro.setTextSize(nio);
+
+        btTres.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+        btTres.setTextColor(Color.WHITE);
+        btTres.setTextSize(nio);
+
+        btCinco.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+        btCinco.setTextColor(Color.WHITE);
+        btCinco.setTextSize(nio);
+
+        btUno.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+        btUno.setTextColor(Color.WHITE);
+        btUno.setTextSize(nio);
+        btDos.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+        btDos.setTextColor(Color.WHITE);
+        btDos.setTextSize(nio);
+        position=3;
+        txOtras.setText("" + jara_arraComercial[position]);
+        txJarabe.setText("Jarabe "+jaraDosis[position]+"  mg/5cc");
+        // txeJarabe.setText("Jarabe "+jaraDosis[position]+"  mg/5cc");
+
+        control=2;
+        try {
+            update();
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void configurarbtdLeve3() throws java.sql.SQLException {
+        btCinco.setTextColor(Color.BLUE);
+        btCinco.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
+        btCinco.setTextSize(nio);
+
+        btTres.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+        btTres.setTextColor(Color.WHITE);
+        btTres.setTextSize(nio);
+        btCuatro.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+        btCuatro.setTextColor(Color.WHITE);
+        btCuatro.setTextSize(nio);
+
+        btUno.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+        btUno.setTextColor(Color.WHITE);
+        btUno.setTextSize(nio);
+        btDos.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+        btDos.setTextColor(Color.WHITE);
+        btDos.setTextSize(nio);
+        position=4;
+        txOtras.setText("" + jara_arraComercial[position]);
+        txJarabe.setText("Jarabe "+jaraDosis[position]+"  mg/5cc");
+        control=2;
+        try {
+            update();
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void configurarSegmento(String[] arrayInhaladores) {
+
+        //CONFIGURA OTRAS PRESENTACIONES
+        int largo=arrayInhaladores.length;
+        if(largo==1){
+            btTres.setVisibility(View.GONE);
+            btDos.setVisibility(View.GONE);
+            btCuatro.setVisibility(View.GONE);
+            btCinco.setVisibility(View.GONE);
+            btUno.setText(arrayInhaladores[0]+txtBotonMg);
+            btCinco.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
+        }
+        if(largo==2){
+            btTres.setVisibility(View.GONE);
+            btCuatro.setVisibility(View.GONE);
+            btCinco.setVisibility(View.GONE);
+            btUno.setText(arrayInhaladores[0]+txtBotonMg);
+            btDos.setText(arrayInhaladores[1]+txtBotonMg);
+            btDos.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+            btDos.setTextColor(Color.WHITE);
+            btDos.setTextSize(nio);
+        }
+
+
+        if (largo==3) {
+            btCuatro.setVisibility(View.GONE);
+            btCinco.setVisibility(View.GONE);
+            btDos.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+            btDos.setTextColor(Color.WHITE);
+            btDos.setTextSize(nio);
+            btTres.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+            btTres.setTextColor(Color.WHITE);
+            btTres.setTextSize(nio);
+            btUno.setText(arrayInhaladores[0]+txtBotonMg);
+            btDos.setText(arrayInhaladores[1]+txtBotonMg);
+            btTres.setText(arrayInhaladores[2]+txtBotonMg);
+        }
+        if (largo==4) {
+            btCinco.setVisibility(View.GONE);
+            btDos.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+            btDos.setTextColor(Color.WHITE);
+            btDos.setTextSize(nio);
+            btTres.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+            btTres.setTextColor(Color.WHITE);
+            btTres.setTextSize(nio);
+            btCuatro.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+            btCuatro.setTextColor(Color.WHITE);
+            btCuatro.setTextSize(nio);
+            btCuatro.setText(arrayInhaladores[3]+txtBotonMg);
+            btUno.setText(arrayInhaladores[0]+txtBotonMg);
+            btDos.setText(arrayInhaladores[1]+txtBotonMg);
+            btTres.setText(arrayInhaladores[2]+txtBotonMg);
+        }
+        if (largo==5) {
+            btDos.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+            btDos.setTextColor(Color.WHITE);
+            btDos.setTextSize(nio);
+            btTres.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+            btTres.setTextColor(Color.WHITE);
+            btTres.setTextSize(nio);
+            btCuatro.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+            btCuatro.setTextColor(Color.WHITE);
+            btCuatro.setTextSize(nio);
+            btCinco.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+            btCinco.setTextColor(Color.WHITE);
+            btCinco.setTextSize(nio);
+            btCinco.setText(arrayInhaladores[4]+txtBotonMg);
+            btCuatro.setText(arrayInhaladores[3]+txtBotonMg);
+            btUno.setText(arrayInhaladores[0]+txtBotonMg);
+            btDos.setText(arrayInhaladores[1]+txtBotonMg);
+            btTres.setText(arrayInhaladores[2]+txtBotonMg);
+        }
+    }
+
+    //region FUNCIONES DE EXTRACCION DE DATOS
+    private String[] arrayMedicamento(String medicina){
+        Cursor medi=null;
+        try {
+            medi= manager.buscarMed(medicina);
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
+        medi.moveToFirst();
+        int largo=medi.getColumnCount();
+        String devul[]=new String[largo];
+        int cont=0;
+        while (cont<largo){
+            devul[cont]=medi.getString(cont);
+            cont++;
+        }
+        medi.close();
+        manager.close();
+        return devul;
+    }
+
+    public int jarabe_seleccioado () {
+        String[] jarabes_comercial = new String[5];
+        int i = 0, res = 0;
+        while (i < 5) {
+            jarabes_comercial[i] = array_datos[0][i + 2];
+            res = jarabes_comercial[i].indexOf(mediComercial);
+            if (res != -1) {
+                break;
+            }
+            i++;
+        }
+        return i;
+    }
+
+    private void mostrar_dosis () {//MUETRA DOSIS DE ENCABEZADO
+        String[] dosi = new String[2];
+        dosi[0] = array_datos[3][0];
+        switch (controla[0]) {
+            case 1:
+                txedosis.setText("");
+                break;
+            case 2:
+                dosi = manager.sacar_numStrin(dosi[0]);
+                try {
+                    txedosis.setText("Dosis " + dosi[0] + " a " + dosi[1] + " mg/kg peso");
+                    sulfa(mediGenerico, dosi);
+                } catch (Exception e) {
+                    txedosis.setText("Dosis " + dosi[0] + " mg/kg peso");
+                }
+                break;
+        }
+    }
+
+    private void sulfa (String sulfa, String[]dosi){
+        if (sulfa.equals("SULFAMETOXAZOL TRIMETOPRIMA")) {
+            txedosis.setText("40 a 60 mg/kg peso de Sulfametoxazol");
+        }
+    }
+
+
+    private void update() throws java.sql.SQLException{
+
+        int resSeeb, res_espiner;
+        resSeeb = seeDefi.getProgress();
+        double sekb_double = resSeeb;
+       // res_espiner = position;
+        String cont_sacado = array_datos[3][0];
+
+        asignar_seekbar(cont_sacado);
+
+
+        //****NUEVAS OPERACONES JARABES
+        jarabes_por5ml =array_datos[10][0];
+
+        //*******OPERACIONES PARA DOSIS
+        String dosis_int, cada_inter;
+        int contador = 0;
+        double[] dosis_intDou, cada_double;
+        dosis_int = (array_datos[3][0]);
+        dosis_intDou = manager.sacar_num(dosis_int);
+        cada_inter = array_datos[7][0];
+        cada_double = manager.sacar_num(cada_inter);
+
+
+        //****DOSIS PARA DISTINGUE CLASES+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        //***********SACA Y MUESTRA NOMBRES COMERCIALES
+
+        Vector jarabes=new Vector(2);
+        jarabes=jarabes_No_Comer(mediGenerico, mediComercial, array_jarabes,array_datos);
+        jara_arraComercial=(String[])jarabes.elementAt(0);
+        jaraDosis=(String[])jarabes.elementAt(1);
+
+        int jar_selec=jarabe_seleccioado();
+
+
+
+        //<editor-fold desc="MUESTRA DOSIS SEGUN PESO O EDAD">
+        switch (controla[0]) {
+            case 1:
+                double[] dosi_esp = new double[18];
+                double[] tosale_fin = new double[2];
+                dosi_esp = manager.sacar_dosis_especial(mediGenerico);
+                tosale_fin = manager.pintar_seebar_final(dosi_esp, sekb_double);
+                dosis_tos(position, tosale_fin, jaraDosis, mediGenerico);
+                break;
+            case 2:
+              String valorAmostrar= manager.dosis_kilo1(position, resSeeb, dosis_intDou, cada_double, jaraDosis, mediGenerico,cada_int);
+              txCantidad.setText(valorAmostrar);
+                break;
+        }
+        //</editor-fold>
+        dosis_especiales(mediGenerico,sekb_double);
+
+
+    }
+
+    public void dosis_tos ( int res_espiner, double[] dosis_intDou, String[] array_jarabes, String med_final){
+        String si_es_gotas;
+        double resultado, res = 0;
+     //   boolean cont = true;
+        double jara_int = Double.parseDouble(array_jarabes[res_espiner]);
+
+        resultado = dosis_intDou[0] / (jara_int / 5);
+        //  si_es_gotas = si_gotas2(resultado, res, mediGenerico);
+        si_es_gotas = manager.si_gotas2(resultado, res, med_final,cada_int);
+
+        if (resultado == 0) {
+            txeCada.setText("");
+        } else {
+            txeCada.setText("Cada " + cada_int + "/h");
+        }
+
+
+
+        txCantidad.setText("Hasta " + si_es_gotas);
+        if (resultado == 0) {
+            txCantidad.setTextColor(Color.RED);
+            txCantidad.setTextSize(15);
+            txCantidad.setText("NO INDICADO PARA LA EDAD");
+        }
+        if (resultado == 0) {
+            txeCada.setText("");
+        } else {
+            txCantidad.setTextColor(Color.BLUE);
+            txCantidad.setTextSize(25);
+            String mensaje_doxi = "";
+            mensaje_doxi = si_vibracina(med_final);
+            txeCada.setText("Cada " + cada_int + "/h\n" + mensaje_doxi);
+        }
+    }
+
+    //*************OPERACIONES VIBRACINA//////////////////
+
+    private String si_vibracina (String medi_vi){
+        String varDoxi = "DOXICICLINA";
+        /////*********************************************************************************
+        if (medi_vi.equals(varDoxi)) {
+            varDoxi = "Con peso mayor de 43 kg";
+        } else varDoxi = "";
+        return varDoxi;
+    }
+
+    public Vector jarabes_No_Comer (String medicamen, String medi_introducido, String[] array_jarabes, String[][] array_datos){
+        // String [][]array_datos=new String[20][10];
+        String[] nue = new String[5];
+        nue[0] = array_datos[0][2];
+        nue[1] = array_datos[0][3];
+        nue[2] = array_datos[0][4];
+        nue[3] = array_datos[0][5];
+        nue[4] = array_datos[0][6];
+        int cont = 0, con2 = 0, con3 = 0;
+        while (cont < 5) {
+            int valor = nue[cont].length();
+            if (valor > 2) {
+                con2 = cont;
+            }
+            cont++;
+        }
+        String mios[] = new String[con2 + 1];
+        while (con3 <= (con2)) {
+            mios[con3] = nue[con3];
+            con3++;
+        }
+        int largo = mios.length;
+        int[][] dato_var1 = {{0, 1, 2, 3, 4}, {1, 0, 2, 3, 4}, {2, 0, 1, 3, 4}, {3, 0, 1, 2, 4}, {4, 0, 1, 2, 3}};
+
+
+        int con1 = 0, variable = 0;
+
+        while (con1 < largo) {
+            int res1 = mios[con1].indexOf(medi_introducido);
+            if (res1 != -1) {
+                variable = con1;
+                break;
+            }
+            con1++;
+        }
+        String[] jarabes_comercial3 = new String[largo];
+        String[] jaraDosis = new String[largo];
+
+        int contaArra = 0;
+        while (contaArra < (largo)) {
+            jarabes_comercial3[contaArra] = mios[dato_var1[variable][contaArra]];
+            jaraDosis[contaArra] = array_jarabes[dato_var1[variable][contaArra]];
+
+            contaArra++;
+        }
+        Vector nuevo = new Vector(2);
+        nuevo.add(jarabes_comercial3);
+        nuevo.add(jaraDosis);
+        return nuevo;
+    }
+
+    private void dosis_especiales (String medica_espe,double sekb_double){
+        String levodro = "LEVODROPROPIZINA";
+        String ketoti = "KETOTIFENO";
+        String aciclo = "ACICLOVIR";
+        String pirantel = "PAMOATO DE PIRANTEL";
+        String albendazol = "ALBENDAZOL";
+        String hidroxicina = "HIDROXIZINA";
+
+        if (medica_espe.equals(levodro)) {
+            if ((sekb_double < 12) && (sekb_double > 3)) {
+                txCantidad.setText("NO INDICADO");
+                txeCada.setText("");
+            }
+
+        }
+        if (medica_espe.equals(pirantel)) {
+            if ((sekb_double < 8) && (sekb_double > 3)) {
+                txCantidad.setText("NO INDICADO");
+                txeCada.setText("");
+            }
+        }
+        if (medica_espe.equals(ketoti)) {
+            if (sekb_double > 16) {
+                txCantidad.setText("5 cc");
+                txeCada.setText("Cada 12/h\n" + "Mayores de 3 años 2 mg dia");
+            }
+        }
+        if (medica_espe.equals(aciclo)) {
+            if (sekb_double < 13) {
+                txCantidad.setText("");
+                txeCada.setText("");
+            }
+        }
+        if (medica_espe.equals(albendazol)) {
+            if (sekb_double < 13) {
+                txCantidad.setTextColor(Color.RED);
+                txCantidad.setTextSize(15);
+                txCantidad.setText("NO INDICADO EN MENORES DE 2 AÑOS");
+                txeCada.setText("");
+            } else {
+                txCantidad.setTextColor(Color.BLUE);
+                txCantidad.setTextSize(25);
+            }
+        }
+
+        if (medica_espe.equals(hidroxicina)) {
+            if (sekb_double < 10) {
+                txCantidad.setTextColor(Color.RED);
+                txCantidad.setTextSize(15);
+                txCantidad.setText("NO INDICADO EN MENORES DE 1 AÑOS");
+                txeCada.setText("");
+            } else {
+                txCantidad.setTextColor(Color.BLUE);
+                txCantidad.setTextSize(25);
+                txeCada.setText("Cada 6/h");
+            }
+        }
+
+
+
+    }
+
+    private void asignar_seekbar (String cont_sacado){
+        //String cam="cambio";
+        int res_sekb = seeDefi.getProgress();
+        if (cont_sacado.equals(cam)){
+            seeDefi.setMax(144);
+            controla[0] = 1;
+            String res=edad_mese(res_sekb);
+            //  txPesoEdad.setText("Edad  "+res);
+            txPesoEdad.setText("Edad");
+            txDosiFinal.setText("DOSIS PARA " +res);
+
+        }else {
+            seeDefi.setMax(40);
+            //seeDefi.setMin(3);
+            controla[0]=2;
+            res_sekb=seeDefi.getProgress();
+            txPesoEdad.setText("Peso");
+            txDosiFinal.setText("DOSIS PARA " +res_sekb+ " Kg");
+
+        }
+
+
+
+
+
+    }
+
+    private String edad_mese ( double res){
+        String edad;
+        if (res < 24) {
+            edad = String.valueOf(d.format(res)) + " MESES";
+        } else {
+            res = res / 12;
+            edad = String.valueOf(d.format(res)) + " AÑOS";
+        }
+        return edad;
+    }
+
+    public void onClick (View view){
+        Intent intent = new Intent(Main4Activity.this, Segundo.class);
+        startActivity(intent);
+
+    }
+
+    public void onCli2 (MenuItem item){
+        Intent intent = new Intent(Main4Activity.this, Main2Activity.class);
+        startActivity(intent);
+
+    }
+
+    public void onClick6(View view) {
+        Intent intent = new Intent(Main4Activity.this, Segundo.class);
+        Bundle bundle = new Bundle();
+
+        bundle.putString("nomb", tipo);
+
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+
+        super.onSaveInstanceState(outState);
+        outState.putInt("PESO_INTRODUCIDO",peso);
+        outState.putInt("POSITION",position);
+        outState.putString("MED_FINAL", mediComercial);
+
+
+    }
+    private void restaurarCampos(Bundle savedInstanceState) {
+        if (savedInstanceState != null){
+            this.peso= savedInstanceState.getInt(String.valueOf(peso));
+            this.mediComercial = savedInstanceState.getString(mediComercial);
+
+        }
+
+    }
+
+    public void onClickBandera(View view) {
+        Intent intent = new Intent(Main4Activity.this, Main2Activity.class);
+        startActivity(intent);
+    }
+
+
+
+}
