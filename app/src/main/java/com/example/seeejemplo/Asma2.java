@@ -8,7 +8,6 @@ import android.graphics.Typeface;
 import android.support.constraint.Guideline;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -34,7 +33,7 @@ public class Asma2 extends AppCompatActivity {
     boolean inhala,nebulizador,salbuta,bromuro,terbuta;
     int control=0,position=0,cada_int;
     Double varibleSalbutamol=1.0;
-    ImageButton volver;
+    ImageButton btVolver, btBandera;
     String [][]array_datos=new String[20][10];
     DecimalFormat formato = new DecimalFormat("#.##");
     DecimalFormat formato1 = new DecimalFormat("#.0");
@@ -43,10 +42,10 @@ public class Asma2 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_asma);
+        setContentView(R.layout.asma2);
 
         datos = getIntent().getExtras();
-        medicamen_final = datos.getString("medcinas");
+        medicamen_final = datos.getString("medigene");
 
         //PARA SACAR EL NOMBRE GENERICO
         //   medGenerico=nomFinal(medicamen_final);
@@ -63,9 +62,6 @@ public class Asma2 extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
-
-
         txGravedad.setText(graveAsma[0]);
         txOtras.setText(arrayNombesComer[2]);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -73,6 +69,7 @@ public class Asma2 extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 pintarPeso(progress);
                 dosis();
+
             }
 
             @Override
@@ -96,10 +93,10 @@ public class Asma2 extends AppCompatActivity {
 
     private void dosis() {
         if (inhala || medicamen_final.contains("BUDESONIDA")){
-            update1();
+            inhalaDosis();
         }
         if(nebulizador){
-            update2();
+            nebuDosis();
         }
     }
 
@@ -215,11 +212,12 @@ public class Asma2 extends AppCompatActivity {
         btGravedad = findViewById(R.id.btdIndice);
         btConsidere = findViewById(R.id.btdConsidere);
         btConsidere.setVisibility(View.GONE);
-        volver=findViewById(R.id.btdAtras);
+        btVolver =findViewById(R.id.btdAtras);
+        btBandera = findViewById(R.id.btBandera);
         guideline2=findViewById(R.id.guideline2);
 
         //VALORES SEEKBAR
-        seekBar=findViewById(R.id.seekBar);
+        seekBar=findViewById(R.id.seebDefi);
         seekBar.setMax(40);
         seekBar.setProgress(6);
         txPeso.setText("6"+ " Kg");
@@ -236,6 +234,8 @@ public class Asma2 extends AppCompatActivity {
             e.printStackTrace();
         }
         banString=cur_bandera.getString(2);
+        cambioBandera(banString);
+
         graveAsma = gravedadAsma();
         //BOTON GRAVE SELECIONADAO
         btGrave.setTextColor(Color.BLUE);
@@ -269,13 +269,21 @@ public class Asma2 extends AppCompatActivity {
         btOtra3.setTextColor(Color.WHITE);
         btOtra4.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
         btOtra4.setTextColor(Color.WHITE);
-        String inhaladores = arrayMedica[10];
-        arrayInhaladores = sacarGuion(inhaladores);
 
+        // SACAR PAISES TODO********++++++++++++++++
+
+        String inhaladores = "";
+        if (banString.contains("banespana.png")){
+            inhaladores = arrayMedica[10];
+        }
+        if (banString.contains("banbolivia.png")){
+            inhaladores = arrayMedica[9];
+        }
+        arrayInhaladores = sacarGuion(inhaladores);
     }
 
     //dosisInhalador()
-    private void update1() {
+    private void inhalaDosis() {
         int peso=seekBar.getProgress();
         Double dosisRedondeo1;
         int dosisRedondeo2;
@@ -317,9 +325,6 @@ public class Asma2 extends AppCompatActivity {
         }else {
             cada();
         }
-
-
-
     }
 
     private void dosisAlternativas() {
@@ -334,20 +339,13 @@ public class Asma2 extends AppCompatActivity {
             txCada.setText("Max 8 pul/dia");
             txPeso.setText("          NIÑOS 3 a 12 AÑOS");
         }
-
         if (medicamen_final.contains("BUDESON")){
             txCantidad.setText("0,25 a 1 mg");
             txCada.setText("12-24 /hrs");
             guideline2.setGuidelinePercent((float) 0.88);
-
             txPeso.setLines(2);
             txPeso.setText(" De 6 meses a 12 años, maximo 2 mg/dia, en casos muy graves hasta 4 mg/dia");
-
         }
-
-
-
-
     }
 
     private int redondeoFun(Double numero) {
@@ -375,7 +373,7 @@ public class Asma2 extends AppCompatActivity {
     }
 
     ///if esNebuloizador{
-    private void update2() {
+    private void nebuDosis() {
         //SALIMOS SI ES BUDEDONIDA
         if(medicamen_final.contains("BUDESONIDA")){
             return;
@@ -386,7 +384,6 @@ public class Asma2 extends AppCompatActivity {
         Double pesoMg = peso*0.15;
         String pesoInterdeci=decimal(pesoInter);
         String pesoMgdeci=decimal(pesoMg);
-        //  txCantidad.setText(""+pesoInterdeci+" ml = "+pesoMgdeci+" mg");
         txCantidad.setText(""+formato.format(pesoInter)+" ml = "+formato1.format(pesoMg)+" mg");
         if(peso<=3){
             txCantidad.setText("");
@@ -408,10 +405,10 @@ public class Asma2 extends AppCompatActivity {
         }
         if(nebulizador){
             //if esNebuloizador{
-            update2();
+            nebuDosis();
         }else {
             // dosisInhalador();
-            update1();
+            inhalaDosis();
         }
     }
 
@@ -430,7 +427,15 @@ public class Asma2 extends AppCompatActivity {
         }
         Double variableJarabe;
         String arrayJarabesAmostrar[]=new String[4];
-        String jar = arrayMedica[10];
+        //PAISES TODO**************
+        String jar = "";
+        if (banString.contains("banespana.png")){
+            jar = arrayMedica[10];
+        }
+        if (banString.contains("banbolivia.png")){
+            jar = arrayMedica[9];
+        }
+
         arrayJarabesAmostrar=jar.split("-");
         variableJarabe = Double.parseDouble(arrayJarabesAmostrar[control1]);
         int peso=seekBar.getProgress();
@@ -510,6 +515,7 @@ public class Asma2 extends AppCompatActivity {
     }
 
     private String[] dato(String medicamento, String tabla) {
+        banString=cur_bandera.getString(2);
         String querySQL="",resInt;
         int conta=0,conta32;
 
@@ -517,14 +523,23 @@ public class Asma2 extends AppCompatActivity {
             querySQL="select * FROM " + Medicamento.DATOS_TABLA_MEDICAMENTOS+ " WHERE " + Medicamento.CN_medicamento + " = \"" + medicamento + "\"";
         }
         if(tabla=="jarabes"){
-            querySQL="select * FROM " + DatosReaderDbHelper.TABLA_JARABES+ " WHERE " + Medicamento.CN_medicamento + " = \"" + medicamento + "\"";
+            if(banString =="banespana.png") {
+                querySQL = "select * FROM " + DatosReaderDbHelper.TABLA_JARABES + " WHERE " + Medicamento.CN_medicamento + " = \"" + medicamento + "\"";
+            }
+            if(banString =="banbolivia.png") {
+                querySQL = "select * FROM " + DatosReaderDbHelper.TABLA_JARABES2 + " WHERE " + Medicamento.CN_medicamento + " = \"" + medicamento + "\"";
+            }
         }
-        if(tabla=="jarabes2"){
-            querySQL="select * FROM " + DatosReaderDbHelper.TABLA_JARABES+ " WHERE " + Medicamento.CN_medicamento + " = \"" + medicamento + "\"";
-        }
+
         if(tabla=="comercial"){
-            querySQL="select * FROM " + DatosReaderDbHelper.TABLA_COMERCIAL+ " WHERE " + Medicamento.CN_medicamento + " = \"" + medicamento + "\"";
+            if (banString.contains("banespana")) {
+                querySQL = "select * FROM " + DatosReaderDbHelper.TABLA_COMERCIAL + " WHERE " + Medicamento.CN_medicamento + " = \"" + medicamento + "\"";
+            }
+            if (banString.contains("banbolivia")) {
+                querySQL = "select * FROM " + DatosReaderDbHelper.TABLA_COMERCIAL2 + " WHERE " + Medicamento.CN_medicamento + " = \"" + medicamento + "\"";
+            }
         }
+
         if(tabla=="dosespecial"){
             querySQL="select * FROM " + DatosReaderDbHelper.TABLA_DOSESPECIAL+ " WHERE " + Medicamento.CN_medicamento + " = \"" + medicamento + "\"";
         }
@@ -613,20 +628,22 @@ public class Asma2 extends AppCompatActivity {
         txTitulo.setTypeface(null, Typeface.BOLD);
 
         // txTitulo.setText(medicamen_final);
-        if(medicamen_final.contains("BROMURO DE IPRATROPIO NEBULIZADOR")){
-            titulo="B. IPRATROPIO NEBU.";
-        }
+        //  if(medicamen_final.contains("BROMURO DE IPRATROPIO NEBULIZADOR")){
+        //      titulo="B. IPRATROPIO NEBU.";
+        //  }
 
-        if(medicamen_final.contains("BROMURO DE IPRATROPIO INHALADOR")){
-            titulo="B. IPRATROPIO INHALA.";
-
-        }
+        //  if(medicamen_final.contains("BROMURO DE IPRATROPIO INHALADOR")){
+        //      titulo="B. IPRATROPIO INHALA.";
+//
+        //  }
         txTitulo.setText(titulo);
 
         //PINTAR CONTRAINDICACIONES
         String contra = arrayMedica[11];
         txPrecausiones.setText(contra);
         //SACA NOMBRES COMERCIALES CON NOMBRE GENERICO
+        //***********************************
+
         arrayNombesComer = array_nombresComerciales(medicamen_final);
         //CONFIGURAR SEGMENTO
     }
@@ -653,11 +670,20 @@ public class Asma2 extends AppCompatActivity {
     }
 
     private String[] array_nombresComerciales(String medicina){
+        String jar="";
+        //SE ELIJE ENTRE LOS PAISES EXISTENTES**************
+        if(banString.contains("banespana")){
+            jar = "jarabes";
+        }
+        if(banString.contains("banbolivia")){
+            jar = "jarabes2";
+        }
         manager.openDB();
         String selection = Jarabes.CN_medicamento+ " = ? ";
         String selectionArgs[] = new String[]{medicina};
         Cursor c =manager.myDataBase.query(
-                "jarabes",
+                //   "jarabes",
+                jar,
                 null,
                 selection,
                 selectionArgs,
@@ -692,22 +718,6 @@ public class Asma2 extends AppCompatActivity {
     //region METODOS PARA CONFIGURAR ELEMENTOS
     private void setupSlider() {
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        switch (banString) {
-            case "banbolivia.png":
-                getMenuInflater().inflate(R.menu.menubolivia, menu);
-                break;
-            case "banespana.png":
-                getMenuInflater().inflate(R.menu.menuespana, menu);
-                break;
-            case "banperu.png":
-                getMenuInflater().inflate(R.menu.menuperu, menu);
-                break;
-        }
-        return true;
     }
 
     public void onCli2(MenuItem item) {
@@ -803,9 +813,9 @@ public class Asma2 extends AppCompatActivity {
                 txOtras.setText(arrayNombesComer[2]);
                 position=0;
                 varibleSalbutamol=1.0;
-                update2();
+                nebuDosis();
                 if (inhala){
-                    update1();
+                    inhalaDosis();
                 }
 
                 break;
@@ -821,9 +831,9 @@ public class Asma2 extends AppCompatActivity {
                 txOtras.setText(arrayNombesComer[3]);
                 position=1;
                 varibleSalbutamol=2.5;
-                update2();
+                nebuDosis();
                 if (inhala){
-                    update1();
+                    inhalaDosis();
                 }
 
                 break;
@@ -839,9 +849,9 @@ public class Asma2 extends AppCompatActivity {
                 position=2;
                 txOtras.setText(arrayNombesComer[4]);
                 varibleSalbutamol=5.0;
-                update2();
+                nebuDosis();
                 if (inhala){
-                    update1();
+                    inhalaDosis();
                 }
 
                 break;
@@ -857,9 +867,9 @@ public class Asma2 extends AppCompatActivity {
                 position=3;
                 txOtras.setText(arrayNombesComer[5]);
                 varibleSalbutamol=5.0;
-                update2();
+                nebuDosis();
                 if (inhala){
-                    update1();
+                    inhalaDosis();
                 }
 
                 break;
@@ -871,13 +881,12 @@ public class Asma2 extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //CAMBIA A ASMA2
     public void onClick7(View view){
         Intent intent = new Intent(Asma2.this, Asma.class);
-
         String text = selector(medicamen_final);
-
         Bundle bundle = new Bundle();
-        bundle.putString("medcinas", text);
+        bundle.putString("medigene", text);
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -897,6 +906,24 @@ public class Asma2 extends AppCompatActivity {
         }
 
         return variable;
+    }
+
+
+    public void onClickBandera(View view) {
+        Intent intent = new Intent(Asma2.this, Main2Activity.class);
+        startActivity(intent);
+    }
+
+    //CAMBIO ICONO BANDERA
+    private void cambioBandera(String bandera){
+        if (bandera.contains("bolivia")){
+            btBandera.setBackground(this.getResources().getDrawable(R.drawable.banbolivia));}
+        if (bandera.contains("espana")){
+            btBandera.setBackground(this.getResources().getDrawable(R.drawable.banespana));}
+        if (bandera.contains("peru")){
+            btBandera.setBackground(this.getResources().getDrawable(R.drawable.banperu));}
+        if (bandera.contains("chile")){
+            btBandera.setBackground(this.getResources().getDrawable(R.drawable.banchile));}
     }
 
 
