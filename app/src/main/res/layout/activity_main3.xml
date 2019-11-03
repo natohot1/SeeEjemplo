@@ -7,6 +7,39 @@
     tools:context=".Segundo"
     tools:layout_editor_absoluteY="81dp">
 
+    <ImageButton
+        android:id="@+id/btBandera"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:background="@drawable/banbolivia"
+        android:onClick="onClickBandera"
+        app:layout_constraintBottom_toTopOf="@+id/guideline20"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btdVolver"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:background="@drawable/atras"
+        android:onClick="onClick6"
+        app:layout_constraintBottom_toTopOf="@+id/guideline20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:text="JARABES"
+        android:textColor="#0A0A0A"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/btBandera"
+        app:layout_constraintStart_toEndOf="@+id/btdVolver"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
 
     <ImageButton
         android:id="@+id/bor"
@@ -31,14 +64,13 @@
         android:layout_width="wrap_content"
         android:layout_height="26dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="2dp"
         android:layout_marginEnd="8dp"
         android:text="@string/tx_q_buscas"
         android:textAppearance="?android:attr/textAppearanceLarge"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/guideline20" />
 
 
     <AutoCompleteTextView
@@ -67,12 +99,12 @@
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
         android:layout_weight="1"
+        android:onClick="onClick1"
         android:paddingTop="2dp"
         android:paddingRight="2dp"
         android:paddingBottom="2dp"
         android:shadowColor="@color/blanco"
         android:text="ANTITUSIVOS"
-        android:onClick="onClick1"
         android:textColor="@color/blanco"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -87,8 +119,8 @@
         android:layout_marginEnd="2dp"
         android:layout_marginBottom="2dp"
         android:layout_weight="1"
-        android:text="ANTIALERGICOS"
         android:onClick="onClick1"
+        android:text="ANTIALERGICOS"
         android:textColor="@color/blanco"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btdTos"
@@ -103,8 +135,8 @@
         android:layout_marginEnd="2dp"
         android:layout_marginBottom="2dp"
         android:layout_weight="1"
-        android:text="ANALGESICOS"
         android:onClick="onClick1"
+        android:text="ANALGESICOS"
         android:textColor="@color/blanco"
         app:layout_constraintBottom_toTopOf="@+id/guideline18"
         app:layout_constraintEnd_toStartOf="@+id/guideline17"
@@ -119,8 +151,8 @@
         android:layout_marginEnd="2dp"
         android:layout_marginBottom="2dp"
         android:layout_weight="1"
-        android:text="ANTIBIOTICOS"
         android:onClick="onClick1"
+        android:text="ANTIBIOTICOS"
         android:textColor="@color/blanco"
         app:layout_constraintBottom_toTopOf="@+id/guideline19"
         app:layout_constraintEnd_toStartOf="@+id/guideline17"
@@ -135,8 +167,8 @@
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
         android:layout_weight="1"
-        android:text="ASMA"
         android:onClick="onClick1"
+        android:text="ASMA"
         android:textColor="@color/blanco"
         app:layout_constraintBottom_toTopOf="@+id/btdTos"
         app:layout_constraintEnd_toEndOf="parent"
@@ -152,8 +184,8 @@
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
         android:layout_weight="1"
-        android:text="@string/todo"
         android:onClick="onClick1"
+        android:text="@string/todo"
         android:textColor="@color/blanco"
         app:layout_constraintBottom_toTopOf="@+id/btdAsma"
         app:layout_constraintEnd_toEndOf="parent"
@@ -196,5 +228,12 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.9" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.05" />
 
 </android.support.constraint.ConstraintLayout>

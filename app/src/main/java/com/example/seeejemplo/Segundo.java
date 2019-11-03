@@ -25,6 +25,7 @@ public class Segundo extends AppCompatActivity {
     String selection,valor="todo";
     DatosReaderDbHelper manager;
     Button btAntibiotico, btAnalgesicos, btTos,btAlergia,btAsma,btTodo;
+    ImageButton btBanera;
 
     boolean cambios=false;
     Cursor cur_bandera;
@@ -126,21 +127,6 @@ public class Segundo extends AppCompatActivity {
     }
 
 
-    private void pasarJarabe(int position, String clase) {
-        //PASA MEDIANTE BOTONES DISTINGUE ASMA Y ACTIVITY4 MEDIANTE VARIABLE CLASE
-        Intent intent = new Intent(Segundo.this, Main4Activity.class);
-        if (clase.equals("asma")) {
-            intent = new Intent(Segundo.this, Asma.class);
-        }
-        String text = medicaLi[position];
-        String mandar = manager.mediComer(text);
-        Bundle bundle = new Bundle();
-        bundle.putString("medcinas", text);
-        bundle.putString("obtenido", mandar);
-        intent.putExtras(bundle);
-        startActivity(intent);
-    }
-
     private void cargarcomponentes() {
         auto = findViewById(R.id.autoCompleteTextView);
        // auto.requestFocusFromTouch();
@@ -153,6 +139,7 @@ public class Segundo extends AppCompatActivity {
         btAsma = findViewById(R.id.btdAsma);
         btTodo = findViewById(R.id.btdTodo);
         lista = findViewById(R.id.miLIsta);
+        btBanera = findViewById(R.id.btBandera);
 
 
         DisplayMetrics metrics = new DisplayMetrics();
@@ -185,13 +172,15 @@ public class Segundo extends AppCompatActivity {
         btTodo.setTextSize(anchoP);
 
 
-        //BUSCA BANDERA
-        manager.openDB();
+        //ESTABLECE BANDERA
         try {
             cur_bandera = manager.buscarMed("BANDERA");
-        } catch (SQLException e) {
+        } catch (java.sql.SQLException e) {
             e.printStackTrace();
         }
+        banString=cur_bandera.getString(2);
+        cambioBandera(banString);
+
 
 
 
@@ -327,28 +316,7 @@ public class Segundo extends AppCompatActivity {
                 actualizarBotones(btTodo);
                 auto.setHint("DOS LETRAS TODOS");
                 break;
-
         }
-
-
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        switch (banString) {
-            case "banbolivia.png":
-                getMenuInflater().inflate(R.menu.menubolivia, menu);
-                break;
-            case "banespana.png":
-                getMenuInflater().inflate(R.menu.menuespana, menu);
-                break;
-            case "banperu.png":
-                getMenuInflater().inflate(R.menu.menuperu, menu);
-                break;
-
-        }
-        return true;
     }
 
     private void actualizarBotones(Button boton){
@@ -362,28 +330,25 @@ public class Segundo extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.españa:
-                Toast t1 = Toast.makeText(this,"NOMBRES COMERCIALES EN ESPAÑA" , Toast.LENGTH_SHORT);
-                t1.show();
 
-                return true;
-            case R.id.bolivia:
-                Toast t2 = Toast.makeText(this,"NOMBRES COMERCIALES EN BOLIVIA" , Toast.LENGTH_SHORT);
-                t2.show();
-
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-    public void onCli2(MenuItem item) {
-        Intent intent = new Intent(Segundo.this,Main2Activity.class);
+    public void onClickBandera(View view) {
+        Intent intent = new Intent(Segundo.this, Main2Activity.class);
         startActivity(intent);
+    }
 
+    public void onClick6(View view) {
+    }
+
+    //CAMBIO ICONO BANDERA
+    private void cambioBandera(String bandera){
+        if (bandera.contains("bolivia")){
+            btBanera.setBackground(this.getResources().getDrawable(R.drawable.banbolivia));}
+        if (bandera.contains("espana")){
+            btBanera.setBackground(this.getResources().getDrawable(R.drawable.banespana));}
+        if (bandera.contains("peru")){
+            btBanera.setBackground(this.getResources().getDrawable(R.drawable.banperu));}
+        if (bandera.contains("chile")){
+            btBanera.setBackground(this.getResources().getDrawable(R.drawable.banchile));}
     }
 }
 

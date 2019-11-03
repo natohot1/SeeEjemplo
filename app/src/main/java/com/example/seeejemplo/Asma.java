@@ -8,7 +8,6 @@ import android.graphics.Typeface;
 import android.support.constraint.Guideline;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +17,6 @@ import android.widget.TextView;
 
 import java.sql.SQLException;
 import java.text.DecimalFormat;
-import java.util.Vector;
 
 public class Asma extends AppCompatActivity {
     String medicamen_final,nombreGenerico;
@@ -33,7 +31,7 @@ public class Asma extends AppCompatActivity {
     boolean inhala,nebulizador,salbuta,bromuro,terbuta;
     int control=0,position=0;
     Double varibleSalbutamol=1.0;
-    ImageButton volver;
+    ImageButton btnVolver,btBandera;
     DecimalFormat formato = new DecimalFormat("#.##");
     DecimalFormat formato1 = new DecimalFormat("#.0");
     Guideline guideline2;
@@ -212,7 +210,8 @@ public class Asma extends AppCompatActivity {
         btGravedad = findViewById(R.id.btdIndice);
         btConsidere = findViewById(R.id.btdConsidere);
         btConsidere.setVisibility(View.GONE);
-        volver=findViewById(R.id.btdAtras);
+        btnVolver =findViewById(R.id.btdAtras);
+        btBandera = findViewById(R.id.btBandera);
         guideline2=findViewById(R.id.guideline2);
 
         //VALORES SEEKBAR
@@ -233,6 +232,8 @@ public class Asma extends AppCompatActivity {
             e.printStackTrace();
         }
         banString=cur_bandera.getString(2);
+        cambioBandera(banString);
+
         graveAsma = gravedadAsma();
         //BOTON GRAVE SELECIONADAO
         btGrave.setTextColor(Color.BLUE);
@@ -322,9 +323,6 @@ public class Asma extends AppCompatActivity {
         }else {
             cada();
         }
-
-
-
     }
 
     private void dosisAlternativas() {
@@ -339,20 +337,13 @@ public class Asma extends AppCompatActivity {
             txCada.setText("Max 8 pul/dia");
             txPeso.setText("          NIÑOS 3 a 12 AÑOS");
         }
-
         if (medicamen_final.contains("BUDESON")){
             txCantidad.setText("0,25 a 1 mg");
             txCada.setText("12-24 /hrs");
             guideline2.setGuidelinePercent((float) 0.88);
-
             txPeso.setLines(2);
             txPeso.setText(" De 6 meses a 12 años, maximo 2 mg/dia, en casos muy graves hasta 4 mg/dia");
-
         }
-
-
-
-
     }
 
     private int redondeoFun(Double numero) {
@@ -727,22 +718,6 @@ public class Asma extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        switch (banString) {
-            case "banbolivia.png":
-                getMenuInflater().inflate(R.menu.menubolivia, menu);
-                break;
-            case "banespana.png":
-                getMenuInflater().inflate(R.menu.menuespana, menu);
-                break;
-            case "banperu.png":
-                getMenuInflater().inflate(R.menu.menuperu, menu);
-                break;
-        }
-        return true;
-    }
-
     public void onCli2(MenuItem item) {
         Intent intent = new Intent(Asma.this,Main2Activity.class);
         startActivity(intent);
@@ -904,13 +879,12 @@ public class Asma extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //CAMBIA A ASMA2
     public void onClick7(View view){
         Intent intent = new Intent(Asma.this, Asma2.class);
-
         String text = selector(medicamen_final);
-
         Bundle bundle = new Bundle();
-        bundle.putString("medcinas", text);
+        bundle.putString("medigene", text);
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -932,10 +906,21 @@ public class Asma extends AppCompatActivity {
         return variable;
     }
 
-
     public void onClickBandera(View view) {
         Intent intent = new Intent(Asma.this, Main2Activity.class);
         startActivity(intent);
+    }
+
+    //CAMBIO ICONO BANDERA
+    private void cambioBandera(String bandera){
+        if (bandera.contains("bolivia")){
+            btBandera.setBackground(this.getResources().getDrawable(R.drawable.banbolivia));}
+        if (bandera.contains("espana")){
+            btBandera.setBackground(this.getResources().getDrawable(R.drawable.banespana));}
+        if (bandera.contains("peru")){
+            btBandera.setBackground(this.getResources().getDrawable(R.drawable.banperu));}
+        if (bandera.contains("chile")){
+            btBandera.setBackground(this.getResources().getDrawable(R.drawable.banchile));}
     }
 
 
