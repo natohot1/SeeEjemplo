@@ -787,7 +787,7 @@ public class Inhalador extends AppCompatActivity implements SeekBar.OnSeekBarCha
 
 
     public void onCli2(MenuItem item) {
-        Intent intent = new Intent(Inhalador.this,Main2Activity.class);
+        Intent intent = new Intent(Inhalador.this, BanderaActivity.class);
         startActivity(intent);
 
     }

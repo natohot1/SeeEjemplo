@@ -22,6 +22,7 @@ public class Main4Activity extends AppCompatActivity {
     SeekBar seeDefi;
     private String mediGenerico;
     private String mediComercial;
+    private String botonActivo;
     DecimalFormat df = new DecimalFormat("0.0");
     DecimalFormat d = new DecimalFormat("0");
     private boolean banderaselec;
@@ -73,6 +74,7 @@ public class Main4Activity extends AppCompatActivity {
         // mediGenerico = datos.getString("medcinas");
         mediComercial = datos.getString("obtenido");
         //  mediComercial = datos.getString("obtenido");
+        botonActivo = datos.getString("boton");
         manager = new DatosReaderDbHelper(this);
         Context context=this;
 
@@ -587,7 +589,6 @@ public class Main4Activity extends AppCompatActivity {
         }
     }
 
-
     private void update() throws java.sql.SQLException{
 
         int resSeeb, res_espiner;
@@ -849,7 +850,8 @@ public class Main4Activity extends AppCompatActivity {
     }
 
     public void onCli2 (MenuItem item){
-        Intent intent = new Intent(Main4Activity.this, Main2Activity.class);
+        Intent intent = new Intent(Main4Activity.this, BanderaActivity.class);
+
         startActivity(intent);
 
     }
@@ -857,9 +859,7 @@ public class Main4Activity extends AppCompatActivity {
     public void onClick6(View view) {
         Intent intent = new Intent(Main4Activity.this, Segundo.class);
         Bundle bundle = new Bundle();
-
-        bundle.putString("nomb", tipo);
-
+        bundle.putString("boton", botonActivo);
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -884,7 +884,10 @@ public class Main4Activity extends AppCompatActivity {
     }
 
     public void onClickBandera(View view) {
-        Intent intent = new Intent(Main4Activity.this, Main2Activity.class);
+        Intent intent = new Intent(Main4Activity.this, BanderaActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("boton", botonActivo);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 

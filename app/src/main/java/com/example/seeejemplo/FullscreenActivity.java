@@ -19,6 +19,7 @@ public class FullscreenActivity extends AppCompatActivity {
     private static final int tiempo_des = 10;
     private static final int repeticion = 4;
     private int contador = 0;
+    private String botonActivo = "todo";
 
 
 
@@ -79,6 +80,9 @@ public class FullscreenActivity extends AppCompatActivity {
                 }
                 else{
                     Intent intent = new Intent(FullscreenActivity.this, Segundo.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("boton", botonActivo);
+                    intent.putExtras(bundle);
                     startActivity(intent);}
 
             }
@@ -93,6 +97,9 @@ public class FullscreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(FullscreenActivity.this, Segundo.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("boton", botonActivo);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });

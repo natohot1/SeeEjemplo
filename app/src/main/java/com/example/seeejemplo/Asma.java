@@ -720,7 +720,7 @@ public class Asma extends AppCompatActivity {
     }
 
     public void onCli2(MenuItem item) {
-        Intent intent = new Intent(Asma.this,Main2Activity.class);
+        Intent intent = new Intent(Asma.this, BanderaActivity.class);
         startActivity(intent);
     }
 
@@ -908,7 +908,7 @@ public class Asma extends AppCompatActivity {
     }
 
     public void onClickBandera(View view) {
-        Intent intent = new Intent(Asma.this, Main2Activity.class);
+        Intent intent = new Intent(Asma.this, BanderaActivity.class);
         startActivity(intent);
     }
 

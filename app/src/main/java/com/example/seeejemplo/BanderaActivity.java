@@ -14,17 +14,22 @@ import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
-public class Main2Activity extends AppCompatActivity {
+public class BanderaActivity extends AppCompatActivity {
     DatosReaderDbHelper manager;
     Button valido;
     Cursor cur_bandera;
-    String banString,banSelecionada;
+    String banString,banSelecionada,botonActivo;
+    Bundle datos;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+
+        datos = getIntent().getExtras();
+        botonActivo = datos.getString("boton");
+
         banSelecionada="banbolivia.png";
 
 
@@ -39,6 +44,7 @@ public class Main2Activity extends AppCompatActivity {
             e.printStackTrace();
         }
         banString=cur_bandera.getString(2);
+
 
         NumberPicker np = findViewById(R.id.piker);
 
@@ -79,7 +85,11 @@ public class Main2Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 modificarbandera(banSelecionada);
-                Intent intent = new Intent(Main2Activity.this, Segundo.class);
+
+                Intent intent = new Intent(BanderaActivity.this, Segundo.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("boton", botonActivo);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });

@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,17 +13,16 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Toast;
-
-import java.sql.SQLException;
 
 public class Segundo extends AppCompatActivity {
     AutoCompleteTextView auto;
     int position;
-    String selection,valor="todo";
+    String botonActivo ="todo";
     DatosReaderDbHelper manager;
     Button btAntibiotico, btAnalgesicos, btTos,btAlergia,btAsma,btTodo;
     ImageButton btBanera;
+    Bundle datos;
+
 
     boolean cambios=false;
     Cursor cur_bandera;
@@ -41,15 +38,12 @@ public class Segundo extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main3);
+        setContentView(R.layout.segundo);
 
         manager = new DatosReaderDbHelper(this);
-
-
         Context context=this;
 
-
-            cargarcomponentes();
+        cargarcomponentes();
 
         banString=cur_bandera.getString(2);
         if (banString.equals("banespana.png")) {
@@ -62,6 +56,31 @@ public class Segundo extends AppCompatActivity {
         }
 
 
+        datos = getIntent().getExtras();
+        botonActivo = datos.getString("boton");
+
+        //SE ESTABLECE BOTON ACTIVO
+        if (botonActivo.contains("todo")){
+            activarTodo();
+        }
+        if (botonActivo.contains("asma")){
+            activarAsma();
+        }
+        if (botonActivo.contains("tos")){
+            activarTos();
+        }
+        if (botonActivo.contains("antibiotico")){
+            activarAntibiotico();
+        }
+        if (botonActivo.contains("antialergico")){
+            activarAlergia();
+        }
+        if (botonActivo.contains("analgesico")){
+            activarAnalgesico();
+        }
+
+
+
         //********BORRAR
      //   final String nombre = getIntent().getStringExtra("nomb");
         final int nombre1=6;
@@ -70,7 +89,7 @@ public class Segundo extends AppCompatActivity {
 
         //******BORRAR
 
-        actualizarBotones(btTodo);
+      //  actualizarBotones(btTodo);
 
 
         adapterAu = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,medicaAu);
@@ -120,6 +139,7 @@ public class Segundo extends AppCompatActivity {
             intent = new Intent(Segundo.this, Asma.class);
         }
         Bundle bundle = new Bundle();
+        bundle.putString("boton", botonActivo);
         bundle.putString("medigene", mediGen);
         bundle.putString("obtenido", mediSelec);
         intent.putExtras(bundle);
@@ -129,9 +149,7 @@ public class Segundo extends AppCompatActivity {
 
     private void cargarcomponentes() {
         auto = findViewById(R.id.autoCompleteTextView);
-       // auto.requestFocusFromTouch();
-
-
+        // auto.requestFocusFromTouch();
         btAnalgesicos= findViewById(R.id.btdAnalgesicos);
         btAntibiotico = findViewById(R.id.btdAntibiticos);
         btTos = findViewById(R.id.btdTos);
@@ -146,10 +164,6 @@ public class Segundo extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         int width = metrics.widthPixels; // ancho absoluto en pixels
         int height = metrics.heightPixels; // alto absoluto en pixels
-
-       // Point size = new Point();
-
-
 
         int anchoP=0;
         int ancho=horizotal(width,height);
@@ -171,8 +185,6 @@ public class Segundo extends AppCompatActivity {
         btAsma.setTextSize(anchoP);
         btTodo.setTextSize(anchoP);
 
-
-
         //ESTABLECE BANDERA
         try {
             cur_bandera = manager.buscarMed("BANDERA");
@@ -181,10 +193,6 @@ public class Segundo extends AppCompatActivity {
         }
         banString=cur_bandera.getString(2);
         cambioBandera(banString);
-
-
-
-
     }
 
     private int horizotal(int width, int height) {
@@ -200,124 +208,144 @@ public class Segundo extends AppCompatActivity {
         Intent intent;
         switch (view.getId()){
             case (R.id.btdAnalgesicos):
-                valor="analgesico";
-                if (banString.equals("banespana.png")) {
-                    medicaLi = getResources().getStringArray(R.array.ANALGESICOS);
-                    medicaAu = getResources().getStringArray(R.array.ANALGESICOS);
-                }
-                if (banString.equals("banbolivia.png")) {
-                    medicaLi = getResources().getStringArray(R.array.ANALGESICOS_BOLIVIA);
-                    medicaAu = getResources().getStringArray(R.array.ANALGESICOS_BOLIVIA);}
-                adapterLi = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicaLi);
-                adapterAu = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicaAu);
-                auto.setAdapter(adapterAu);
-                lista.setAdapter(adapterLi);
-                adapterLi.notifyDataSetChanged();
-                adapterAu.notifyDataSetChanged();
-                btAnalgesicos.setBackgroundColor(getResources().getColor(R.color.botnActivo));
-                actualizarBotones(btAnalgesicos);
-                auto.setHint("DOS LETRAS ANALGESICOS");
-
+                activarAnalgesico();
                 break;
             case (R.id.btdAntialergicos):
-                valor ="antialergico";
-                if (banString.equals("banespana.png")) {
-                    medicaLi = getResources().getStringArray(R.array.ANTIALERGICOS);
-                    medicaAu = getResources().getStringArray(R.array.ANTIALERGICOS);
-                }
-                if (banString.equals("banbolivia.png")) {
-                    medicaLi = getResources().getStringArray(R.array.ANTIALERGICOS_BOLIVIA);
-                    medicaAu = getResources().getStringArray(R.array.ANTIALERGICOS_BOLIVIA);}
-                adapterLi = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicaLi);
-                adapterAu = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicaAu);
-                auto.setAdapter(adapterAu);
-                lista.setAdapter(adapterLi);
-                adapterLi.notifyDataSetChanged();
-                adapterAu.notifyDataSetChanged();
-                btAnalgesicos.setBackgroundColor(getResources().getColor(R.color.botnActivo));
-                actualizarBotones(btAlergia);
-                auto.setHint("DOS LETRAS ANTIALERGICOS");
-
+                activarAlergia();
                 break;
             case (R.id.btdAntibiticos):
-                valor ="antibiotico";
-                if (banString.equals("banespana.png")) {
-                    medicaLi = getResources().getStringArray(R.array.ANTIBIOTICOS);
-                    medicaAu = getResources().getStringArray(R.array.ANTIBIOTICOS);
-                }
-                if (banString.equals("banbolivia.png")) {
-                    medicaLi = getResources().getStringArray(R.array.ANTIBIOTICOS_BOLIVIA);
-                    medicaAu = getResources().getStringArray(R.array.ANTIBIOTICOS_BOLIVIA);}
-                adapterLi = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicaLi);
-                adapterAu = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicaAu);
-                auto.setAdapter(adapterAu);
-                lista.setAdapter(adapterLi);
-                adapterLi.notifyDataSetChanged();
-                adapterAu.notifyDataSetChanged();
-                btAntibiotico.setBackgroundColor(getResources().getColor(R.color.botnActivo));
-                actualizarBotones(btAntibiotico);
-                auto.setHint("DOS LETRAS ANTIBIOTICOS");
-
+                activarAntibiotico();
                 break;
             case (R.id.btdTos):
-                valor="tos";
-                if (banString.equals("banespana.png")) {
-                    medicaLi = getResources().getStringArray(R.array.ANTITUSIGENOS);
-                    medicaAu = getResources().getStringArray(R.array.ANTITUSIGENOS);
-                }
-                if (banString.equals("banbolivia.png")) {
-                    medicaLi = getResources().getStringArray(R.array.ANTITUSIGENOS_BOLIVIA);
-                    medicaAu = getResources().getStringArray(R.array.ANTITUSIGENOS_BOLIVIA);}
-                adapterLi = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicaLi);
-                adapterAu = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicaAu);
-                auto.setAdapter(adapterAu);
-                lista.setAdapter(adapterLi);
-                adapterLi.notifyDataSetChanged();
-                adapterAu.notifyDataSetChanged();
-                btTos.setBackgroundColor(getResources().getColor(R.color.botnActivo));
-                actualizarBotones(btTos);
-                auto.setHint("DOS LETRAS ANTITUSIVOS");
-
+                activarTos();
                 break;
             case (R.id.btdAsma):
-                valor = "asma";
-                if (banString.equals("banespana.png")) {
-                    medicaLi = getResources().getStringArray(R.array.ASMA);
-                    medicaAu = getResources().getStringArray(R.array.ASMA);
-                }
-                if (banString.equals("banbolivia.png")) {
-                    medicaLi = getResources().getStringArray(R.array.ASMA);
-                    medicaAu = getResources().getStringArray(R.array.ASMA);}
-                adapterLi = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicaLi);
-                adapterAu = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicaAu);
-                auto.setAdapter(adapterAu);
-                lista.setAdapter(adapterLi);
-                adapterLi.notifyDataSetChanged();
-                adapterAu.notifyDataSetChanged();
-                btAsma.setBackgroundColor(getResources().getColor(R.color.botnActivo));
-                actualizarBotones(btAsma);
-                auto.setHint("DOS LETRAS ASMA");
+                activarAsma();
                 break;
             case (R.id.btdTodo):
-                valor = "todo";
-                if (banString.equals("banespana.png")) {
-                    medicaLi = getResources().getStringArray(R.array.medica_array);
-                    medicaAu = getResources().getStringArray(R.array.medica_array);
-                }
-                if (banString.equals("banbolivia.png")) {
-                    medicaLi = getResources().getStringArray(R.array.medica_arrayBolivia);
-                    medicaAu = getResources().getStringArray(R.array.medica_arrayBolivia);}
-                adapterLi = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicaLi);
-                adapterAu = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicaAu);
-                auto.setAdapter(adapterAu);
-                lista.setAdapter(adapterLi);
-                adapterLi.notifyDataSetChanged();
-                adapterAu.notifyDataSetChanged();
-                btTodo.setBackgroundColor(getResources().getColor(R.color.botnActivo));
-                actualizarBotones(btTodo);
-                auto.setHint("DOS LETRAS TODOS");
+                activarTodo();
                 break;
         }
+    }
+
+    private void activarTodo() {
+        botonActivo = "todo";
+        if (banString.equals("banespana.png")) {
+            medicaLi = getResources().getStringArray(R.array.medica_array);
+            medicaAu = getResources().getStringArray(R.array.medica_array);
+        }
+        if (banString.equals("banbolivia.png")) {
+            medicaLi = getResources().getStringArray(R.array.medica_arrayBolivia);
+            medicaAu = getResources().getStringArray(R.array.medica_arrayBolivia);}
+        adapterLi = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicaLi);
+        adapterAu = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicaAu);
+        auto.setAdapter(adapterAu);
+        lista.setAdapter(adapterLi);
+        adapterLi.notifyDataSetChanged();
+        adapterAu.notifyDataSetChanged();
+        btTodo.setBackgroundColor(getResources().getColor(R.color.botnActivo));
+        actualizarBotones(btTodo);
+        auto.setHint("DOS LETRAS TODOS");
+    }
+
+    private void activarAsma() {
+        botonActivo = "asma";
+        if (banString.equals("banespana.png")) {
+            medicaLi = getResources().getStringArray(R.array.ASMA);
+            medicaAu = getResources().getStringArray(R.array.ASMA);
+        }
+        if (banString.equals("banbolivia.png")) {
+            medicaLi = getResources().getStringArray(R.array.ASMA);
+            medicaAu = getResources().getStringArray(R.array.ASMA);}
+        adapterLi = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicaLi);
+        adapterAu = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicaAu);
+        auto.setAdapter(adapterAu);
+        lista.setAdapter(adapterLi);
+        adapterLi.notifyDataSetChanged();
+        adapterAu.notifyDataSetChanged();
+        btAsma.setBackgroundColor(getResources().getColor(R.color.botnActivo));
+        actualizarBotones(btAsma);
+        auto.setHint("DOS LETRAS ASMA");
+    }
+
+    private void activarTos() {
+        botonActivo ="tos";
+        if (banString.equals("banespana.png")) {
+            medicaLi = getResources().getStringArray(R.array.ANTITUSIGENOS);
+            medicaAu = getResources().getStringArray(R.array.ANTITUSIGENOS);
+        }
+        if (banString.equals("banbolivia.png")) {
+            medicaLi = getResources().getStringArray(R.array.ANTITUSIGENOS_BOLIVIA);
+            medicaAu = getResources().getStringArray(R.array.ANTITUSIGENOS_BOLIVIA);}
+        adapterLi = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicaLi);
+        adapterAu = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicaAu);
+        auto.setAdapter(adapterAu);
+        lista.setAdapter(adapterLi);
+        adapterLi.notifyDataSetChanged();
+        adapterAu.notifyDataSetChanged();
+        btTos.setBackgroundColor(getResources().getColor(R.color.botnActivo));
+        actualizarBotones(btTos);
+        auto.setHint("DOS LETRAS ANTITUSIVOS");
+    }
+
+    private void activarAntibiotico() {
+        botonActivo ="antibiotico";
+        if (banString.equals("banespana.png")) {
+            medicaLi = getResources().getStringArray(R.array.ANTIBIOTICOS);
+            medicaAu = getResources().getStringArray(R.array.ANTIBIOTICOS);
+        }
+        if (banString.equals("banbolivia.png")) {
+            medicaLi = getResources().getStringArray(R.array.ANTIBIOTICOS_BOLIVIA);
+            medicaAu = getResources().getStringArray(R.array.ANTIBIOTICOS_BOLIVIA);}
+        adapterLi = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicaLi);
+        adapterAu = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicaAu);
+        auto.setAdapter(adapterAu);
+        lista.setAdapter(adapterLi);
+        adapterLi.notifyDataSetChanged();
+        adapterAu.notifyDataSetChanged();
+        btAntibiotico.setBackgroundColor(getResources().getColor(R.color.botnActivo));
+        actualizarBotones(btAntibiotico);
+        auto.setHint("DOS LETRAS ANTIBIOTICOS");
+    }
+
+    private void activarAlergia() {
+        botonActivo ="antialergico";
+        if (banString.equals("banespana.png")) {
+            medicaLi = getResources().getStringArray(R.array.ANTIALERGICOS);
+            medicaAu = getResources().getStringArray(R.array.ANTIALERGICOS);
+        }
+        if (banString.equals("banbolivia.png")) {
+            medicaLi = getResources().getStringArray(R.array.ANTIALERGICOS_BOLIVIA);
+            medicaAu = getResources().getStringArray(R.array.ANTIALERGICOS_BOLIVIA);}
+        adapterLi = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicaLi);
+        adapterAu = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicaAu);
+        auto.setAdapter(adapterAu);
+        lista.setAdapter(adapterLi);
+        adapterLi.notifyDataSetChanged();
+        adapterAu.notifyDataSetChanged();
+        btAnalgesicos.setBackgroundColor(getResources().getColor(R.color.botnActivo));
+        actualizarBotones(btAlergia);
+        auto.setHint("DOS LETRAS ANTIALERGICOS");
+    }
+
+    private void activarAnalgesico() {
+        botonActivo ="analgesico";
+        if (banString.equals("banespana.png")) {
+            medicaLi = getResources().getStringArray(R.array.ANALGESICOS);
+            medicaAu = getResources().getStringArray(R.array.ANALGESICOS);
+        }
+        if (banString.equals("banbolivia.png")) {
+            medicaLi = getResources().getStringArray(R.array.ANALGESICOS_BOLIVIA);
+            medicaAu = getResources().getStringArray(R.array.ANALGESICOS_BOLIVIA);}
+        adapterLi = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicaLi);
+        adapterAu = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicaAu);
+        auto.setAdapter(adapterAu);
+        lista.setAdapter(adapterLi);
+        adapterLi.notifyDataSetChanged();
+        adapterAu.notifyDataSetChanged();
+        btAnalgesicos.setBackgroundColor(getResources().getColor(R.color.botnActivo));
+        actualizarBotones(btAnalgesicos);
+        auto.setHint("DOS LETRAS ANALGESICOS");
     }
 
     private void actualizarBotones(Button boton){
@@ -333,7 +361,10 @@ public class Segundo extends AppCompatActivity {
 
 
     public void onClickBandera(View view) {
-        Intent intent = new Intent(Segundo.this, Main2Activity.class);
+        Intent intent = new Intent(Segundo.this, BanderaActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("boton", botonActivo);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 

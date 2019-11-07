@@ -155,7 +155,7 @@ public class Medicina extends AppCompatActivity {
         return true;
     }
     public void onCli2(MenuItem item) {
-        Intent intent = new Intent(Medicina.this,Main2Activity.class);
+        Intent intent = new Intent(Medicina.this, BanderaActivity.class);
         startActivity(intent);
     }
 

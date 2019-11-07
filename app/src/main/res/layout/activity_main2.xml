@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/fondo23sep"
 
-    tools:context=".Main2Activity">
+    tools:context=".BanderaActivity">
 
     <RelativeLayout
         android:id="@+id/relativeLayout"

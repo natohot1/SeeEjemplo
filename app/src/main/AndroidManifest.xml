@@ -20,7 +20,7 @@
         <activity android:name=".Inhalador" />
         <activity android:name=".Medicina"
             android:screenOrientation="fullSensor"/>
-        <activity android:name=".Main2Activity" />
+        <activity android:name=".BanderaActivity" />
         <activity android:name=".Asma"
             android:screenOrientation="fullSensor"
             />
