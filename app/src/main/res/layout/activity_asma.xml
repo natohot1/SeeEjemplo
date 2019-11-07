@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/fondo23sep"
     tools:context=".Asma">
 
 
@@ -65,7 +66,7 @@
 
     <TextView
         android:id="@+id/txdDosis"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="27dp"
         android:layout_marginBottom="1dp"
         android:text="DOSIS"
@@ -78,7 +79,7 @@
 
     <TextView
         android:id="@+id/txdCada"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="27dp"
         android:layout_marginBottom="1dp"
         android:fontFamily="serif"
@@ -301,12 +302,15 @@
         android:id="@+id/txdOtrasNopro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:layout_marginEnd="45dp"
         android:text="INDICACIONES Y PRECAUCIONES"
         android:textColor="#000000"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/scrollView3"
-        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/guideline5"
         app:layout_constraintVertical_chainStyle="packed" />
 
@@ -403,13 +407,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.75" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline8"
-        android:layout_width="wrap_content"
-        android:layout_height="18dp"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.89" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline6"

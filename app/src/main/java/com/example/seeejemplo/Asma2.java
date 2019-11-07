@@ -36,7 +36,7 @@ public class Asma2 extends AppCompatActivity {
     ImageButton btVolver, btBandera;
     String [][]array_datos=new String[20][10];
     DecimalFormat formato = new DecimalFormat("#.##");
-    DecimalFormat formato1 = new DecimalFormat("#.0");
+    DecimalFormat formato1 = new DecimalFormat("#.#");
     Guideline guideline2;
 
     @Override
@@ -384,7 +384,7 @@ public class Asma2 extends AppCompatActivity {
         Double pesoMg = peso*0.15;
         String pesoInterdeci=decimal(pesoInter);
         String pesoMgdeci=decimal(pesoMg);
-        txCantidad.setText(""+formato.format(pesoInter)+" ml = "+formato1.format(pesoMg)+" mg");
+        txCantidad.setText(""+formato.format(pesoInter)+" ml = "+formato1.format(pesoMg)+"  mg.");
         if(peso<=3){
             txCantidad.setText("");
             txCada.setText("");

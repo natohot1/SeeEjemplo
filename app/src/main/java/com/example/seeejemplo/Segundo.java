@@ -172,6 +172,7 @@ public class Segundo extends AppCompatActivity {
         btTodo.setTextSize(anchoP);
 
 
+
         //ESTABLECE BANDERA
         try {
             cur_bandera = manager.buscarMed("BANDERA");

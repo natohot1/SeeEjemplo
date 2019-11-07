@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorMioTrans"
+    android:background="@drawable/fondo23sep"
+
     tools:context=".Main2Activity">
 
     <RelativeLayout

@@ -33,7 +33,7 @@ public class Asma extends AppCompatActivity {
     Double varibleSalbutamol=1.0;
     ImageButton btnVolver,btBandera;
     DecimalFormat formato = new DecimalFormat("#.##");
-    DecimalFormat formato1 = new DecimalFormat("#.0");
+    DecimalFormat formato1 = new DecimalFormat("#.#");
     Guideline guideline2;
 
 
@@ -382,7 +382,8 @@ public class Asma extends AppCompatActivity {
         Double pesoMg = peso*0.15;
         String pesoInterdeci=decimal(pesoInter);
         String pesoMgdeci=decimal(pesoMg);
-        txCantidad.setText(""+formato.format(pesoInter)+" ml = "+formato1.format(pesoMg)+" mg");
+        txCantidad.setText(""+formato.format(pesoInter)+" ml = "+formato1.format(pesoMg)+"  mg.");
+
         if(peso<=3){
             txCantidad.setText("");
             txCada.setText("");
