@@ -225,11 +225,23 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
 
 
     public void modificarbandera(String value){
+        openDB();
         String var_bandera = "BANDERA";
         ContentValues registro = new ContentValues();
         registro.put(Medicamento.CN_dosisAddia,value);
         myDataBase.update(DatosRegistro.DATOS_TABLA_MEDICAMENTOS,registro,
                 Medicamento.CN_medicamento + "=?", new String[]{var_bandera});
+        close();
+    }
+    public void pasarDatos(String clase3, String botonAc4){
+        openDB();
+        String var_bandera = "BANDERA";
+        ContentValues registro = new ContentValues();
+        registro.put(Medicamento.CN_DosisP,clase3);
+        registro.put(Medicamento.CN_DosisP1,botonAc4);
+        myDataBase.update(DatosRegistro.DATOS_TABLA_MEDICAMENTOS,registro,
+                Medicamento.CN_medicamento + "=?", new String[]{var_bandera});
+        close();
     }
 
 

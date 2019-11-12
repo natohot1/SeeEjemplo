@@ -19,7 +19,8 @@ public class FullscreenActivity extends AppCompatActivity {
     private static final int tiempo_des = 10;
     private static final int repeticion = 4;
     private int contador = 0;
-    private String botonActivo = "todo";
+    private String botonActivo = "todo", clase = "1";
+    DatosReaderDbHelper manager;
 
 
 
@@ -28,11 +29,14 @@ public class FullscreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fullscreen);
 
+        manager = new DatosReaderDbHelper(this);
+
        // getSupportActionBar().hide();
 
         texto=(TextView)findViewById(R.id.texmio);
         final String textos[]={"SOLO NECESITAS","DOS O TRES LETRAS","DESLIZAR LA BARRA","YA ESTA"};
         Button salto=(Button)findViewById(R.id.btnValidar);
+        manager.pasarDatos(clase,botonActivo);
 
         //<editor-fold desc="VALORES ANIMACION">
         final AlphaAnimation fadein = new AlphaAnimation(0.0f, 1.0f);
@@ -79,10 +83,12 @@ public class FullscreenActivity extends AppCompatActivity {
                     texto.startAnimation(fadein);
                 }
                 else{
+             //       manager.pasarDatos(clase,botonActivo);
                     Intent intent = new Intent(FullscreenActivity.this, Segundo.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("boton", botonActivo);
-                    intent.putExtras(bundle);
+
+                   // Bundle bundle = new Bundle();
+                   // bundle.putString("boton", botonActivo);
+                   // intent.putExtras(bundle);
                     startActivity(intent);}
 
             }
@@ -96,10 +102,8 @@ public class FullscreenActivity extends AppCompatActivity {
         salto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+              //  manager.pasarDatos(clase,botonActivo);
                 Intent intent = new Intent(FullscreenActivity.this, Segundo.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("boton", botonActivo);
-                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });

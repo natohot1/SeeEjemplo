@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 
 public class Asma2 extends AppCompatActivity {
-    String medicamen_final,nombreGenerico;
+    String medicamen_final,nombreGenerico, clase ="asma";
     private boolean banderaselec;
     TextView txTitulo, txCantidad, txCada, txGravedad,txOtras, txPrecausiones,txPeso;
     Button btGrave,btModerada,btLeve,btOtra1,btOtra2,btOtra3,btOtra4,btGravedad,btConsidere;
@@ -911,6 +911,9 @@ public class Asma2 extends AppCompatActivity {
 
     public void onClickBandera(View view) {
         Intent intent = new Intent(Asma2.this, BanderaActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("clase", clase);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 

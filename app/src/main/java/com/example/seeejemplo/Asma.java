@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 
 public class Asma extends AppCompatActivity {
-    String medicamen_final,nombreGenerico;
+    private String medicamen_final,nombreGenerico, clase="asma";
     TextView txTitulo, txCantidad, txCada, txGravedad,txOtras, txPrecausiones,txPeso;
     Button btGrave,btModerada,btLeve,btOtra1,btOtra2,btOtra3,btOtra4,btGravedad,btConsidere;
     SeekBar seekBar;
@@ -396,20 +396,6 @@ public class Asma extends AppCompatActivity {
         txPeso.setText(""+progress+ " Kg");
     }
 
-    private void dosisNebulizador(){
-        if(nebulizador && bromuro){
-            //dosisEdad1
-            update();
-            return;
-        }
-        if(nebulizador){
-            //if esNebuloizador{
-            nebuDosis();
-        }else {
-            // dosisInhalador();
-            inhalaDosis();
-        }
-    }
 
     //DOSISEDAD1
     private void update() {
@@ -719,86 +705,10 @@ public class Asma extends AppCompatActivity {
 
     }
 
-    public void onCli2(MenuItem item) {
-        Intent intent = new Intent(Asma.this, BanderaActivity.class);
-        startActivity(intent);
-    }
 
-    //FUNCION BOTONES PARA GRAVEDAD
-    public void onClick(View view) {
-        switch (view.getId()){
-            //BOTONES GRAVE A LEVE CONFIGURAR
-            case R.id.btdGrave:
-                btGrave.setTextColor(Color.BLUE);
-                btGrave.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
-                btModerada.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-                btModerada.setTextColor(Color.WHITE);
-                btLeve.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-                btLeve.setTextColor(Color.WHITE);
-                txGravedad.setText(graveAsma[0]);
-                if(nebulizador){
-                    btConsidere.setVisibility(View.GONE);
-                }
-                if(inhala){
-                    btConsidere.setVisibility(View.VISIBLE);
-                }
-                if(medicamen_final.contains("BUDESONIDA")){
-                    btConsidere.setVisibility(View.VISIBLE);
-                }
-                control=0;
-                cada();
-                dosis();
-                break;
-            case R.id.btdModerada:
-                btModerada.setTextColor(Color.BLUE);
-                btModerada.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
-                btGrave.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-                btGrave.setTextColor(Color.WHITE);
-                btLeve.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-                btLeve.setTextColor(Color.WHITE);
-                txGravedad.setText(graveAsma[1]);
-                if(nebulizador){
-                    btConsidere.setVisibility(View.GONE);
-                }
-                if(inhala && salbuta){
-                    btConsidere.setVisibility(View.VISIBLE);
-                }
-                if(medicamen_final.contains("BUDESONIDA")){
-                    btConsidere.setVisibility(View.VISIBLE);
-                }
-                control=1;
-                cada();
-                dosis();
-                break;
-            case R.id.btdLeve:
-                btLeve.setTextColor(Color.BLUE);
-                btLeve.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
-                btGrave.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-                btGrave.setTextColor(Color.WHITE);
-                btModerada.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-                btModerada.setTextColor(Color.WHITE);
-                txGravedad.setText(graveAsma[2]);
-                if(inhala && salbuta){
-                    btConsidere.setVisibility(View.GONE);
-                }
-                if(nebulizador && salbuta){
-                    btConsidere.setVisibility(View.VISIBLE);
-                }
-                if(bromuro && inhala){
-                    btConsidere.setVisibility(View.GONE);
-                }
-                if(medicamen_final.contains("BUDESONIDA")){
-                    btConsidere.setVisibility(View.GONE);
-                }
-                control=2;
-                cada();
-                dosis();
-                break;
-        }
-    }
 
     //FUNCION BOTONES PARA OTRAS PRESENTACIONES
-    public void onClick2(View view) {
+    public void onClickOtrasPre(View view) {
         switch (view.getId()){
             case R.id.btdPri:
                 btOtra1.setTextColor(Color.BLUE);
@@ -874,14 +784,12 @@ public class Asma extends AppCompatActivity {
                 break;
         }
     }
-
-    public void onClick6(View view) {
+    public void onclickVolver(View view) {
         Intent intent = new Intent(Asma.this, Segundo.class);
         startActivity(intent);
     }
-
     //CAMBIA A ASMA2
-    public void onClick7(View view){
+    public void onClickConsidere(View view){
         Intent intent = new Intent(Asma.this, Asma2.class);
         String text = selector(medicamen_final);
         Bundle bundle = new Bundle();
@@ -889,6 +797,83 @@ public class Asma extends AppCompatActivity {
         intent.putExtras(bundle);
         startActivity(intent);
     }
+    public void onClickBandera(View view) {
+        Intent intent = new Intent(Asma.this, BanderaActivity.class);
+        startActivity(intent);
+    }
+    //FUNCION BOTONES PARA GRAVEDAD
+    public void onClick(View view) {
+        switch (view.getId()){
+            //BOTONES GRAVE A LEVE CONFIGURAR
+            case R.id.btdGrave:
+                btGrave.setTextColor(Color.BLUE);
+                btGrave.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
+                btModerada.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+                btModerada.setTextColor(Color.WHITE);
+                btLeve.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+                btLeve.setTextColor(Color.WHITE);
+                txGravedad.setText(graveAsma[0]);
+                if(nebulizador){
+                    btConsidere.setVisibility(View.GONE);
+                }
+                if(inhala){
+                    btConsidere.setVisibility(View.VISIBLE);
+                }
+                if(medicamen_final.contains("BUDESONIDA")){
+                    btConsidere.setVisibility(View.VISIBLE);
+                }
+                control=0;
+                cada();
+                dosis();
+                break;
+            case R.id.btdModerada:
+                btModerada.setTextColor(Color.BLUE);
+                btModerada.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
+                btGrave.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+                btGrave.setTextColor(Color.WHITE);
+                btLeve.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+                btLeve.setTextColor(Color.WHITE);
+                txGravedad.setText(graveAsma[1]);
+                if(nebulizador){
+                    btConsidere.setVisibility(View.GONE);
+                }
+                if(inhala && salbuta){
+                    btConsidere.setVisibility(View.VISIBLE);
+                }
+                if(medicamen_final.contains("BUDESONIDA")){
+                    btConsidere.setVisibility(View.VISIBLE);
+                }
+                control=1;
+                cada();
+                dosis();
+                break;
+            case R.id.btdLeve:
+                btLeve.setTextColor(Color.BLUE);
+                btLeve.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
+                btGrave.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+                btGrave.setTextColor(Color.WHITE);
+                btModerada.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+                btModerada.setTextColor(Color.WHITE);
+                txGravedad.setText(graveAsma[2]);
+                if(inhala && salbuta){
+                    btConsidere.setVisibility(View.GONE);
+                }
+                if(nebulizador && salbuta){
+                    btConsidere.setVisibility(View.VISIBLE);
+                }
+                if(bromuro && inhala){
+                    btConsidere.setVisibility(View.GONE);
+                }
+                if(medicamen_final.contains("BUDESONIDA")){
+                    btConsidere.setVisibility(View.GONE);
+                }
+                control=2;
+                cada();
+                dosis();
+                break;
+        }
+    }
+
     private String selector(String inter) {
         String inhala= "INHALADOR",salbuta="SALBUTAMOL",atro="IPRATROPIO",nebuli="NEBULIZADOR",variable="";
         if (inter.contains(inhala)&&inter.contains(salbuta)){
@@ -905,11 +890,6 @@ public class Asma extends AppCompatActivity {
         }
 
         return variable;
-    }
-
-    public void onClickBandera(View view) {
-        Intent intent = new Intent(Asma.this, BanderaActivity.class);
-        startActivity(intent);
     }
 
     //CAMBIO ICONO BANDERA

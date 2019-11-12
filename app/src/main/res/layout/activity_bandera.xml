@@ -32,7 +32,8 @@
             android:layout_marginStart="54dp"
             android:layout_marginTop="18dp"
             android:layout_marginEnd="54dp"
-            android:layout_marginBottom="84dp"></NumberPicker>
+            android:layout_marginBottom="84dp">
+        </NumberPicker>
 
         <TextView
             android:id="@+id/textView"

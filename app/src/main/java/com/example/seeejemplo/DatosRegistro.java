@@ -93,5 +93,4 @@ public class DatosRegistro {
         openHelper= new DatosReaderDbHelper(context);
         database = openHelper.getWritableDatabase();
     }
-
 }

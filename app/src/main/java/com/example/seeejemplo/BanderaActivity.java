@@ -18,17 +18,34 @@ public class BanderaActivity extends AppCompatActivity {
     DatosReaderDbHelper manager;
     Button valido;
     Cursor cur_bandera;
-    String banString,banSelecionada,botonActivo;
+    String banString,banSelecionada,botonActivo = "todo",claseRecibida,mediGenerico, mediComercial;
     Bundle datos;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_bandera);
 
-        datos = getIntent().getExtras();
-        botonActivo = datos.getString("boton");
+        manager = new DatosReaderDbHelper(this);
+
+      //  datos = getIntent().getExtras();
+      //      botonActivo = datos.getString("boton");
+      //      claseRecibida = datos.getString("clase");
+
+        //SACA BANDERA Y SUS DATOS
+        try {
+            cur_bandera = manager.buscarMed("BANDERA");
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            botonActivo = cur_bandera.getString(4);
+            claseRecibida=cur_bandera.getString(3);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         banSelecionada="banbolivia.png";
 
@@ -43,6 +60,7 @@ public class BanderaActivity extends AppCompatActivity {
         } catch (java.sql.SQLException e) {
             e.printStackTrace();
         }
+        manager.close();
         banString=cur_bandera.getString(2);
 
 
@@ -85,12 +103,23 @@ public class BanderaActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 modificarbandera(banSelecionada);
-
-                Intent intent = new Intent(BanderaActivity.this, Segundo.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("boton", botonActivo);
-                intent.putExtras(bundle);
-                startActivity(intent);
+                if (claseRecibida.contains("Segundo")) {
+                    Intent intent = new Intent(BanderaActivity.this, Segundo.class);
+                    manager.pasarDatos(claseRecibida,botonActivo);
+                    startActivity(intent);
+                }
+                if (claseRecibida.contains("Main4")){
+                    Intent intent = new Intent(BanderaActivity.this, Segundo.class);
+                   // Bundle bundle = new Bundle();
+                   // bundle.putString("boton",botonActivo);
+                    manager.pasarDatos(claseRecibida,botonActivo);
+                    startActivity(intent);
+                }
+                if (claseRecibida.contains("1")) {
+                    Intent intent = new Intent(BanderaActivity.this, FullscreenActivity.class);
+                    manager.pasarDatos("1","todo");
+                    startActivity(intent);
+                }
             }
         });
 
@@ -102,23 +131,6 @@ public class BanderaActivity extends AppCompatActivity {
         manager.openDB();
         manager.modificarbandera(value);
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        switch (banString) {
-            case "banbolivia.png":
-                getMenuInflater().inflate(R.menu.menubolivia, menu);
-                break;
-            case "banespana.png":
-                getMenuInflater().inflate(R.menu.menuespana, menu);
-                break;
-            case "banperu.png":
-                getMenuInflater().inflate(R.menu.menuperu, menu);
-                break;
-
-        }
-        return true;
     }
 
 

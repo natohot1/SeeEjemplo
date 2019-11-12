@@ -17,7 +17,7 @@ import android.widget.ListView;
 public class Segundo extends AppCompatActivity {
     AutoCompleteTextView auto;
     int position;
-    String botonActivo ="todo";
+    String botonActivo ="todo", clase = "segundo";
     DatosReaderDbHelper manager;
     Button btAntibiotico, btAnalgesicos, btTos,btAlergia,btAsma,btTodo;
     ImageButton btBanera;
@@ -41,6 +41,7 @@ public class Segundo extends AppCompatActivity {
         setContentView(R.layout.segundo);
 
         manager = new DatosReaderDbHelper(this);
+
         Context context=this;
 
         cargarcomponentes();
@@ -55,9 +56,11 @@ public class Segundo extends AppCompatActivity {
             medicaLi = getResources().getStringArray(R.array.medica_arrayBolivia);
         }
 
+        //SACAMOS DAOTOS BOTON Y CLASE
+        botonActivo=cur_bandera.getString(4);
 
-        datos = getIntent().getExtras();
-        botonActivo = datos.getString("boton");
+
+
 
         //SE ESTABLECE BOTON ACTIVO
         if (botonActivo.contains("todo")){
@@ -202,10 +205,10 @@ public class Segundo extends AppCompatActivity {
         return devulto;
     }
 
-    //CONFIGURACION BOTONES
-
+    //METODOS ONCLICK
+    public void onClickAtras(View view) {
+    }
     public void onClick1(View view) {
-        Intent intent;
         switch (view.getId()){
             case (R.id.btdAnalgesicos):
                 activarAnalgesico();
@@ -227,7 +230,12 @@ public class Segundo extends AppCompatActivity {
                 break;
         }
     }
+    public void onClickBandera(View view) {
+        Intent intent = new Intent(Segundo.this, BanderaActivity.class);
+        startActivity(intent);
+    }
 
+    //CONFIGURACION BOTONES
     private void activarTodo() {
         botonActivo = "todo";
         if (banString.equals("banespana.png")) {
@@ -246,8 +254,8 @@ public class Segundo extends AppCompatActivity {
         btTodo.setBackgroundColor(getResources().getColor(R.color.botnActivo));
         actualizarBotones(btTodo);
         auto.setHint("DOS LETRAS TODOS");
+        manager.pasarDatos("Segundo",botonActivo);
     }
-
     private void activarAsma() {
         botonActivo = "asma";
         if (banString.equals("banespana.png")) {
@@ -266,8 +274,8 @@ public class Segundo extends AppCompatActivity {
         btAsma.setBackgroundColor(getResources().getColor(R.color.botnActivo));
         actualizarBotones(btAsma);
         auto.setHint("DOS LETRAS ASMA");
+        manager.pasarDatos("Segundo",botonActivo);
     }
-
     private void activarTos() {
         botonActivo ="tos";
         if (banString.equals("banespana.png")) {
@@ -286,8 +294,8 @@ public class Segundo extends AppCompatActivity {
         btTos.setBackgroundColor(getResources().getColor(R.color.botnActivo));
         actualizarBotones(btTos);
         auto.setHint("DOS LETRAS ANTITUSIVOS");
+        manager.pasarDatos("Segundo",botonActivo);
     }
-
     private void activarAntibiotico() {
         botonActivo ="antibiotico";
         if (banString.equals("banespana.png")) {
@@ -306,8 +314,8 @@ public class Segundo extends AppCompatActivity {
         btAntibiotico.setBackgroundColor(getResources().getColor(R.color.botnActivo));
         actualizarBotones(btAntibiotico);
         auto.setHint("DOS LETRAS ANTIBIOTICOS");
+        manager.pasarDatos("Segundo",botonActivo);
     }
-
     private void activarAlergia() {
         botonActivo ="antialergico";
         if (banString.equals("banespana.png")) {
@@ -326,8 +334,8 @@ public class Segundo extends AppCompatActivity {
         btAnalgesicos.setBackgroundColor(getResources().getColor(R.color.botnActivo));
         actualizarBotones(btAlergia);
         auto.setHint("DOS LETRAS ANTIALERGICOS");
+        manager.pasarDatos("Segundo",botonActivo);
     }
-
     private void activarAnalgesico() {
         botonActivo ="analgesico";
         if (banString.equals("banespana.png")) {
@@ -346,6 +354,7 @@ public class Segundo extends AppCompatActivity {
         btAnalgesicos.setBackgroundColor(getResources().getColor(R.color.botnActivo));
         actualizarBotones(btAnalgesicos);
         auto.setHint("DOS LETRAS ANALGESICOS");
+        manager.pasarDatos("Segundo",botonActivo);
     }
 
     private void actualizarBotones(Button boton){
@@ -360,16 +369,7 @@ public class Segundo extends AppCompatActivity {
     }
 
 
-    public void onClickBandera(View view) {
-        Intent intent = new Intent(Segundo.this, BanderaActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("boton", botonActivo);
-        intent.putExtras(bundle);
-        startActivity(intent);
-    }
 
-    public void onClick6(View view) {
-    }
 
     //CAMBIO ICONO BANDERA
     private void cambioBandera(String bandera){
@@ -382,6 +382,8 @@ public class Segundo extends AppCompatActivity {
         if (bandera.contains("chile")){
             btBanera.setBackground(this.getResources().getDrawable(R.drawable.banchile));}
     }
+
+
 }
 
 
