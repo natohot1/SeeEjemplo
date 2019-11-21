@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
@@ -63,7 +64,7 @@ public class Main4Activity extends AppCompatActivity {
 
         restaurarCampos(savedInstanceState);
         //AVERIGUAMOS LA RESOLUCION DEL DISPOSIOTIVO
-        resolucion = multiplica();
+  //      resolucion = multiplica();
 
 
         datos = getIntent().getExtras();
@@ -217,10 +218,40 @@ public class Main4Activity extends AppCompatActivity {
         btUno.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
 
         arrayMedica=arrayMedicamento(mediGenerico);
-        //  configurarSegmento();
-        txCantidad.setTextSize(25-resolucion);
-        txeCada.setTextSize(25-resolucion);
-        txDosiFinal.setTextSize(25-resolucion);
+
+        //CONFIGURA ALTO DE ALGUNOS TEXTVIEW
+        configuraAlto();
+
+    }
+
+    private void configuraAlto(){
+        int heightNu; //your textview height
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int width = metrics.widthPixels; // ancho absoluto en pixels
+        int height = metrics.heightPixels; // alto absoluto en pixels
+        if (height > 1500){
+            heightNu = 70;
+            txCantidad.getLayoutParams().height =heightNu;
+            txeCada.getLayoutParams().height =heightNu;
+            txDosiFinal.getLayoutParams().height =heightNu;
+            txTitulo.getLayoutParams().height = heightNu+20;
+        }
+        if (height > 1290){
+            heightNu = 50;
+            txCantidad.getLayoutParams().height =heightNu;
+            txeCada.getLayoutParams().height =heightNu;
+            txDosiFinal.getLayoutParams().height =heightNu;
+            txTitulo.getLayoutParams().height = heightNu+20;
+        }
+        if (height >790){
+           heightNu = 70;
+           txCantidad.getLayoutParams().height =heightNu;
+           txeCada.getLayoutParams().height =heightNu;
+           txDosiFinal.getLayoutParams().height =heightNu;
+           txTitulo.getLayoutParams().height = heightNu+20;
+        }
+
 
     }
 
@@ -352,14 +383,14 @@ public class Main4Activity extends AppCompatActivity {
         txCantidad.setText("Hasta " + si_es_gotas);
         if (resultado == 0) {
             txCantidad.setTextColor(Color.RED);
-            txCantidad.setTextSize(15);
+          //  txCantidad.setTextSize(15);
             txCantidad.setText("NO INDICADO PARA LA EDAD");
         }
         if (resultado == 0) {
             txeCada.setText("");
         } else {
             txCantidad.setTextColor(Color.BLUE);
-            txCantidad.setTextSize(25);
+        //    txCantidad.setTextSize(25);
             String mensaje_doxi = "";
             mensaje_doxi = si_vibracina(med_final);
             txeCada.setText("Cada " + cada_int + "/h\n" + mensaje_doxi);
@@ -451,24 +482,24 @@ public class Main4Activity extends AppCompatActivity {
         if (medica_espe.equals(albendazol)) {
             if (sekb_double < 13) {
                 txCantidad.setTextColor(Color.RED);
-                txCantidad.setTextSize(15);
+               // txCantidad.setHeight(35);
                 txCantidad.setText("NO INDICADO EN MENORES DE 2 AÑOS");
                 txeCada.setText("");
             } else {
                 txCantidad.setTextColor(Color.BLUE);
-                txCantidad.setTextSize(25);
+            //    txCantidad.setTextSize(25);
             }
         }
 
         if (medica_espe.equals(hidroxicina)) {
             if (sekb_double < 10) {
                 txCantidad.setTextColor(Color.RED);
-                txCantidad.setTextSize(15);
+             //   txCantidad.setTextSize(15);
                 txCantidad.setText("NO INDICADO EN MENORES DE 1 AÑOS");
                 txeCada.setText("");
             } else {
                 txCantidad.setTextColor(Color.BLUE);
-                txCantidad.setTextSize(25);
+             //   txCantidad.setTextSize(25);
                 txeCada.setText("Cada 6/h");
             }
         }
@@ -500,7 +531,7 @@ public class Main4Activity extends AppCompatActivity {
     private void titulo(String medi_introducido) {
         int largo=medi_introducido.length();
         if(largo>15){
-            txTitulo.setTextSize(18);
+          //  txTitulo.setTextSize(18);
         }
         txTitulo.setText(medi_introducido);
 
@@ -521,15 +552,9 @@ public class Main4Activity extends AppCompatActivity {
     public void onClickBandera(View view) {
         Intent intent = new Intent(Main4Activity.this, BanderaActivity.class);
         manager.pasarDatos(clase,botonActivo);
-     //  Bundle bundle = new Bundle();
-     //  bundle.putString("boton", botonActivo);
-     //  bundle.putString("clase", clase);
-     // // bundle.putString("medicamento", mediGenerico);
-     // // bundle.putString("obtenido", mediComercial);
-     //  intent.putExtras(bundle);
         startActivity(intent);
     }
-    public void onClick6(View view) {
+    public void onClickVolver(View view) {
         Intent intent = new Intent(Main4Activity.this, Segundo.class);
         Bundle bundle = new Bundle();
         bundle.putString("boton", botonActivo);
@@ -750,8 +775,6 @@ public class Main4Activity extends AppCompatActivity {
             btDos.setTextColor(Color.WHITE);
             btDos.setTextSize(nio);
         }
-
-
         if (largo==3) {
             btCuatro.setVisibility(View.GONE);
             btCinco.setVisibility(View.GONE);

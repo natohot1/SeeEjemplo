@@ -18,8 +18,6 @@
         <activity android:name=".Asma2"
             android:screenOrientation="fullSensor"/>
         <activity android:name=".Inhalador" />
-        <activity android:name=".Medicina"
-            android:screenOrientation="fullSensor"/>
         <activity android:name=".BanderaActivity" />
         <activity android:name=".Asma"
             android:screenOrientation="fullSensor"

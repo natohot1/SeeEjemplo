@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -41,6 +43,14 @@ public class Segundo extends AppCompatActivity {
         setContentView(R.layout.segundo);
 
         manager = new DatosReaderDbHelper(this);
+
+        View view = this.getCurrentFocus();
+
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+
 
         Context context=this;
 
@@ -92,7 +102,7 @@ public class Segundo extends AppCompatActivity {
 
         //******BORRAR
 
-      //  actualizarBotones(btTodo);
+       // actualizarBotones(btTodo);
 
 
         adapterAu = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,medicaAu);
@@ -126,14 +136,45 @@ public class Segundo extends AppCompatActivity {
                 pasarJarabe2(mediGenerico,clase,obtenido);
             }
         });
+
+        auto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                quitarBotones();
+            }
+        });
+
+
         ImageButton bt = (ImageButton) findViewById(R.id.bor);
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 auto.setText("");
+                ponerBotones();
+                closeKeyboard();
             }
         });
+
+        //FOCO EN AUTOCOMPLETE
+        quitar();
+
     }
+
+    public void quitar(){
+        auto.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    quitarBotones();
+                }else {
+                    closeKeyboard();
+                }
+            }
+        });
+
+    }
+
+
 
     private void pasarJarabe2(String mediGen, String clase, String mediSelec) {
         //PASA MEDIANTE BOTONES DISTINGUE ASMA Y ACTIVITY4 MEDIANTE VARIABLE CLASE
@@ -152,14 +193,14 @@ public class Segundo extends AppCompatActivity {
 
     private void cargarcomponentes() {
         auto = findViewById(R.id.autoCompleteTextView);
-        // auto.requestFocusFromTouch();
         btAnalgesicos= findViewById(R.id.btdAnalgesicos);
         btAntibiotico = findViewById(R.id.btdAntibiticos);
         btTos = findViewById(R.id.btdTos);
-        btAlergia = (Button)findViewById(R.id.btdAntialergicos);
+        btAlergia = findViewById(R.id.btdAntialergicos);
         btAsma = findViewById(R.id.btdAsma);
         btTodo = findViewById(R.id.btdTodo);
         lista = findViewById(R.id.miLIsta);
+        lista.requestFocusFromTouch();
         btBanera = findViewById(R.id.btBandera);
 
 
@@ -172,13 +213,13 @@ public class Segundo extends AppCompatActivity {
         int ancho=horizotal(width,height);
 
         if(ancho<1000){
-            anchoP=15;
+            anchoP=7;
         }
         if(ancho>1000 && ancho<2000){
-            anchoP=20;
+            anchoP=10;
         }
         if(ancho>2000){
-            anchoP=25;
+            anchoP=15;
         }
 
         btAntibiotico.setTextSize(anchoP);
@@ -196,6 +237,7 @@ public class Segundo extends AppCompatActivity {
         }
         banString=cur_bandera.getString(2);
         cambioBandera(banString);
+
     }
 
     private int horizotal(int width, int height) {
@@ -212,27 +254,42 @@ public class Segundo extends AppCompatActivity {
         switch (view.getId()){
             case (R.id.btdAnalgesicos):
                 activarAnalgesico();
+                closeKeyboard();
                 break;
             case (R.id.btdAntialergicos):
                 activarAlergia();
+                closeKeyboard();
                 break;
             case (R.id.btdAntibiticos):
                 activarAntibiotico();
+                closeKeyboard();
                 break;
             case (R.id.btdTos):
                 activarTos();
+                closeKeyboard();
                 break;
             case (R.id.btdAsma):
                 activarAsma();
+                closeKeyboard();
                 break;
             case (R.id.btdTodo):
                 activarTodo();
+                closeKeyboard();
                 break;
         }
     }
     public void onClickBandera(View view) {
         Intent intent = new Intent(Segundo.this, BanderaActivity.class);
         startActivity(intent);
+    }
+
+    //QUITAR TECLADO
+    private void closeKeyboard(){
+        View view = this.getCurrentFocus();
+        if(view != null){
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+        }
     }
 
     //CONFIGURACION BOTONES
@@ -252,6 +309,7 @@ public class Segundo extends AppCompatActivity {
         adapterLi.notifyDataSetChanged();
         adapterAu.notifyDataSetChanged();
         btTodo.setBackgroundColor(getResources().getColor(R.color.botnActivo));
+        btTodo.setTextColor(getResources().getColor(R.color.blanco));
         actualizarBotones(btTodo);
         auto.setHint("DOS LETRAS TODOS");
         manager.pasarDatos("Segundo",botonActivo);
@@ -273,6 +331,7 @@ public class Segundo extends AppCompatActivity {
         adapterAu.notifyDataSetChanged();
         btAsma.setBackgroundColor(getResources().getColor(R.color.botnActivo));
         actualizarBotones(btAsma);
+        btAsma.setTextColor(getResources().getColor(R.color.blanco));
         auto.setHint("DOS LETRAS ASMA");
         manager.pasarDatos("Segundo",botonActivo);
     }
@@ -293,6 +352,7 @@ public class Segundo extends AppCompatActivity {
         adapterAu.notifyDataSetChanged();
         btTos.setBackgroundColor(getResources().getColor(R.color.botnActivo));
         actualizarBotones(btTos);
+        btTos.setTextColor(getResources().getColor(R.color.blanco));
         auto.setHint("DOS LETRAS ANTITUSIVOS");
         manager.pasarDatos("Segundo",botonActivo);
     }
@@ -313,6 +373,7 @@ public class Segundo extends AppCompatActivity {
         adapterAu.notifyDataSetChanged();
         btAntibiotico.setBackgroundColor(getResources().getColor(R.color.botnActivo));
         actualizarBotones(btAntibiotico);
+        btAntibiotico.setTextColor(getResources().getColor(R.color.blanco));
         auto.setHint("DOS LETRAS ANTIBIOTICOS");
         manager.pasarDatos("Segundo",botonActivo);
     }
@@ -333,6 +394,7 @@ public class Segundo extends AppCompatActivity {
         adapterAu.notifyDataSetChanged();
         btAnalgesicos.setBackgroundColor(getResources().getColor(R.color.botnActivo));
         actualizarBotones(btAlergia);
+        btAlergia.setTextColor(getResources().getColor(R.color.blanco));
         auto.setHint("DOS LETRAS ANTIALERGICOS");
         manager.pasarDatos("Segundo",botonActivo);
     }
@@ -353,23 +415,21 @@ public class Segundo extends AppCompatActivity {
         adapterAu.notifyDataSetChanged();
         btAnalgesicos.setBackgroundColor(getResources().getColor(R.color.botnActivo));
         actualizarBotones(btAnalgesicos);
+        btAnalgesicos.setTextColor(getResources().getColor(R.color.blanco));
         auto.setHint("DOS LETRAS ANALGESICOS");
         manager.pasarDatos("Segundo",botonActivo);
     }
 
     private void actualizarBotones(Button boton){
-        btTodo.setBackgroundColor(getResources().getColor(R.color.botonDes));
-        btAnalgesicos.setBackgroundColor(getResources().getColor(R.color.botonDes));
-        btAlergia.setBackgroundColor(getResources().getColor(R.color.botonDes));
-        btAsma.setBackgroundColor(getResources().getColor(R.color.botonDes));
-        btTos.setBackgroundColor(getResources().getColor(R.color.botonDes));
-        btAntibiotico.setBackgroundColor(getResources().getColor(R.color.botonDes));
+        btTodo.setBackgroundColor(getResources().getColor(R.color.botnInactivo));
+        btAnalgesicos.setBackgroundColor(getResources().getColor(R.color.botnInactivo));
+        btAlergia.setBackgroundColor(getResources().getColor(R.color.botnInactivo));
+        btAsma.setBackgroundColor(getResources().getColor(R.color.botnInactivo));
+        btTos.setBackgroundColor(getResources().getColor(R.color.botnInactivo));
+        btAntibiotico.setBackgroundColor(getResources().getColor(R.color.botnInactivo));
         boton.setBackgroundColor(getResources().getColor(R.color.botnActivo));
 
     }
-
-
-
 
     //CAMBIO ICONO BANDERA
     private void cambioBandera(String bandera){
@@ -383,7 +443,25 @@ public class Segundo extends AppCompatActivity {
             btBanera.setBackground(this.getResources().getDrawable(R.drawable.banchile));}
     }
 
+    public void quitarBotones() {
+        btAnalgesicos.setVisibility(View.GONE);
+        btAlergia.setVisibility(View.GONE);
+        btAnalgesicos.setVisibility(View.GONE);
+        btTos.setVisibility(View.GONE);
+        btTodo.setVisibility(View.GONE);
+        btAntibiotico.setVisibility(View.GONE);
+        btAsma.setVisibility(View.GONE);
+    }
+    public void ponerBotones(){
+        btAnalgesicos.setVisibility(View.VISIBLE);
+        btAlergia.setVisibility(View.VISIBLE);
+        btAnalgesicos.setVisibility(View.VISIBLE);
+        btTos.setVisibility(View.VISIBLE);
+        btTodo.setVisibility(View.VISIBLE);
+        btAntibiotico.setVisibility(View.VISIBLE);
+        btAsma.setVisibility(View.VISIBLE);
 
+    }
 }
 
 

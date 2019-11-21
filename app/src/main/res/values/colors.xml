@@ -13,4 +13,5 @@
     <color name="blanco">#FFFFFF</color>
     <color name="botonDes">#D1F3F3</color>
     <color name="botnActivo">#3802DA</color>
+    <color name="botnInactivo">#CDCECE</color>
 </resources>
