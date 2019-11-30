@@ -634,7 +634,7 @@ public class Inhalador extends AppCompatActivity implements SeekBar.OnSeekBarCha
         return r_final;
     }
 
-    //*****VA CON pintar_seebar_final  ALERGIA, TOS
+    //*****VA CON dosis_final_edad  ALERGIA, TOS
     private double[] pintar_seebar_final(double[] dosis, double valor_seekb1) {
         //<editor-fold desc="SE NECEITA SEEKBARR Y VALORES DE DOSIS EDAD = ultima_dosis_edad ALERGIA, TOS">
         double []resultado=new double[1];

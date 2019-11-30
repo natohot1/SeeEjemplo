@@ -461,11 +461,14 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
         return array_inter;
 
     }
+
+    //DOSIS ESPECIALES
     public double[] sacar_dosis_especial (String medicamen_final) {
         Cursor dosesp=null;
         double[] resultado = new double[18];
         int cont = 0;
         try {
+            //SACAMOS DOSIS ESPECIALES
             dosesp = dos_esp(medicamen_final);
         } catch (java.sql.SQLException e) {
             e.printStackTrace();
@@ -686,8 +689,8 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
         return r_final;
     }
 
-    //*****VA CON pintar_seebar_final  ALERGIA, TOS
-    public double[] pintar_seebar_final ( double[] dosis, double valor_seekb1){
+    //*****SACA DOSIS DE ACUERDO A EDAD VA CON dosis_final_edad  ALERGIA, TOS
+    public double[] dosis_final_edad(double[] dosis, double valor_seekb1){
         //<editor-fold desc="SE NECEITA SEEKBARR Y VALORES DE DOSIS EDAD = ultima_dosis_edad ALERGIA, TOS">
         double[] resultado = new double[1];
         double valor_seekb;
@@ -711,15 +714,7 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
         return resultado;
         //</editor-fold>(ULTIM
 
-
-
-
     }
-
-
-
-
-
 
 
 }

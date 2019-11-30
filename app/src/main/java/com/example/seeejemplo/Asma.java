@@ -8,7 +8,6 @@ import android.graphics.Typeface;
 import android.support.constraint.Guideline;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -17,6 +16,7 @@ import android.widget.TextView;
 
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.util.Vector;
 
 public class Asma extends AppCompatActivity {
     private String medicamen_final,nombreGenerico, clase="asma";
@@ -27,14 +27,18 @@ public class Asma extends AppCompatActivity {
     Bundle datos;
     Cursor cur_bandera;
     String banString;
-    String arrayMedica[],arrayNombesComer[],graveAsma[],asmaArray[],arrayInhaladores[];
+    String arrayMedica[],arrayNombesComer[],graveAsma[],asmaArray[],arrayInhaladores[],arrayInhaladores1[];
     boolean inhala,nebulizador,salbuta,bromuro,terbuta;
     int control=0,position=0;
     Double varibleSalbutamol=1.0;
     ImageButton btnVolver,btBandera;
+    String [][]array_datos=new String[20][10];
     DecimalFormat formato = new DecimalFormat("#.##");
     DecimalFormat formato1 = new DecimalFormat("#.#");
+    DecimalFormat formato2 = new DecimalFormat("#");
     Guideline guideline2;
+    String[]jara_arraComercial;
+    String[]jaraDosis;
 
 
     @Override
@@ -216,15 +220,19 @@ public class Asma extends AppCompatActivity {
 
         //VALORES SEEKBAR
         seekBar=findViewById(R.id.seebDefi);
-        seekBar.setMax(40);
-        seekBar.setProgress(6);
+
+        asignar_seekbar(medicamen_final);
+
+
+
+
+
         txPeso.setText("6"+ " Kg");
 
 
         nombreGenerico = nomFinal(medicamen_final);
         //DATOS TABLA MEDICAMENTOS2
         arrayMedica=arrayMedicamento(nombreGenerico);
-
 
         try {
             cur_bandera = manager.buscarMed("BANDERA");
@@ -233,6 +241,12 @@ public class Asma extends AppCompatActivity {
         }
         banString=cur_bandera.getString(2);
         cambioBandera(banString);
+
+        try {
+            array_datos=manager.sacar_datos_en_array(nombreGenerico,banString);
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
 
         graveAsma = gravedadAsma();
         //BOTON GRAVE SELECIONADAO
@@ -278,6 +292,31 @@ public class Asma extends AppCompatActivity {
             inhaladores = arrayMedica[9];
         }
         arrayInhaladores = sacarGuion(inhaladores);
+        arrayInhaladores1 = sacarGuion(inhaladores);
+    }
+
+    private void asignar_seekbar (String cont_sacado){
+        //String cam="cambio";
+        int res_sekb = seekBar.getProgress();
+        if (cont_sacado.contains("BROMURO DE IPRATROPIO NEBULIZADOR")){
+            seekBar.setMax(144);
+            seekBar.setProgress(90);
+          //  controla[0] = 1;
+          //  String res=edad_mese(res_sekb);
+          //  //  txPesoEdad.setText("Edad  "+res);
+          //  txPesoEdad.setText("Edad");
+          //  txDosiFinal.setText("DOSIS PARA " +res);
+
+        }else {
+
+            seekBar.setMax(40);
+            seekBar.setProgress(6);
+            //seeDefi.setMin(3);
+         //  controla[0]=2;
+         //  res_sekb=seeDefi.getProgress();
+         //  txPesoEdad.setText("Peso");
+         //  txDosiFinal.setText("DOSIS PARA " +res_sekb+ " Kg");
+        }
     }
 
     //dosisInhalador()
@@ -372,28 +411,110 @@ public class Asma extends AppCompatActivity {
 
     ///if esNebuloizador{
     private void nebuDosis() {
+        int peso=seekBar.getProgress();
+        double sekb_double = peso;
         //SALIMOS SI ES BUDEDONIDA
         if(medicamen_final.contains("BUDESONIDA")){
             return;
         }
-        //if esNebuloizador TODO
-        int peso=seekBar.getProgress();
-        Double pesoInter = (peso*0.03)*varibleSalbutamol;
-        Double pesoMg = peso*0.15;
-        String pesoInterdeci=decimal(pesoInter);
-        String pesoMgdeci=decimal(pesoMg);
-        txCantidad.setText(""+formato.format(pesoInter)+" ml = "+formato1.format(pesoMg)+"  mg.");
+        if (medicamen_final.contains("BROMURO DE IPRATROPIO NEBULIZADOR")){
+            //DOSIS SEGUN EDAD
+            double[] dosi_esp = new double[18];
+            double[] dosisFinalEdad = new double[2];
+            double dosisFinal;
 
-        if(peso<=3){
-            txCantidad.setText("");
-            txCada.setText("");
+            Vector jarabes=new Vector(2);
+            //ARRAY jarabes NOMBRES COMERCIALES Y CANTIDAD
+            jarabes=jarabes_No_Comer(medicamen_final, medicamen_final, arrayInhaladores1,array_datos);
+            jara_arraComercial=(String[])jarabes.elementAt(0);
+            jaraDosis=(String[])jarabes.elementAt(1);
+            dosi_esp = manager.sacar_dosis_especial(medicamen_final);
+            //FUNCION ESPECIFICAMPARA ATROVENT NEBULIZADOR
+            dosis_segun_edad(peso,dosi_esp);
+          //  dosisAtroventInhalador(res);
+          //  txCantidad.setText(""+ formato2.format(res)+" ug");
+            return;
         }else {
-            cada();
+
+            Double pesoInter = (peso * 0.03) * varibleSalbutamol;
+            Double pesoMg = peso * 0.15;
+            String pesoInterdeci = decimal(pesoInter);
+            String pesoMgdeci = decimal(pesoMg);
+            txCantidad.setText("" + formato.format(pesoInter) + " ml = " + formato1.format(pesoMg) + "  mg.");
+
+            if (peso <= 3) {
+                txCantidad.setText("");
+                txCada.setText("");
+            } else {
+                cada();
+            }
         }
     }
 
+    private void dosisAtroventInhalador(double res) {
+        txCantidad.setText(""+ formato2.format(res)+" ug");
+
+    }
+
+    //DOSIS SEGUN EDAD ATROVENT NEBULIZADOR
+    public void dosis_segun_edad(int edad_sekBar, double []edades_dosis){
+        double retorno = 0.0;
+        double sek_double= Double.valueOf(edad_sekBar)/12;
+        double interEdad;
+        double resto=0.0;
+        double interPorcetajeEdad;
+        double interDosis;
+        double interCantidadDosis;
+
+            if (sek_double >= edades_dosis[5] && sek_double <= edades_dosis[6]) {
+                interEdad = edades_dosis[6] - edades_dosis[5];
+                resto = sek_double - edades_dosis[5];
+                interPorcetajeEdad = (resto * 100)/interEdad;
+                interDosis = edades_dosis[4] - edades_dosis[3];
+                interCantidadDosis = (interDosis * interPorcetajeEdad)/100;
+                retorno = interCantidadDosis + edades_dosis[3];
+            }
+            if (edades_dosis[8] != 0.0) {
+                if (sek_double >= edades_dosis[10] && sek_double <= edades_dosis[11]) {
+                    interEdad = edades_dosis[11] - edades_dosis[10];
+                    resto = sek_double - edades_dosis[10];
+                    interPorcetajeEdad = (resto * 100) / interEdad;
+                    interDosis = edades_dosis[9] - edades_dosis[8];
+                    interCantidadDosis = (interDosis * interPorcetajeEdad) / 100;
+                    retorno = interCantidadDosis + edades_dosis[8];
+                }
+            }
+        if (edades_dosis[13] != 0.0) {
+            if (sek_double >= edades_dosis[10] && sek_double <= edades_dosis[11]) {
+                interEdad = edades_dosis[15] - edades_dosis[16];
+                resto = sek_double - edades_dosis[16];
+                interPorcetajeEdad = (resto * 100) / interEdad;
+                interDosis = edades_dosis[14] - edades_dosis[13];
+                interCantidadDosis = (interDosis * interPorcetajeEdad) / 100;
+                retorno = interCantidadDosis + edades_dosis[13];
+            }
+        }
+        if (medicamen_final.contains("BROMURO DE IPRATROPIO NEBULIZADOR")){
+            resto = (retorno * 2)/250;
+            if (position == 1){
+               resto = resto/2;
+
+            }
+        }
+
+        txCantidad.setText(""+ formato1.format(resto)+" ml = "+formato1.format(retorno)+" ug");
+
+
+
+    }
+
+
+
     private void pintarPeso(int progress) {
         txPeso.setText(""+progress+ " Kg");
+        if (medicamen_final.contains("BROMURO DE IPRATROPIO NEBULIZADOR")){
+            txPeso.setText(""+progress/12+ " Años");
+        }
     }
 
 
@@ -556,6 +677,9 @@ public class Asma extends AppCompatActivity {
         if(medicamen_final.contains("BUDESONIDA")){
             txCada.setText("Cada 12-24/hrs");
         }
+        if (medicamen_final.contains("BROMURO DE IPRATROPIO NEBULIZADOR")){
+            txCada.setText("Cada 6-8/hrs");
+        }
     }
 
     private void considere() {
@@ -612,15 +736,7 @@ public class Asma extends AppCompatActivity {
         String titulo=medicamen_final;
         txTitulo.setTypeface(null, Typeface.BOLD);
 
-        // txTitulo.setText(medicamen_final);
-        //  if(medicamen_final.contains("BROMURO DE IPRATROPIO NEBULIZADOR")){
-        //      titulo="B. IPRATROPIO NEBU.";
-        //  }
-
-        //  if(medicamen_final.contains("BROMURO DE IPRATROPIO INHALADOR")){
-        //      titulo="B. IPRATROPIO INHALA.";
-//
-        //  }
+  //   titulo="B. IPRATROPIO INHALA.";
         txTitulo.setText(titulo);
 
         //PINTAR CONTRAINDICACIONES
@@ -707,6 +823,60 @@ public class Asma extends AppCompatActivity {
 
 
 
+    public Vector jarabes_No_Comer (String medicamen, String medi_introducido, String[] array_jarabes, String[][] array_datos){
+        // String [][]array_datos=new String[20][10];
+        String[] nue = new String[5];
+        nue[0] = array_datos[0][2];
+        nue[1] = array_datos[0][3];
+        nue[2] = array_datos[0][4];
+        nue[3] = array_datos[0][5];
+        nue[4] = array_datos[0][6];
+        int cont = 0, con2 = 0, con3 = 0;
+        while (cont < 5) {
+            int valor = nue[cont].length();
+            if (valor > 2) {
+                con2 = cont;
+            }
+            cont++;
+        }
+        String mios[] = new String[con2 + 1];
+        while (con3 <= (con2)) {
+            mios[con3] = nue[con3];
+            con3++;
+        }
+        int largo = mios.length;
+        int[][] dato_var1 = {{0, 1, 2, 3, 4}, {1, 0, 2, 3, 4}, {2, 0, 1, 3, 4}, {3, 0, 1, 2, 4}, {4, 0, 1, 2, 3}};
+
+
+        int con1 = 0, variable = 0;
+
+        while (con1 < largo) {
+            int res1 = mios[con1].indexOf(medi_introducido);
+            if (res1 != -1) {
+                variable = con1;
+                break;
+            }
+            con1++;
+        }
+        String[] jarabes_comercial3 = new String[largo];
+        String[] jaraDosis = new String[largo];
+
+        int contaArra = 0;
+        while (contaArra < (largo)) {
+            jarabes_comercial3[contaArra] = mios[dato_var1[variable][contaArra]];
+            jaraDosis[contaArra] = array_jarabes[dato_var1[variable][contaArra]];
+
+            contaArra++;
+        }
+        Vector nuevo = new Vector(2);
+        nuevo.add(jarabes_comercial3);
+        nuevo.add(jaraDosis);
+        return nuevo;
+    }
+
+
+
+    //region CONFIGURACIONES DE BOTONES Y BANDERA
     //FUNCION BOTONES PARA OTRAS PRESENTACIONES
     public void onClickOtrasPre(View view) {
         switch (view.getId()){
@@ -903,6 +1073,7 @@ public class Asma extends AppCompatActivity {
         if (bandera.contains("chile")){
             btBandera.setBackground(this.getResources().getDrawable(R.drawable.banchile));}
     }
+    //endregion
 
 
 }
