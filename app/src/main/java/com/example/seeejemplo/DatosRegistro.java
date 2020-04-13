@@ -13,6 +13,13 @@ public class DatosRegistro {
     public static final String INT_TYPE="integer";
     public static final String REAL_TYPE="real";
 
+    public static final String STRING_analgesico="analgesico";
+    public static final String STRING_antialergico="antialergico";
+    public static final String STRING_antibiotico="antibiotico";
+    public static final String STRING_tos="tos";
+    public static final String STRING_asma="asma";
+    public static final String STRING_todo="todo";
+
 
     public static final String CREAR_TABLA_MEDICAMENTOS2=
             "create table "+DATOS_TABLA_MEDICAMENTOS+"(" +

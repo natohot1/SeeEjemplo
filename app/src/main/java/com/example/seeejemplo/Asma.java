@@ -5,9 +5,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.constraint.Guideline;
-import android.support.v7.app.AppCompatActivity;
+import androidx.constraintlayout.widget.Guideline;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -20,7 +21,7 @@ import java.util.Vector;
 
 public class Asma extends AppCompatActivity {
     private String medicamen_final,nombreGenerico, clase="asma";
-    TextView txTitulo, txCantidad, txCada, txGravedad,txOtras, txPrecausiones,txPeso;
+    TextView txTitulo, txCantidad, txCada, txGravedad,txOtras, txPrecausiones,txPeso, txotrasNoPro;
     Button btGrave,btModerada,btLeve,btOtra1,btOtra2,btOtra3,btOtra4,btGravedad,btConsidere;
     SeekBar seekBar;
     DatosReaderDbHelper manager;
@@ -88,6 +89,7 @@ public class Asma extends AppCompatActivity {
 
         //DOSIS SEGUN TIPO
         dosis();
+        configuraAlto();
 
     }
 
@@ -204,6 +206,7 @@ public class Asma extends AppCompatActivity {
         txOtras = findViewById(R.id.txdOtras);
         txPrecausiones = findViewById(R.id.txdPrecausiones);
         txPeso = findViewById(R.id.txdPeso);
+        txotrasNoPro = findViewById(R.id.txdOtrasPNoprog);
         btGrave = findViewById(R.id.btdGrave);
         btModerada = findViewById(R.id.btdModerada);
         btLeve = findViewById(R.id.btdLeve);
@@ -261,7 +264,8 @@ public class Asma extends AppCompatActivity {
         btGravedad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Asma.this, IndiceGravedadAsma.class);
+              //  Intent intent = new Intent(Asma.this, IndiceGravedadAsma.class);
+                Intent intent = new Intent(Asma.this, IndiceAsma4.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("medcinas", medicamen_final);
                 intent.putExtras(bundle);
@@ -293,6 +297,15 @@ public class Asma extends AppCompatActivity {
         }
         arrayInhaladores = sacarGuion(inhaladores);
         arrayInhaladores1 = sacarGuion(inhaladores);
+        //CONFIGURAR PARA BUDESONIDA
+        if(medicamen_final.contains("BUDESONIDA")){
+            btGrave.setText("ASMA LEVE");
+            btGrave.setTextSize(11);
+            btModerada.setText("ASAMA MODERADA");
+            btModerada.setTextSize(11);
+            btLeve.setText("CRUP");
+            btLeve.setTextSize(11);
+        }
     }
 
     private void asignar_seekbar (String cont_sacado){
@@ -301,21 +314,16 @@ public class Asma extends AppCompatActivity {
         if (cont_sacado.contains("BROMURO DE IPRATROPIO NEBULIZADOR")){
             seekBar.setMax(144);
             seekBar.setProgress(90);
-          //  controla[0] = 1;
-          //  String res=edad_mese(res_sekb);
-          //  //  txPesoEdad.setText("Edad  "+res);
-          //  txPesoEdad.setText("Edad");
-          //  txDosiFinal.setText("DOSIS PARA " +res);
+            //  controla[0] = 1;
+            //  String res=edad_mese(res_sekb);
+            //  //  txPesoEdad.setText("Edad  "+res);
+            //  txPesoEdad.setText("Edad");
+            //  txDosiFinal.setText("DOSIS PARA " +res);
 
         }else {
 
             seekBar.setMax(40);
             seekBar.setProgress(6);
-            //seeDefi.setMin(3);
-         //  controla[0]=2;
-         //  res_sekb=seeDefi.getProgress();
-         //  txPesoEdad.setText("Peso");
-         //  txDosiFinal.setText("DOSIS PARA " +res_sekb+ " Kg");
         }
     }
 
@@ -381,7 +389,7 @@ public class Asma extends AppCompatActivity {
             txCada.setText("12-24 /hrs");
             guideline2.setGuidelinePercent((float) 0.88);
             txPeso.setLines(2);
-            txPeso.setText(" De 6 meses a 12 años, maximo 2 mg/dia, en casos muy graves hasta 4 mg/dia");
+            txPeso.setText(" De 6 meses a 12 años, maximo 2 mg/dia, \n en casos muy graves hasta 4 mg/dia");
         }
     }
 
@@ -431,8 +439,8 @@ public class Asma extends AppCompatActivity {
             dosi_esp = manager.sacar_dosis_especial(medicamen_final);
             //FUNCION ESPECIFICAMPARA ATROVENT NEBULIZADOR
             dosis_segun_edad(peso,dosi_esp);
-          //  dosisAtroventInhalador(res);
-          //  txCantidad.setText(""+ formato2.format(res)+" ug");
+            //  dosisAtroventInhalador(res);
+            //  txCantidad.setText(""+ formato2.format(res)+" ug");
             return;
         }else {
 
@@ -466,24 +474,24 @@ public class Asma extends AppCompatActivity {
         double interDosis;
         double interCantidadDosis;
 
-            if (sek_double >= edades_dosis[5] && sek_double <= edades_dosis[6]) {
-                interEdad = edades_dosis[6] - edades_dosis[5];
-                resto = sek_double - edades_dosis[5];
-                interPorcetajeEdad = (resto * 100)/interEdad;
-                interDosis = edades_dosis[4] - edades_dosis[3];
-                interCantidadDosis = (interDosis * interPorcetajeEdad)/100;
-                retorno = interCantidadDosis + edades_dosis[3];
+        if (sek_double >= edades_dosis[5] && sek_double <= edades_dosis[6]) {
+            interEdad = edades_dosis[6] - edades_dosis[5];
+            resto = sek_double - edades_dosis[5];
+            interPorcetajeEdad = (resto * 100)/interEdad;
+            interDosis = edades_dosis[4] - edades_dosis[3];
+            interCantidadDosis = (interDosis * interPorcetajeEdad)/100;
+            retorno = interCantidadDosis + edades_dosis[3];
+        }
+        if (edades_dosis[8] != 0.0) {
+            if (sek_double >= edades_dosis[10] && sek_double <= edades_dosis[11]) {
+                interEdad = edades_dosis[11] - edades_dosis[10];
+                resto = sek_double - edades_dosis[10];
+                interPorcetajeEdad = (resto * 100) / interEdad;
+                interDosis = edades_dosis[9] - edades_dosis[8];
+                interCantidadDosis = (interDosis * interPorcetajeEdad) / 100;
+                retorno = interCantidadDosis + edades_dosis[8];
             }
-            if (edades_dosis[8] != 0.0) {
-                if (sek_double >= edades_dosis[10] && sek_double <= edades_dosis[11]) {
-                    interEdad = edades_dosis[11] - edades_dosis[10];
-                    resto = sek_double - edades_dosis[10];
-                    interPorcetajeEdad = (resto * 100) / interEdad;
-                    interDosis = edades_dosis[9] - edades_dosis[8];
-                    interCantidadDosis = (interDosis * interPorcetajeEdad) / 100;
-                    retorno = interCantidadDosis + edades_dosis[8];
-                }
-            }
+        }
         if (edades_dosis[13] != 0.0) {
             if (sek_double >= edades_dosis[10] && sek_double <= edades_dosis[11]) {
                 interEdad = edades_dosis[15] - edades_dosis[16];
@@ -497,7 +505,7 @@ public class Asma extends AppCompatActivity {
         if (medicamen_final.contains("BROMURO DE IPRATROPIO NEBULIZADOR")){
             resto = (retorno * 2)/250;
             if (position == 1){
-               resto = resto/2;
+                resto = resto/2;
 
             }
         }
@@ -678,7 +686,12 @@ public class Asma extends AppCompatActivity {
             txCada.setText("Cada 12-24/hrs");
         }
         if (medicamen_final.contains("BROMURO DE IPRATROPIO NEBULIZADOR")){
-            txCada.setText("Cada 6-8/hrs");
+            if (control == 0 || control == 1 ) {
+                txCada.setText("Cada 6 hrs");
+            }
+            if (control == 2 ) {
+                txCada.setText("Cada 8 hrs");
+            }
         }
     }
 
@@ -736,7 +749,7 @@ public class Asma extends AppCompatActivity {
         String titulo=medicamen_final;
         txTitulo.setTypeface(null, Typeface.BOLD);
 
-  //   titulo="B. IPRATROPIO INHALA.";
+        //   titulo="B. IPRATROPIO INHALA.";
         txTitulo.setText(titulo);
 
         //PINTAR CONTRAINDICACIONES
@@ -821,8 +834,6 @@ public class Asma extends AppCompatActivity {
 
     }
 
-
-
     public Vector jarabes_No_Comer (String medicamen, String medi_introducido, String[] array_jarabes, String[][] array_datos){
         // String [][]array_datos=new String[20][10];
         String[] nue = new String[5];
@@ -873,8 +884,6 @@ public class Asma extends AppCompatActivity {
         nuevo.add(jaraDosis);
         return nuevo;
     }
-
-
 
     //region CONFIGURACIONES DE BOTONES Y BANDERA
     //FUNCION BOTONES PARA OTRAS PRESENTACIONES
@@ -954,22 +963,42 @@ public class Asma extends AppCompatActivity {
                 break;
         }
     }
-    public void onclickVolver(View view) {
-        Intent intent = new Intent(Asma.this, Segundo.class);
-        startActivity(intent);
-    }
-    //CAMBIA A ASMA2
-    public void onClickConsidere(View view){
-        Intent intent = new Intent(Asma.this, Asma2.class);
-        String text = selector(medicamen_final);
-        Bundle bundle = new Bundle();
-        bundle.putString("medigene", text);
-        intent.putExtras(bundle);
-        startActivity(intent);
-    }
-    public void onClickBandera(View view) {
-        Intent intent = new Intent(Asma.this, BanderaActivity.class);
-        startActivity(intent);
+
+
+    private void configuraAlto(){
+        int heightNu; //your textview height
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int width = metrics.widthPixels; // ancho absoluto en pixels
+        int height = metrics.heightPixels; // alto absoluto en pixels
+        if (height > 1500){
+            //  heightNu = 70;
+            //  txCantidad.getLayoutParams().height =heightNu;
+            //  txeCada.getLayoutParams().height =heightNu;
+            //  txDosiFinal.getLayoutParams().height =heightNu;
+            //  txTitulo.getLayoutParams().height = heightNu+20;
+        }
+        if (height > 1290){
+            //   heightNu = 50;
+            //   txCantidad.getLayoutParams().height =heightNu;
+            //   txeCada.getLayoutParams().height =heightNu;
+            //   txDosiFinal.getLayoutParams().height =heightNu;
+            //   txTitulo.getLayoutParams().height = heightNu+20;
+        }
+        if (height < 900){
+            //heightNu = 70;
+            //txCantidad.getLayoutParams().height =heightNu;
+            //txeCada.getLayoutParams().height =heightNu;
+            //txDosiFinal.getLayoutParams().height =heightNu;
+            //txTitulo.getLayoutParams().height = heightNu+20;
+            txOtras.setTextSize(15);
+            txPeso.setTextSize(15);
+            txPrecausiones.setTextSize(13);
+            txGravedad.setTextSize(13);
+            txotrasNoPro.setTextSize(16);
+        }
+
+
     }
     //FUNCION BOTONES PARA GRAVEDAD
     public void onClick(View view) {
@@ -1074,6 +1103,24 @@ public class Asma extends AppCompatActivity {
             btBandera.setBackground(this.getResources().getDrawable(R.drawable.banchile));}
     }
     //endregion
+
+    public void onclickVolver(View view) {
+        Intent intent = new Intent(Asma.this, Segundo.class);
+        startActivity(intent);
+    }
+    //CAMBIA A ASMA2
+    public void onClickConsidere(View view){
+        Intent intent = new Intent(Asma.this, Asma2.class);
+        String text = selector(medicamen_final);
+        Bundle bundle = new Bundle();
+        bundle.putString("medigene", text);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+    public void onClickBandera(View view) {
+        Intent intent = new Intent(Asma.this, BanderaActivity.class);
+        startActivity(intent);
+    }
 
 
 }

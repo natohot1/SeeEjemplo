@@ -2,18 +2,9 @@
     <string name="app_name">Jarabes</string>
 
     <string name="title_activity_fullscreen">FullscreenActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
 
     <string name="tx_q_buscas">QUE BUSCAS</string>
-    <string name="banespa">Espana</string>
-    <string name="banbolivia">Bolivia</string>
-    <string name="nombres_comerciales">Nombres Comerciales</string>
     <string name="cantidad">cantidad</string>
-    <string name="txt_peso">txt_peso</string>
-    <string name="jarabe">jarabe</string>
-    <string name="tvdosis">tvdosis</string>
-    <string name="indicaciones_y_efectos_secundarios">INDICACIONES Y EFECTOS SECUNDARIOS</string>
     <string name="todo">TODO</string>
 
 
@@ -693,8 +684,16 @@
         <item>BUDESONIDA INHALADOR</item>
 
     </string-array>
-    <string name="title_activity_asma2">Asma2</string>
-    <string name="peso">PESO</string>
+    <string name="title_activity_indice_gravedad_asma2">IndiceGravedadAsma2</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- Strings used for fragments for navigation -->
 
 
 </resources>

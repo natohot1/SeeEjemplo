@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -61,7 +61,7 @@ public class Main4Activity extends AppCompatActivity {
 
         restaurarCampos(savedInstanceState);
         //AVERIGUAMOS LA RESOLUCION DEL DISPOSIOTIVO
-  //      resolucion = multiplica();
+        //      resolucion = multiplica();
 
 
         datos = getIntent().getExtras();
@@ -69,7 +69,7 @@ public class Main4Activity extends AppCompatActivity {
         // mediGenerico = datos.getString("medcinas");
         mediComercial = datos.getString("obtenido");
         //  mediComercial = datos.getString("obtenido");
-      //  botonActivo = datos.getString("boton");
+        //  botonActivo = datos.getString("boton");
 
         manager = new DatosReaderDbHelper(this);
         Context context=this;
@@ -218,7 +218,7 @@ public class Main4Activity extends AppCompatActivity {
         arrayMedica=arrayMedicamento(mediGenerico);
 
         //CONFIGURA ALTO DE ALGUNOS TEXTVIEW
-        configuraAlto();
+        //  configuraAlto();
 
     }
     //<editor-fold desc="FUNCIONES BOTONES PARA OTRAS PRESENTACIONES">
@@ -518,12 +518,13 @@ public class Main4Activity extends AppCompatActivity {
             txDosiFinal.getLayoutParams().height =heightNu;
             txTitulo.getLayoutParams().height = heightNu+20;
         }
-        if (height >790){
-            heightNu = 70;
-            txCantidad.getLayoutParams().height =heightNu;
-            txeCada.getLayoutParams().height =heightNu;
-            txDosiFinal.getLayoutParams().height =heightNu;
-            txTitulo.getLayoutParams().height = heightNu+20;
+        if (height < 900){
+            //heightNu = 70;
+            //txCantidad.getLayoutParams().height =heightNu;
+            //txeCada.getLayoutParams().height =heightNu;
+            //txDosiFinal.getLayoutParams().height =heightNu;
+            //txTitulo.getLayoutParams().height = heightNu+20;
+
         }
 
 
@@ -589,7 +590,7 @@ public class Main4Activity extends AppCompatActivity {
         int resSeeb, res_espiner;
         resSeeb = seeDefi.getProgress();
         double sekb_double = resSeeb;
-       // res_espiner = position;
+        // res_espiner = position;
         String cont_sacado = array_datos[3][0];
 
         asignar_seekbar(cont_sacado);
@@ -633,8 +634,8 @@ public class Main4Activity extends AppCompatActivity {
                 break;
             case 2:
                 //DOSIS SEGUN PESO
-              String valorAmostrar= manager.dosis_kilo1(position, resSeeb, dosis_intDou, cada_double, jaraDosis, mediGenerico,cada_int);
-              txCantidad.setText(valorAmostrar);
+                String valorAmostrar= manager.dosis_kilo1(position, resSeeb, dosis_intDou, cada_double, jaraDosis, mediGenerico,cada_int);
+                txCantidad.setText(valorAmostrar);
                 break;
         }
         //</editor-fold>
@@ -645,7 +646,7 @@ public class Main4Activity extends AppCompatActivity {
     public void dosis_tos ( int res_espiner, double[] dosis_intDou, String[] array_jarabes, String med_final){
         String si_es_gotas;
         double resultado, res = 0;
-     //   boolean cont = true;
+        //   boolean cont = true;
         double jara_int = Double.parseDouble(array_jarabes[res_espiner]);
 
         resultado = dosis_intDou[0] / (jara_int / 5);
@@ -661,14 +662,14 @@ public class Main4Activity extends AppCompatActivity {
         txCantidad.setText("Hasta " + si_es_gotas);
         if (resultado == 0) {
             txCantidad.setTextColor(Color.RED);
-          //  txCantidad.setTextSize(15);
+            //  txCantidad.setTextSize(15);
             txCantidad.setText("NO INDICADO PARA LA EDAD");
         }
         if (resultado == 0) {
             txeCada.setText("");
         } else {
             txCantidad.setTextColor(Color.BLUE);
-        //    txCantidad.setTextSize(25);
+            //    txCantidad.setTextSize(25);
             String mensaje_doxi = "";
             mensaje_doxi = si_vibracina(med_final);
             txeCada.setText("Cada " + cada_int + "/h\n" + mensaje_doxi);
@@ -760,24 +761,24 @@ public class Main4Activity extends AppCompatActivity {
         if (medica_espe.equals(albendazol)) {
             if (sekb_double < 13) {
                 txCantidad.setTextColor(Color.RED);
-               // txCantidad.setHeight(35);
+                // txCantidad.setHeight(35);
                 txCantidad.setText("NO INDICADO EN MENORES DE 2 AÑOS");
                 txeCada.setText("");
             } else {
                 txCantidad.setTextColor(Color.BLUE);
-            //    txCantidad.setTextSize(25);
+                //    txCantidad.setTextSize(25);
             }
         }
 
         if (medica_espe.equals(hidroxicina)) {
             if (sekb_double < 10) {
                 txCantidad.setTextColor(Color.RED);
-             //   txCantidad.setTextSize(15);
+                //   txCantidad.setTextSize(15);
                 txCantidad.setText("NO INDICADO EN MENORES DE 1 AÑOS");
                 txeCada.setText("");
             } else {
                 txCantidad.setTextColor(Color.BLUE);
-             //   txCantidad.setTextSize(25);
+                //   txCantidad.setTextSize(25);
                 txeCada.setText("Cada 6/h");
             }
         }
@@ -809,7 +810,7 @@ public class Main4Activity extends AppCompatActivity {
     private void titulo(String medi_introducido) {
         int largo=medi_introducido.length();
         if(largo>15){
-          //  txTitulo.setTextSize(18);
+            //  txTitulo.setTextSize(18);
         }
         txTitulo.setText(medi_introducido);
 
@@ -875,7 +876,6 @@ public class Main4Activity extends AppCompatActivity {
             txedosis.setText("40 a 60 mg/kg peso de Sulfametoxazol");
         }
     }
-
 
 
 

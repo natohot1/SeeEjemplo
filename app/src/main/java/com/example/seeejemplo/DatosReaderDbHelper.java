@@ -233,6 +233,7 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
                 Medicamento.CN_medicamento + "=?", new String[]{var_bandera});
         close();
     }
+
     public void pasarDatos(String clase3, String botonAc4){
         openDB();
         String var_bandera = "BANDERA";
@@ -339,9 +340,6 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
     }
 
 
-
-
-
     //  INSERTAR DATOS DE INICIO EN AMOXICILINA
     public void val_inicio() throws SQLException {
         openDB();
@@ -413,9 +411,6 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
         }
 
     }
-
-
-
 
 
     public Boolean validarBandera() throws SQLException {
@@ -558,11 +553,6 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
         nuevo.add(jaraDosis);
         return nuevo;
     }
-
-
-
-
-
 
 
     @Override

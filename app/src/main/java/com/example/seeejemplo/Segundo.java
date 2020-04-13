@@ -3,9 +3,9 @@ package com.example.seeejemplo;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -69,28 +69,25 @@ public class Segundo extends AppCompatActivity {
         //SACAMOS DAOTOS BOTON Y CLASE
         botonActivo=cur_bandera.getString(4);
 
-
-
-
         //SE ESTABLECE BOTON ACTIVO
-        if (botonActivo.contains("todo")){
-            activarTodo();
-        }
-        if (botonActivo.contains("asma")){
-            activarAsma();
-        }
-        if (botonActivo.contains("tos")){
-            activarTos();
-        }
-        if (botonActivo.contains("antibiotico")){
-            activarAntibiotico();
-        }
-        if (botonActivo.contains("antialergico")){
-            activarAlergia();
-        }
-        if (botonActivo.contains("analgesico")){
-            activarAnalgesico();
-        }
+       if (botonActivo.contains("todo")){
+           activarTodo();
+       }
+       if (botonActivo.contains("asma")){
+           activarAsma();
+       }
+       if (botonActivo.contains("tos")){
+           activarTos();
+       }
+       if (botonActivo.contains("antibiotico")){
+           activarAntibiotico();
+       }
+       if (botonActivo.contains("antialergico")){
+           activarAlergia();
+       }
+       if (botonActivo.contains("analgesico")){
+           activarAnalgesico();
+       }
 
 
 
@@ -213,13 +210,13 @@ public class Segundo extends AppCompatActivity {
         int ancho=horizotal(width,height);
 
         if(ancho<1000){
-            anchoP=7;
+            anchoP=11;
         }
         if(ancho>1000 && ancho<2000){
-            anchoP=10;
+            anchoP=14;
         }
         if(ancho>2000){
-            anchoP=15;
+            anchoP=20;
         }
 
         btAntibiotico.setTextSize(anchoP);
@@ -253,26 +250,32 @@ public class Segundo extends AppCompatActivity {
     public void onClick1(View view) {
         switch (view.getId()){
             case (R.id.btdAnalgesicos):
+                botonActivo = DatosRegistro.STRING_analgesico;
                 activarAnalgesico();
                 closeKeyboard();
                 break;
             case (R.id.btdAntialergicos):
+                botonActivo = DatosRegistro.STRING_antialergico;
                 activarAlergia();
                 closeKeyboard();
                 break;
             case (R.id.btdAntibiticos):
+                botonActivo = DatosRegistro.STRING_antibiotico;
                 activarAntibiotico();
                 closeKeyboard();
                 break;
             case (R.id.btdTos):
+                botonActivo = DatosRegistro.STRING_tos;
                 activarTos();
                 closeKeyboard();
                 break;
             case (R.id.btdAsma):
+                botonActivo = DatosRegistro.STRING_asma;
                 activarAsma();
                 closeKeyboard();
                 break;
             case (R.id.btdTodo):
+                botonActivo = DatosRegistro.STRING_todo;
                 activarTodo();
                 closeKeyboard();
                 break;
@@ -293,12 +296,29 @@ public class Segundo extends AppCompatActivity {
     }
 
     //CONFIGURACION BOTONES
-    private void activarTodo() {
-        botonActivo = "todo";
+    private void activarBoton(Button miboton){
+      //  actualizarBotones3();
         if (banString.equals("banespana.png")) {
             medicaLi = getResources().getStringArray(R.array.medica_array);
-            medicaAu = getResources().getStringArray(R.array.medica_array);
-        }
+            medicaAu = getResources().getStringArray(R.array.medica_array); }
+        if (banString.equals("banbolivia.png")) {
+            medicaLi = getResources().getStringArray(R.array.medica_arrayBolivia);
+            medicaAu = getResources().getStringArray(R.array.medica_arrayBolivia);}
+        adapterLi = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicaLi);
+        adapterAu = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicaAu);
+        auto.setAdapter(adapterAu);
+        lista.setAdapter(adapterLi);
+        adapterLi.notifyDataSetChanged();
+        adapterAu.notifyDataSetChanged();
+        miboton.setBackgroundColor(getResources().getColor(R.color.botnActivo));
+        miboton.setTextColor(getResources().getColor(R.color.blanco));
+        manager.pasarDatos("Segundo",botonActivo);
+    }
+    private void activarTodo() {
+        actualizarBotones3();
+        if (banString.equals("banespana.png")) {
+            medicaLi = getResources().getStringArray(R.array.medica_array);
+            medicaAu = getResources().getStringArray(R.array.medica_array); }
         if (banString.equals("banbolivia.png")) {
             medicaLi = getResources().getStringArray(R.array.medica_arrayBolivia);
             medicaAu = getResources().getStringArray(R.array.medica_arrayBolivia);}
@@ -310,12 +330,12 @@ public class Segundo extends AppCompatActivity {
         adapterAu.notifyDataSetChanged();
         btTodo.setBackgroundColor(getResources().getColor(R.color.botnActivo));
         btTodo.setTextColor(getResources().getColor(R.color.blanco));
-        actualizarBotones(btTodo);
-        auto.setHint("DOS LETRAS TODOS");
         manager.pasarDatos("Segundo",botonActivo);
+        btTodo.setBackgroundResource(R.drawable.boton_redondo_azul);
     }
     private void activarAsma() {
-        botonActivo = "asma";
+       // botonActivo = "asma";
+        actualizarBotones3();
         if (banString.equals("banespana.png")) {
             medicaLi = getResources().getStringArray(R.array.ASMA);
             medicaAu = getResources().getStringArray(R.array.ASMA);
@@ -330,13 +350,13 @@ public class Segundo extends AppCompatActivity {
         adapterLi.notifyDataSetChanged();
         adapterAu.notifyDataSetChanged();
         btAsma.setBackgroundColor(getResources().getColor(R.color.botnActivo));
-        actualizarBotones(btAsma);
         btAsma.setTextColor(getResources().getColor(R.color.blanco));
-        auto.setHint("DOS LETRAS ASMA");
         manager.pasarDatos("Segundo",botonActivo);
+        btAsma.setBackgroundResource(R.drawable.boton_redondo_azul);
     }
     private void activarTos() {
-        botonActivo ="tos";
+       // botonActivo ="tos";
+        actualizarBotones3();
         if (banString.equals("banespana.png")) {
             medicaLi = getResources().getStringArray(R.array.ANTITUSIGENOS);
             medicaAu = getResources().getStringArray(R.array.ANTITUSIGENOS);
@@ -351,13 +371,13 @@ public class Segundo extends AppCompatActivity {
         adapterLi.notifyDataSetChanged();
         adapterAu.notifyDataSetChanged();
         btTos.setBackgroundColor(getResources().getColor(R.color.botnActivo));
-        actualizarBotones(btTos);
         btTos.setTextColor(getResources().getColor(R.color.blanco));
-        auto.setHint("DOS LETRAS ANTITUSIVOS");
         manager.pasarDatos("Segundo",botonActivo);
+        btTos.setBackgroundResource(R.drawable.boton_redondo_azul);
     }
     private void activarAntibiotico() {
-        botonActivo ="antibiotico";
+      //  botonActivo ="antibiotico";
+        actualizarBotones3();
         if (banString.equals("banespana.png")) {
             medicaLi = getResources().getStringArray(R.array.ANTIBIOTICOS);
             medicaAu = getResources().getStringArray(R.array.ANTIBIOTICOS);
@@ -372,13 +392,13 @@ public class Segundo extends AppCompatActivity {
         adapterLi.notifyDataSetChanged();
         adapterAu.notifyDataSetChanged();
         btAntibiotico.setBackgroundColor(getResources().getColor(R.color.botnActivo));
-        actualizarBotones(btAntibiotico);
         btAntibiotico.setTextColor(getResources().getColor(R.color.blanco));
-        auto.setHint("DOS LETRAS ANTIBIOTICOS");
         manager.pasarDatos("Segundo",botonActivo);
+        btAntibiotico.setBackgroundResource(R.drawable.boton_redondo_azul);
     }
     private void activarAlergia() {
-        botonActivo ="antialergico";
+     //   botonActivo ="antialergico";
+        actualizarBotones3();
         if (banString.equals("banespana.png")) {
             medicaLi = getResources().getStringArray(R.array.ANTIALERGICOS);
             medicaAu = getResources().getStringArray(R.array.ANTIALERGICOS);
@@ -392,14 +412,14 @@ public class Segundo extends AppCompatActivity {
         lista.setAdapter(adapterLi);
         adapterLi.notifyDataSetChanged();
         adapterAu.notifyDataSetChanged();
-        btAnalgesicos.setBackgroundColor(getResources().getColor(R.color.botnActivo));
-        actualizarBotones(btAlergia);
+        btAlergia.setBackgroundColor(getResources().getColor(R.color.botnActivo));
         btAlergia.setTextColor(getResources().getColor(R.color.blanco));
-        auto.setHint("DOS LETRAS ANTIALERGICOS");
         manager.pasarDatos("Segundo",botonActivo);
+        btAlergia.setBackgroundResource(R.drawable.boton_redondo_azul);
     }
     private void activarAnalgesico() {
-        botonActivo ="analgesico";
+      //  botonActivo ="analgesico";
+        actualizarBotones3();
         if (banString.equals("banespana.png")) {
             medicaLi = getResources().getStringArray(R.array.ANALGESICOS);
             medicaAu = getResources().getStringArray(R.array.ANALGESICOS);
@@ -414,22 +434,33 @@ public class Segundo extends AppCompatActivity {
         adapterLi.notifyDataSetChanged();
         adapterAu.notifyDataSetChanged();
         btAnalgesicos.setBackgroundColor(getResources().getColor(R.color.botnActivo));
-        actualizarBotones(btAnalgesicos);
         btAnalgesicos.setTextColor(getResources().getColor(R.color.blanco));
-        auto.setHint("DOS LETRAS ANALGESICOS");
         manager.pasarDatos("Segundo",botonActivo);
+        btAnalgesicos.setBackgroundResource(R.drawable.boton_redondo_azul);
     }
 
-    private void actualizarBotones(Button boton){
+    private void actualizarBotones3(){
         btTodo.setBackgroundColor(getResources().getColor(R.color.botnInactivo));
+        btTodo.setTextColor(getResources().getColor(R.color.colorLetBlaneutra));
+        btTodo.setBackgroundResource(R.drawable.boton_redondo_inactivo);
         btAnalgesicos.setBackgroundColor(getResources().getColor(R.color.botnInactivo));
+        btAnalgesicos.setTextColor(getResources().getColor(R.color.colorLetBlaneutra));
+        btAnalgesicos.setBackgroundResource(R.drawable.boton_redondo_inactivo);
         btAlergia.setBackgroundColor(getResources().getColor(R.color.botnInactivo));
+        btAlergia.setTextColor(getResources().getColor(R.color.colorLetBlaneutra));
+        btAlergia.setBackgroundResource(R.drawable.boton_redondo_inactivo);
         btAsma.setBackgroundColor(getResources().getColor(R.color.botnInactivo));
+        btAsma.setTextColor(getResources().getColor(R.color.colorLetBlaneutra));
+        btAsma.setBackgroundResource(R.drawable.boton_redondo_inactivo);
         btTos.setBackgroundColor(getResources().getColor(R.color.botnInactivo));
+        btTos.setTextColor(getResources().getColor(R.color.colorLetBlaneutra));
+        btTos.setBackgroundResource(R.drawable.boton_redondo_inactivo);
         btAntibiotico.setBackgroundColor(getResources().getColor(R.color.botnInactivo));
-        boton.setBackgroundColor(getResources().getColor(R.color.botnActivo));
-
+        btAntibiotico.setTextColor(getResources().getColor(R.color.colorLetBlaneutra));
+        btAntibiotico.setBackgroundResource(R.drawable.boton_redondo_inactivo);
     }
+
+
 
     //CAMBIO ICONO BANDERA
     private void cambioBandera(String bandera){
