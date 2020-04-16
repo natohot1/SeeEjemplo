@@ -135,11 +135,6 @@ public class Main4Activity extends AppCompatActivity {
             txdOtrasTexto.setText("SOLO PRESENTACION DE");
         }
 
-        //******************* TODO+++++++++++++++++++++++++++++++++++++++++++++++++++++++
-       // txeCada.setText("Cada " + cada_int + "/h");
-
-
-
         //GENERAMOS INDICACIONES EN WEV VIEW
         indicaContraindicaciones(contraindaciones);
         try {

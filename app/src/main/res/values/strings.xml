@@ -15,7 +15,8 @@
         <item>ACTITHIOL INFANTIL 2%</item>
         <item>AERIUS</item>
         <item>ALERGOLIBER</item>
-        <item>ALERLISIN</item>
+        <item>ALERLISIN GOTAS</item>
+        <item>ALERLISIN SOLUCION</item>
         <item>ALGIASDIN</item>
         <item>ALGIMABO INFANTIL</item>
         <item>ALGIMABO</item>
@@ -273,10 +274,12 @@
     <string-array name="ANTIALERGICOS">
         <item>AERIUS</item>
         <item>ALERGOLIBER</item>
-        <item>ALERLISIN</item>
+        <item>ALERLISIN GOTAS</item>
+        <item>ALERLISIN SOLUCION</item>
         <item>ATARAX</item>
         <item>AZOMYR</item>
-        <item>CETIRIZINA</item>
+        <item>CETIRIZINA GOTAS</item>
+        <item>CETIRIZINA SOLUCION</item>
         <item>CIVERAN</item>
         <item>DEFLAZACORT</item>
         <item>DESLORATADINA</item>

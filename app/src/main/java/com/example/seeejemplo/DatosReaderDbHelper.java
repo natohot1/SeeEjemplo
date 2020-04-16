@@ -600,13 +600,14 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
         }
         return resul;
     }
+    //PARA AGREGAR LOS MEDICACMENTOS QUE TIENEN PRESENTACION DE GOTAS///////////////
     public String si_gotas2 ( double resultado, double re1, String medi, int cada_int){
         boolean cont = true, gotas = false;
         String nue = "";
         int variaGotas = 20;
         double resFinalgotas = resultado, resFinalgotas2 = re1;
         String predni = "PREDNISOLONA", dexgotas = "DEXTROMETORFANO",paragotas = "PARACETAMOL",levogotas = "LEVOCETIRIZINA",
-                ibugotas = "IBUPROFENO",levodrogotas = "LEVODROPROPIZINA",metalgialgotas = "METAMIZOL";
+                ibugotas = "IBUPROFENO",levodrogotas = "LEVODROPROPIZINA",metalgialgotas = "METAMIZOL",cetirizinagotas ="CETIRIZINA";
         if (resultado < 1) {
             if (medi.equals(predni)) {
                 gotas = true;
@@ -614,7 +615,7 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
             if (medi.equals(dexgotas)) {
                 gotas = true;
                 variaGotas = 27; }
-            if (medi.equals(paragotas) || medi.equals(levogotas )|| medi.equals(ibugotas)|| medi.equals(levodrogotas) || medi.equals(metalgialgotas)) {
+            if (medi.equals(paragotas) || medi.equals(levogotas )|| medi.equals(ibugotas)|| medi.equals(levodrogotas) || medi.equals(metalgialgotas) || medi.equals(cetirizinagotas)) {
                 gotas = true; }
         }
         if (gotas) {
