@@ -11,4 +11,7 @@
     <color name="botnActivo">#3802DA</color>
     <color name="botnInactivo">#CDCECE</color>
     <color name="colorLetBlaneutra">#EFEAEA</color>
+    <color name="colorLetMorada">#5A006D</color>
+
+    #5A006D
 </resources>

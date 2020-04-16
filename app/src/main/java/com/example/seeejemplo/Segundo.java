@@ -295,25 +295,8 @@ public class Segundo extends AppCompatActivity {
         }
     }
 
+    //<editor-fold desc="CONFIGURACIOON DE BOTONES">
     //CONFIGURACION BOTONES
-    private void activarBoton(Button miboton){
-      //  actualizarBotones3();
-        if (banString.equals("banespana.png")) {
-            medicaLi = getResources().getStringArray(R.array.medica_array);
-            medicaAu = getResources().getStringArray(R.array.medica_array); }
-        if (banString.equals("banbolivia.png")) {
-            medicaLi = getResources().getStringArray(R.array.medica_arrayBolivia);
-            medicaAu = getResources().getStringArray(R.array.medica_arrayBolivia);}
-        adapterLi = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicaLi);
-        adapterAu = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicaAu);
-        auto.setAdapter(adapterAu);
-        lista.setAdapter(adapterLi);
-        adapterLi.notifyDataSetChanged();
-        adapterAu.notifyDataSetChanged();
-        miboton.setBackgroundColor(getResources().getColor(R.color.botnActivo));
-        miboton.setTextColor(getResources().getColor(R.color.blanco));
-        manager.pasarDatos("Segundo",botonActivo);
-    }
     private void activarTodo() {
         actualizarBotones3();
         if (banString.equals("banespana.png")) {
@@ -438,7 +421,6 @@ public class Segundo extends AppCompatActivity {
         manager.pasarDatos("Segundo",botonActivo);
         btAnalgesicos.setBackgroundResource(R.drawable.boton_redondo_azul);
     }
-
     private void actualizarBotones3(){
         btTodo.setBackgroundColor(getResources().getColor(R.color.botnInactivo));
         btTodo.setTextColor(getResources().getColor(R.color.colorLetBlaneutra));
@@ -459,21 +441,6 @@ public class Segundo extends AppCompatActivity {
         btAntibiotico.setTextColor(getResources().getColor(R.color.colorLetBlaneutra));
         btAntibiotico.setBackgroundResource(R.drawable.boton_redondo_inactivo);
     }
-
-
-
-    //CAMBIO ICONO BANDERA
-    private void cambioBandera(String bandera){
-        if (bandera.contains("bolivia")){
-            btBanera.setBackground(this.getResources().getDrawable(R.drawable.banbolivia));}
-        if (bandera.contains("espana")){
-            btBanera.setBackground(this.getResources().getDrawable(R.drawable.banespana));}
-        if (bandera.contains("peru")){
-            btBanera.setBackground(this.getResources().getDrawable(R.drawable.banperu));}
-        if (bandera.contains("chile")){
-            btBanera.setBackground(this.getResources().getDrawable(R.drawable.banchile));}
-    }
-
     public void quitarBotones() {
         btAnalgesicos.setVisibility(View.GONE);
         btAlergia.setVisibility(View.GONE);
@@ -493,6 +460,21 @@ public class Segundo extends AppCompatActivity {
         btAsma.setVisibility(View.VISIBLE);
 
     }
+    //</editor-fold>
+
+    //CAMBIO ICONO BANDERA
+    private void cambioBandera(String bandera){
+        if (bandera.contains("bolivia")){
+            btBanera.setBackground(this.getResources().getDrawable(R.drawable.banbolivia));}
+        if (bandera.contains("espana")){
+            btBanera.setBackground(this.getResources().getDrawable(R.drawable.banespana));}
+        if (bandera.contains("peru")){
+            btBanera.setBackground(this.getResources().getDrawable(R.drawable.banperu));}
+        if (bandera.contains("chile")){
+            btBanera.setBackground(this.getResources().getDrawable(R.drawable.banchile));}
+    }
+
+
 }
 
 

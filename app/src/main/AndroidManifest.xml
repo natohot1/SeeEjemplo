@@ -21,7 +21,6 @@
         <activity
             android:name=".Asma"
             android:screenOrientation="fullSensor" />
-        <activity android:name=".IndiceGravedadAsma" />
         <activity
             android:name=".FullscreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

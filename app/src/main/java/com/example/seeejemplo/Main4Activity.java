@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -132,7 +134,12 @@ public class Main4Activity extends AppCompatActivity {
         if (largo_jara_arraComercial==1){
             txdOtrasTexto.setText("SOLO PRESENTACION DE");
         }
-        txeCada.setText("Cada " + cada_int + "/h");
+
+        //******************* TODO+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+       // txeCada.setText("Cada " + cada_int + "/h");
+
+
+
         //GENERAMOS INDICACIONES EN WEV VIEW
         indicaContraindicaciones(contraindaciones);
         try {
@@ -151,15 +158,11 @@ public class Main4Activity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
-
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
             }
         });
 
@@ -168,7 +171,7 @@ public class Main4Activity extends AppCompatActivity {
 
         configurarSegmento(jaraDosis);
         //PARA MOSTAR LA DOSIS DE ENCABWEZADO
-        mostrar_dosis();
+        mostrar_dosis_para();
     }
 
     //<editor-fold desc="CONFIGURACIONES">
@@ -467,19 +470,16 @@ public class Main4Activity extends AppCompatActivity {
             res_sekb=seeDefi.getProgress();
             txPesoEdad.setText("Peso");
             txDosiFinal.setText("DOSIS PARA " +res_sekb+ " Kg");
+
+            if (res_sekb<4){
+                    txeCada.setText("");
+                    txCantidad.setText("");
+            }else {
+                txeCada.setText("Cada " + cada_int + "/h");
+            }
         }
     }
-    //CAMBIO ICONO BANDERA
-    private void cambioBandera(String bandera){
-        if (bandera.contains("bolivia")){
-            btdBandera.setBackground(this.getResources().getDrawable(R.drawable.banbolivia));}
-        if (bandera.contains("espana")){
-            btdBandera.setBackground(this.getResources().getDrawable(R.drawable.banespana));}
-        if (bandera.contains("peru")){
-            btdBandera.setBackground(this.getResources().getDrawable(R.drawable.banperu));}
-        if (bandera.contains("chile")){
-            btdBandera.setBackground(this.getResources().getDrawable(R.drawable.banchile));}
-    }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -531,9 +531,6 @@ public class Main4Activity extends AppCompatActivity {
     }
     //</editor-fold>
 
-
-
-
     //region FUNCIONES DE EXTRACCION DE DATOS
     private String[] arrayMedicamento(String medicina){
         Cursor medi=null;
@@ -567,7 +564,7 @@ public class Main4Activity extends AppCompatActivity {
         }
         return i;
     }
-    private void mostrar_dosis () {//MUETRA DOSIS DE ENCABEZADO
+    private void mostrar_dosis_para() {//MUETRA DOSIS DE ENCABEZADO
         String[] dosi = new String[2];
         dosi[0] = array_datos[3][0];
         switch (controla[0]) {
@@ -586,16 +583,12 @@ public class Main4Activity extends AppCompatActivity {
         }
     }
     private void update() throws java.sql.SQLException{
-
         int resSeeb, res_espiner;
         resSeeb = seeDefi.getProgress();
         double sekb_double = resSeeb;
         // res_espiner = position;
         String cont_sacado = array_datos[3][0];
-
         asignar_seekbar(cont_sacado);
-
-
         //****NUEVAS OPERACONES JARABES
         jarabes_por5ml =array_datos[10][0];
 
@@ -608,9 +601,7 @@ public class Main4Activity extends AppCompatActivity {
         cada_inter = array_datos[7][0];
         cada_double = manager.sacar_num(cada_inter);
 
-
         //****DOSIS PARA DISTINGUE CLASES+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
         //***********SACA Y MUESTRA NOMBRES COMERCIALES
 
         Vector jarabes=new Vector(2);
@@ -619,9 +610,6 @@ public class Main4Activity extends AppCompatActivity {
         jaraDosis=(String[])jarabes.elementAt(1);
 
         int jar_selec=jarabe_seleccioado();
-
-
-
         //<editor-fold desc="MUESTRA DOSIS SEGUN PESO O EDAD">
         switch (controla[0]) {
             case 1:
@@ -640,10 +628,8 @@ public class Main4Activity extends AppCompatActivity {
         }
         //</editor-fold>
         dosis_especiales(mediGenerico,sekb_double);
-
-
     }
-    public void dosis_tos ( int res_espiner, double[] dosis_intDou, String[] array_jarabes, String med_final){
+    public void dosis_tos (int res_espiner, double[] dosis_intDou, String[] array_jarabes, String med_final){
         String si_es_gotas;
         double resultado, res = 0;
         //   boolean cont = true;
@@ -653,26 +639,29 @@ public class Main4Activity extends AppCompatActivity {
         //  si_es_gotas = si_gotas2(resultado, res, mediGenerico);
         si_es_gotas = manager.si_gotas2(resultado, res, med_final,cada_int);
 
-        if (resultado == 0) {
-            txeCada.setText("");
-        } else {
-            txeCada.setText("Cada " + cada_int + "/h");
-        }
+          if (resultado == 0) {
+              txeCada.setText("");
+          } else {
+              txeCada.setText("Cada " + cada_int + "/h");
+          }
 
         txCantidad.setText("Hasta " + si_es_gotas);
         if (resultado == 0) {
             txCantidad.setTextColor(Color.RED);
-            //  txCantidad.setTextSize(15);
             txCantidad.setText("NO INDICADO PARA LA EDAD");
+        }else{
+           // txCantidad.setTextColor(Color.BLUE);
+            txCantidad.setTextColor(getResources().getColor(R.color.colorLetMorada));
         }
-        if (resultado == 0) {
-            txeCada.setText("");
-        } else {
-            txCantidad.setTextColor(Color.BLUE);
-            //    txCantidad.setTextSize(25);
-            String mensaje_doxi = "";
-            mensaje_doxi = si_vibracina(med_final);
-            txeCada.setText("Cada " + cada_int + "/h\n" + mensaje_doxi);
+
+        if (med_final.contains("DOXICICLINA")){
+            if(resultado == 0){
+                txeCada.setText("");
+            }else {
+                String mensaje_doxi = "";
+                mensaje_doxi = si_vibracina(med_final);
+                txeCada.setText("Cada " + cada_int + "/h\n" + mensaje_doxi);
+            }
         }
     }
     public Vector jarabes_No_Comer (String medicamen, String medi_introducido, String[] array_jarabes, String[][] array_datos){
@@ -717,7 +706,6 @@ public class Main4Activity extends AppCompatActivity {
         while (contaArra < (largo)) {
             jarabes_comercial3[contaArra] = mios[dato_var1[variable][contaArra]];
             jaraDosis[contaArra] = array_jarabes[dato_var1[variable][contaArra]];
-
             contaArra++;
         }
         Vector nuevo = new Vector(2);
@@ -732,13 +720,11 @@ public class Main4Activity extends AppCompatActivity {
         String pirantel = "PAMOATO DE PIRANTEL";
         String albendazol = "ALBENDAZOL";
         String hidroxicina = "HIDROXIZINA";
-
         if (medica_espe.equals(levodro)) {
             if ((sekb_double < 12) && (sekb_double > 3)) {
                 txCantidad.setText("NO INDICADO");
                 txeCada.setText("");
             }
-
         }
         if (medica_espe.equals(pirantel)) {
             if ((sekb_double < 8) && (sekb_double > 3)) {
@@ -782,9 +768,6 @@ public class Main4Activity extends AppCompatActivity {
                 txeCada.setText("Cada 6/h");
             }
         }
-
-
-
     }
     private String edad_mese ( double res){
         String edad;
@@ -877,7 +860,16 @@ public class Main4Activity extends AppCompatActivity {
         }
     }
 
-
-
+    //CAMBIO ICONO BANDERA
+    private void cambioBandera(String bandera){
+        if (bandera.contains("bolivia")){
+            btdBandera.setBackground(this.getResources().getDrawable(R.drawable.banbolivia));}
+        if (bandera.contains("espana")){
+            btdBandera.setBackground(this.getResources().getDrawable(R.drawable.banespana));}
+        if (bandera.contains("peru")){
+            btdBandera.setBackground(this.getResources().getDrawable(R.drawable.banperu));}
+        if (bandera.contains("chile")){
+            btdBandera.setBackground(this.getResources().getDrawable(R.drawable.banchile));}
+    }
 
 }

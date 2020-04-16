@@ -516,15 +516,12 @@ public class Asma extends AppCompatActivity {
 
     }
 
-
-
     private void pintarPeso(int progress) {
         txPeso.setText(""+progress+ " Kg");
         if (medicamen_final.contains("BROMURO DE IPRATROPIO NEBULIZADOR")){
             txPeso.setText(""+progress/12+ " Años");
         }
     }
-
 
     //DOSISEDAD1
     private void update() {

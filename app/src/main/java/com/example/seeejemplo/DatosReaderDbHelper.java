@@ -605,7 +605,8 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
         String nue = "";
         int variaGotas = 20;
         double resFinalgotas = resultado, resFinalgotas2 = re1;
-        String predni = "PREDNISOLONA", dexgotas = "DEXTROMETORFANO",paragotas = "PARACETAMOL",levogotas = "LEVOCETIRIZINA",ibugotas = "IBUPROFENO",levodrogotas = "LEVODROPROPIZINA";
+        String predni = "PREDNISOLONA", dexgotas = "DEXTROMETORFANO",paragotas = "PARACETAMOL",levogotas = "LEVOCETIRIZINA",
+                ibugotas = "IBUPROFENO",levodrogotas = "LEVODROPROPIZINA",metalgialgotas = "METAMIZOL";
         if (resultado < 1) {
             if (medi.equals(predni)) {
                 gotas = true;
@@ -613,7 +614,7 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
             if (medi.equals(dexgotas)) {
                 gotas = true;
                 variaGotas = 27; }
-            if (medi.equals(paragotas) || medi.equals(levogotas )|| medi.equals(ibugotas)|| medi.equals(levodrogotas)) {
+            if (medi.equals(paragotas) || medi.equals(levogotas )|| medi.equals(ibugotas)|| medi.equals(levodrogotas) || medi.equals(metalgialgotas)) {
                 gotas = true; }
         }
         if (gotas) {
