@@ -16,6 +16,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
+import java.util.Objects;
 import java.util.Vector;
 
 public class Main4Activity extends AppCompatActivity {
@@ -122,7 +123,7 @@ public class Main4Activity extends AppCompatActivity {
 
         Vector jarabes=new Vector(2);
 
-        jarabes=jarabes_No_Comer(mediGenerico, mediComercial, array_jarabes,array_datos);
+        jarabes=jarabes_No_Comer2(mediGenerico, mediComercial, array_jarabes,array_datos);
         jara_arraComercial=(String[])jarabes.elementAt(0);
 
 
@@ -130,6 +131,9 @@ public class Main4Activity extends AppCompatActivity {
         int largo_jara_arraComercial=jara_arraComercial.length;
         jaraDosis=(String[])jarabes.elementAt(1);
         txJarabe.setText("Jarabe "+jaraDosis[position]+" mg/5cc");
+        //****************************************************TODO
+
+
         txOtras.setText("" + jara_arraComercial[position]);
         if (largo_jara_arraComercial==1){
             txdOtrasTexto.setText("SOLO PRESENTACION DE");
@@ -469,6 +473,7 @@ public class Main4Activity extends AppCompatActivity {
             if (res_sekb<4){
                     txeCada.setText("");
                     txCantidad.setText("");
+                    txDosiFinal.setText("AVANCE LA BARRA");
             }else {
                 txeCada.setText("Cada " + cada_int + "/h");
             }
@@ -600,7 +605,7 @@ public class Main4Activity extends AppCompatActivity {
         //***********SACA Y MUESTRA NOMBRES COMERCIALES
 
         Vector jarabes=new Vector(2);
-        jarabes=jarabes_No_Comer(mediGenerico, mediComercial, array_jarabes,array_datos);
+        jarabes=jarabes_No_Comer2(mediGenerico, mediComercial, array_jarabes,array_datos);
         jara_arraComercial=(String[])jarabes.elementAt(0);
         jaraDosis=(String[])jarabes.elementAt(1);
 
@@ -659,8 +664,91 @@ public class Main4Activity extends AppCompatActivity {
             }
         }
     }
+
+
+    public Vector jarabes_No_Comer2 (String medicamen, String medi_introducido, String[] array_jarabes, String[][] array_datos){
+        // SACAMOS LOS DISTINTOS ARRAY SEGUN LAS  CONCENTRACIONES EXISTENTES A ORDENAR
+        String[] nue = new String[5];
+        nue[0] = array_datos[0][2];
+        nue[1] = array_datos[0][3];
+        nue[2] = array_datos[0][4];
+        nue[3] = array_datos[0][5];
+        nue[4] = array_datos[0][6];
+        int cont = 0, con2 = 0, con3 = 0;
+        while (cont < 5) {
+            int valor = nue[cont].length();
+            if (valor > 2) {
+                con2 = cont;
+            }
+            cont++;
+        }
+        String mios[] = new String[con2 + 1];
+        while (con3 <= (con2)) {
+            mios[con3] = nue[con3];
+            con3++;
+        }
+        int largo = mios.length;
+        int[][] dato_var1 = {{0, 1, 2, 3, 4}, {1, 0, 2, 3, 4}, {2, 0, 1, 3, 4}, {3, 0, 1, 2, 4}, {4, 0, 1, 2, 3}};
+        int con1 = 0, variable = 0;
+
+        //devuelve el numero de la tabla donde esta el medicameto buscado  "variable"
+        variable=manager.posicion(nue[0],nue[1],nue[2],nue[3],nue[4],medi_introducido);
+        variable=variable-1;
+
+        int lar1=medi_introducido.length();
+        int lar2=medicamen.length();
+        boolean esmio=false;
+
+        //SI  ESTA COMO COMERCIAL Y NO HAY GENERRICO, SE COMPARA CON TAMAÑO
+        // SI MEDICAMENO Y MEDICAMENTO SELECCONADO ES EL MISMO VARIABLE SERA VARIABLE -1
+        if (variable==-1){
+                int conta5=0;
+                int conta6=0;
+                Character[]carac= new Character[lar1];
+                Character[]carac2= new Character[lar2];
+                while (conta5<lar1){
+                    carac[conta5]=medi_introducido.charAt(conta5);
+                    conta5++;
+                }
+                while (conta6<lar2){
+                    carac2[conta6]=medicamen.charAt(conta6);
+                    conta6++;
+                }
+                conta5=0;
+                while (lar1>conta5){
+                    if(carac[conta5]==carac2[conta5]){
+                        esmio=true;
+                        conta5++;
+                        break;
+                    }
+                    esmio=false;
+                }
+                if(esmio){
+                    variable=0;
+                }
+        }
+
+        String[] jarabes_comercial3 = new String[largo];
+        String[] jaraDosis = new String[largo];
+
+        int contaArra = 0;
+        while (contaArra < (largo)) {
+            jarabes_comercial3[contaArra] = mios[dato_var1[variable][contaArra]];
+            jaraDosis[contaArra] = array_jarabes[dato_var1[variable][contaArra]];
+            contaArra++;
+        }
+        Vector nuevo = new Vector(2);
+        nuevo.add(jarabes_comercial3);
+        nuevo.add(jaraDosis);
+        return nuevo;
+
+    }
+
+
+
+
     public Vector jarabes_No_Comer (String medicamen, String medi_introducido, String[] array_jarabes, String[][] array_datos){
-        // String [][]array_datos=new String[20][10];
+        // SACAMOS LOS DISTINTOS ARRAY SEGUN LAS  CONCENTRACIONES EXISTENTES A ORDENAR
         String[] nue = new String[5];
         nue[0] = array_datos[0][2];
         nue[1] = array_datos[0][3];
@@ -686,12 +774,13 @@ public class Main4Activity extends AppCompatActivity {
 
         int con1 = 0, variable = 0;
 
+        //devuelve el numero de la tabla donde esta el medicameto buscado  "variable"
         while (con1 < largo) {
-            int res1 = mios[con1].indexOf(medi_introducido);
-            if (res1 != -1) {
-                variable = con1;
-                break;
-            }
+           int res1 = mios[con1].indexOf(medi_introducido);
+           if (res1 != -1) {
+               variable = con1;
+               break;
+           }
             con1++;
         }
         String[] jarabes_comercial3 = new String[largo];
@@ -707,7 +796,14 @@ public class Main4Activity extends AppCompatActivity {
         nuevo.add(jarabes_comercial3);
         nuevo.add(jaraDosis);
         return nuevo;
+
     }
+
+
+
+
+
+
     private void dosis_especiales (String medica_espe,double sekb_double){
         String levodro = "LEVODROPROPIZINA";
         String ketoti = "KETOTIFENO";
@@ -758,7 +854,7 @@ public class Main4Activity extends AppCompatActivity {
                 txCantidad.setText("NO INDICADO EN MENORES DE 1 AÑOS");
                 txeCada.setText("");
             } else {
-                txCantidad.setTextColor(Color.BLUE);
+                txCantidad.setTextColor(getResources().getColor(R.color.colorLetMorada));
                 //   txCantidad.setTextSize(25);
                 txeCada.setText("Cada 6/h");
             }
@@ -802,7 +898,6 @@ public class Main4Activity extends AppCompatActivity {
     }
     private void indicaContraindicaciones (String comprimidos){
         txPrecausiones.setText(comprimidos);
-
     }
 
     //METODOS ONCLICK

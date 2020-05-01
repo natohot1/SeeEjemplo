@@ -290,15 +290,7 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
 
     }
 
-
-
-
-
-
-
-
     //BUSCAR Y EXTRER SI HAY EN TABLA DOSIS ESPECIALES
-
     public Cursor dos_esp(String medicina) throws SQLException {
         openDB();
         String query = "select * FROM " + TABLA_DOSESPECIAL + " WHERE " + COLUMNA_MEDICAMENTO + " = \"" + medicina + "\"";
@@ -310,7 +302,6 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
         return ce;
     }
 
-
     public Cursor nom_com(String nombrcomer) throws SQLException {
         openDB();
         String query = "select * FROM " + TABLA_COMERCIAL + " WHERE " + Medicamento.CN_nobrecom + " = \"" + nombrcomer + "\"";
@@ -321,7 +312,6 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
         }
         return cex;
     }
-
 
     public Cursor edad(String peso)throws SQLException {
         openDB();
@@ -348,15 +338,11 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
         Cursor p=buscarMed(var_paraceta);
         Cursor a=buscarMed(var_amoxic);
 
-
         int primeraVezP=p.getInt(6);
         int paraFecha,amoFecha;
 
-        //TODO pendiene de hacer
-
         paraFecha=p.getInt(6);
         amoFecha=a.getInt(6);
-
 
         int masdias=1;
 
@@ -378,9 +364,7 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
             myDataBase.update(DatosRegistro.DATOS_TABLA_MEDICAMENTOS,registro,Medicamento.CN_medicamento + "=?", new String[]{var_paraceta});
             myDataBase.update(DatosRegistro.DATOS_TABLA_MEDICAMENTOS,registro1,Medicamento.CN_medicamento + "=?", new String[]{var_amoxic});
         }
-
     }
-
 
 
     public Date sumarRestarDiasFecha(Date fecha, int dias){
@@ -411,7 +395,6 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
         }
 
     }
-
 
     public Boolean validarBandera() throws SQLException {
         Boolean esBoli=null;
@@ -475,8 +458,6 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
         return resultado;
     }
 
-
-
     //obtener lista de jarabes
     public Cursor jar_NombreComerciales(String medicamento, String tablaPais) throws SQLException {
         String pais=null;
@@ -484,8 +465,6 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
             pais="jarabes2";}
         if(tablaPais.equals("banespana.png")){
             pais="jarabes";}
-
-
         String query = "select * FROM " + pais + " WHERE " + COLUMNA_MEDICAMENTO + " = \"" + medicamento + "\"";
         Cursor c = myDataBase.rawQuery(query,null);
 
@@ -554,7 +533,6 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
         return nuevo;
     }
 
-
     @Override
     public void onCreate(SQLiteDatabase db) {
 
@@ -564,7 +542,6 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
-
 
     public String dosis_kilo1(int res_espiner, double resSeeb, double[] dosis_intDou, double[] cada_double, String[] array_jarabes,String medicamen_final, int cada_int) {
         double resultado, resultado1;
@@ -607,7 +584,7 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
         int variaGotas = 20;
         double resFinalgotas = resultado, resFinalgotas2 = re1;
         String predni = "PREDNISOLONA", dexgotas = "DEXTROMETORFANO",paragotas = "PARACETAMOL",levogotas = "LEVOCETIRIZINA",
-                ibugotas = "IBUPROFENO",levodrogotas = "LEVODROPROPIZINA",metalgialgotas = "METAMIZOL",cetirizinagotas ="CETIRIZINA";
+                ibugotas = "IBUPROFENO",levodrogotas = "LEVODROPROPIZINA",metalgialgotas = "METAMIZOL",cetirizinagotas ="CETIRIZINA",zamenegotas = "DEFLAZACORT";
         if (resultado < 1) {
             if (medi.equals(predni)) {
                 gotas = true;
@@ -615,7 +592,7 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
             if (medi.equals(dexgotas)) {
                 gotas = true;
                 variaGotas = 27; }
-            if (medi.equals(paragotas) || medi.equals(levogotas )|| medi.equals(ibugotas)|| medi.equals(levodrogotas) || medi.equals(metalgialgotas) || medi.equals(cetirizinagotas)) {
+            if (medi.equals(paragotas) || medi.equals(levogotas )|| medi.equals(ibugotas)|| medi.equals(levodrogotas) || medi.equals(metalgialgotas) || medi.equals(cetirizinagotas)|| medi.equals(zamenegotas)) {
                 gotas = true; }
         }
         if (gotas) {
@@ -707,6 +684,125 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
         //</editor-fold>(ULTIM
 
     }
+
+    //<editor-fold desc="FUNCION QUE DEVUELVE ARRAY STRING DE 2 VALORES LA POSICION Y LUEGO LA CADENA STRING, STRING ORDENADO. NECESITA 5 STRING
+    //  SEPARADOS POR ALGO COMO COMAS, SALTOS DE LINEA. SON NECESARIAS  FUNCIONES   "esta"  y "contiene"">
+    public String []esta(String mioA,String mio2,String mio3,String mio4,String mio5,String busca){
+        String[] prim=mioA.split("\n");
+        String[] prim2=mio2.split("\n");
+        String[] prim3=mio3.split("\n");
+        String[] prim4=mio4.split("\n");
+        String[] prim5=mio5.split("\n");
+        String[] nue = new String[5];
+        nue[0]=mioA;
+        nue[1]=mio2;
+        nue[2]=mio3;
+        nue[3]=mio4;
+        nue[4]=mio5;
+
+
+
+        int tamano=prim.length, tamano2=prim2.length,tamano3=prim3.length,tamano4=prim4.length,tamano5=prim5.length;
+        String[] devuelve={"0","0","0"};
+        int estaen;
+        String ordenados="";
+        if (tamano>1){
+            estaen=contiene(mioA,busca);
+            if(estaen!=0){
+                devuelve[0]=String.valueOf(estaen);
+                devuelve[1]="1";
+                ordenados=ponerPrimero(mioA,devuelve);
+            }
+
+        }
+        if (tamano2>1){
+            estaen=contiene(mio2,busca);
+            if(estaen!=0) {
+                devuelve[0] = String.valueOf(estaen);
+                devuelve[1] = "2";
+                ordenados=ponerPrimero(mio2,devuelve);
+            }
+        }
+        if (tamano3>1){
+            estaen=contiene(mio3,busca);
+            if(estaen!=0) {
+                devuelve[0] = String.valueOf(estaen);
+                devuelve[1] = "3";
+                ordenados=ponerPrimero(mio3,devuelve);
+            }
+        }
+        if (tamano4>1){
+            estaen=contiene(mio4,busca);
+            if(estaen!=0) {
+                devuelve[0] = String.valueOf(estaen);
+                devuelve[1] = "4";
+                ordenados=ponerPrimero(mio4,devuelve);
+            }
+        }
+        if (tamano5>1){
+            estaen=contiene(mio5,busca);
+            if(estaen!=0) {
+                devuelve[0] = String.valueOf(estaen);
+                devuelve[1] = "5";
+                ordenados=ponerPrimero(mio5,devuelve);
+            }
+        }
+        devuelve[2]=ordenados;
+
+
+        return devuelve;
+    }
+
+    //DEVUELVE LA TABLA OH STRING DONDE ESTA, SI ES "0" NO ESTA, NECESITA 5 VALORES
+    public int posicion(String valores,String valores2,String valores3,String valores4,String valores5,String aencontrar){
+        int dev=0;
+        String[]arrayMa={valores,valores2,valores3,valores4,valores5};
+        int contaFinal=0;
+        int contaDevol=0;
+        while (contaFinal<5) {
+            String[] nue = arrayMa[contaFinal].split("\n");
+            int largo = nue.length;
+            int contador = 0, contInter = 0;
+            while (contador < largo) {
+                if (nue[contador].equals(aencontrar)) {
+                    dev = contador;
+                    contaDevol=contaFinal+1;
+                    break;
+                }
+                contador++;
+            }
+            contaFinal++;
+        }
+        return contaDevol;
+    }
+
+    private int contiene(String trata,String busca2){
+        //SE CAMBIARA SPLIT SEGUN ESTEN SEPARADOS LOS REGISTROS
+        String[] prim=trata.split("\n");
+        int largo=prim.length,contador=0,ret=0;
+        while (contador<largo){
+            String vari=prim[contador];
+            if (vari.equals(busca2)){
+                ret=contador+1;
+            }
+            contador++;
+        }
+        return ret;
+    }
+    private String ponerPrimero(String pasadoIni,String[]devuel){
+        String []pasado=pasadoIni.split("\n");
+        String dev1="";
+        int posi=Integer.parseInt(devuel[0]),largo=pasado.length,contador=0;
+        String sacado=pasado[posi-1],prime=pasado[0];
+        pasado[0]=sacado;
+        pasado[posi-1]=prime;
+        while (contador<largo) {
+            dev1 = dev1+"\n" + pasado[contador];
+            contador++;
+        }
+        return dev1;
+    }
+    //</editor-fold>
 
 
 }
