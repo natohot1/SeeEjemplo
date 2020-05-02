@@ -19,7 +19,6 @@
         <item>ALERGOLIBER</item>
         <item>ALERLISIN GOTAS</item>
         <item>ALERLISIN SOLUCION</item>
-        <item>ALGIASDIN</item>
         <item>AMBROXOL</item>
         <item>AMOXI GOBENS</item>
         <item>AMOXICILINA CLAVULANICO 125</item>
@@ -57,7 +56,7 @@
         <item>DESLORATADINA</item>
         <item>DEXCLORFENIRAMINA</item>
         <item>DEXTROMETORFANO</item>
-        <item>DEZACOR</item>
+        <item>DEZACOR GOTAS</item>
         <item>DOXICICLINA</item>
         <item>DIFLUCAN 10</item>
         <item>DIFLUCAN 40</item>
@@ -78,7 +77,6 @@
         <item>FOSFOCINA</item>
         <item>FRENATERMIN 2%</item>
         <item>HIDROXIZINA</item>
-        <item>HOSBORAL</item>
         <item>IBUPROFENO</item>
         <item>INISTON ANTITUSIVO</item>
         <item>INISTON MUCOLITICO</item>
@@ -113,7 +111,7 @@
         <item>PANTOMICINA</item>
         <item>PARACETAMOL</item>
         <item>PECTOX</item>
-        <item>PIREXIN</item>
+        <item>PECTOX FORTE</item>
         <item>PIREXIN</item>
         <item>POLARAMINE</item>
         <item>PREDNISOLONA</item>
@@ -122,7 +120,6 @@
         <item>ROMILAR JARABE</item>
         <item>RUPAFIN</item>
         <item>RUPATADINA</item>
-        <item>SAETIL</item>
         <item>SEKISAN</item>
         <item>SEPTRIN PEDIATRICO</item>
         <item>SULFAMETOXAZOL TRIMETOPRIMA</item>
@@ -130,22 +127,21 @@
         <item>TEDIPRIMA</item>
         <item>TERBASMIN</item>
         <item>TERBUTALINA JARABE</item>
-        <item>TERMALGIN INFANTIL</item>
-        <item>TERMALGIN LACTANTES</item>
         <item>TERMALGIN</item>
         <item>TRILOMBRIN</item>
         <item>TRIMETOPRIMA</item>
         <item>TUSCALMAN</item>
         <item>TUSSIDRILL INFANTIL</item>
         <item>VIBRACINA</item>
-        <item>VISCOTEÍNA</item>
+        <item>VISCOTEINA</item>
         <item>XAZAL</item>
-        <item>ZAMENE</item>
+        <item>ZAMENE GOTAS</item>
         <item>ZASTEN</item>
         <item>ZINNAT</item>
         <item>ZITROMAX</item>
-        <item>ZOVIRAX</item>
-        <item>ZYRTEC</item>
+        <item>ZOVIRAX 400</item>
+        <item>ZYRTEC GOTAS</item>
+        <item>ZYRTEC SOLUCION</item>
     </string-array>
 
 
@@ -180,7 +176,6 @@
         <item>FLUCONAZOL</item>
         <item>FOSFOCINA</item>
         <item>FOSFOMICINA</item>
-        <item>HOSBORAL</item>
         <item>JOSAMINA 250</item>
         <item>JOSAMINA 500</item>
         <item>LOMPER</item>
@@ -200,7 +195,7 @@
         <item>VIBRACINA</item>
         <item>ZINNAT</item>
         <item>ZITROMAX</item>
-        <item>ZOVIRAX FORTE</item>
+        <item>ZOVIRAX 400</item>
 
 
     </string-array>
@@ -256,6 +251,7 @@
         <item>NAXPA</item>
         <item>NOSCAPINA</item>
         <item>PECTOX</item>
+        <item>PECTOX FORTE</item>
         <item>ROMILAR GOTAS</item>
         <item>ROMILAR JARABE</item>
         <item>ROMILAR</item>
@@ -281,7 +277,7 @@
         <item>DEFLAZACORT</item>
         <item>DESLORATADINA</item>
         <item>DEXCLORFENIRAMINA</item>
-        <item>DEZACOR</item>
+        <item>DEZACOR GOTAS</item>
         <item>EBASTEL</item>
         <item>EBASTINA</item>
         <item>ESTILSONA GOTAS</item>
@@ -297,9 +293,10 @@
         <item>RUPAFIN</item>
         <item>RUPATADINA</item>
         <item>XAZAL</item>
-        <item>ZAMENE</item>
+        <item>ZAMENE GOTAS</item>
         <item>ZASTEN</item>
-        <item>ZYRTEC</item>
+        <item>ZYRTEC GOTAS</item>
+        <item>ZYRTEC SOLUCION</item>
 
     </string-array>
 

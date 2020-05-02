@@ -4,9 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -15,8 +12,9 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.text.DecimalFormat;
-import java.util.Objects;
 import java.util.Vector;
 
 public class Main4Activity extends AppCompatActivity {
@@ -131,8 +129,6 @@ public class Main4Activity extends AppCompatActivity {
         int largo_jara_arraComercial=jara_arraComercial.length;
         jaraDosis=(String[])jarabes.elementAt(1);
         txJarabe.setText("Jarabe "+jaraDosis[position]+" mg/5cc");
-        //****************************************************TODO
-
 
         txOtras.setText("" + jara_arraComercial[position]);
         if (largo_jara_arraComercial==1){
@@ -480,16 +476,12 @@ public class Main4Activity extends AppCompatActivity {
         }
     }
 
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-
         super.onSaveInstanceState(outState);
         outState.putInt("PESO_INTRODUCIDO",peso);
         outState.putInt("POSITION",position);
         outState.putString("MED_FINAL", mediComercial);
-
-
     }
     private void restaurarCampos(Bundle savedInstanceState) {
         if (savedInstanceState != null){
@@ -715,17 +707,20 @@ public class Main4Activity extends AppCompatActivity {
                     conta6++;
                 }
                 conta5=0;
-                while (lar1>conta5){
+            int conExter = 0;
+            while (lar1 > conExter) {
                     if(carac[conta5]==carac2[conta5]){
                         esmio=true;
                         conta5++;
                         break;
                     }
+                conExter++;
                     esmio=false;
                 }
                 if(esmio){
                     variable=0;
                 }
+            variable = 0;
         }
 
         String[] jarabes_comercial3 = new String[largo];
@@ -743,9 +738,6 @@ public class Main4Activity extends AppCompatActivity {
         return nuevo;
 
     }
-
-
-
 
     public Vector jarabes_No_Comer (String medicamen, String medi_introducido, String[] array_jarabes, String[][] array_datos){
         // SACAMOS LOS DISTINTOS ARRAY SEGUN LAS  CONCENTRACIONES EXISTENTES A ORDENAR
@@ -799,11 +791,6 @@ public class Main4Activity extends AppCompatActivity {
 
     }
 
-
-
-
-
-
     private void dosis_especiales (String medica_espe,double sekb_double){
         String levodro = "LEVODROPROPIZINA";
         String ketoti = "KETOTIFENO";
@@ -813,14 +800,20 @@ public class Main4Activity extends AppCompatActivity {
         String hidroxicina = "HIDROXIZINA";
         if (medica_espe.equals(levodro)) {
             if ((sekb_double < 12) && (sekb_double > 3)) {
-                txCantidad.setText("NO INDICADO");
+                txCantidad.setTextColor(Color.RED);
+                txCantidad.setText("NO INDICADO MENOS DE 11 KG");
                 txeCada.setText("");
+            } else {
+                txCantidad.setTextColor(getResources().getColor(R.color.colorLetMorada));
             }
         }
         if (medica_espe.equals(pirantel)) {
             if ((sekb_double < 8) && (sekb_double > 3)) {
-                txCantidad.setText("NO INDICADO");
+                txCantidad.setTextColor(Color.RED);
+                txCantidad.setText("NO INDICADO MENOS DE 7 KG");
                 txeCada.setText("");
+            } else {
+                txCantidad.setTextColor(getResources().getColor(R.color.colorLetMorada));
             }
         }
         if (medica_espe.equals(ketoti)) {
@@ -838,24 +831,20 @@ public class Main4Activity extends AppCompatActivity {
         if (medica_espe.equals(albendazol)) {
             if (sekb_double < 13) {
                 txCantidad.setTextColor(Color.RED);
-                // txCantidad.setHeight(35);
                 txCantidad.setText("NO INDICADO EN MENORES DE 2 AÑOS");
                 txeCada.setText("");
             } else {
-                txCantidad.setTextColor(Color.BLUE);
-                //    txCantidad.setTextSize(25);
+                txCantidad.setTextColor(getResources().getColor(R.color.colorLetMorada));
             }
         }
 
         if (medica_espe.equals(hidroxicina)) {
             if (sekb_double < 10) {
                 txCantidad.setTextColor(Color.RED);
-                //   txCantidad.setTextSize(15);
                 txCantidad.setText("NO INDICADO EN MENORES DE 1 AÑOS");
                 txeCada.setText("");
             } else {
                 txCantidad.setTextColor(getResources().getColor(R.color.colorLetMorada));
-                //   txCantidad.setTextSize(25);
                 txeCada.setText("Cada 6/h");
             }
         }

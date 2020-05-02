@@ -164,7 +164,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:text="OTRAS PRESENTACIONES"
+        android:text="OTROS NOMBRES COMERCIALES"
         android:textAlignment="center"
         android:textColor="@color/colorAzul"
         android:textStyle="bold"
