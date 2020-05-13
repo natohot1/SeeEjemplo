@@ -178,7 +178,7 @@
     <LinearLayout
         android:id="@+id/segmento1"
         android:layout_width="0dp"
-        android:layout_height="25dp"
+        android:layout_height="40dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/txdJarabe"
         app:layout_constraintEnd_toEndOf="parent"
@@ -263,6 +263,7 @@
 
     <ScrollView
         android:id="@+id/scrollView2"
+        style="@android:style/Widget.Holo.Light.ScrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/txdOtrasNopro"
@@ -275,6 +276,7 @@
             android:id="@+id/txdOtras"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:justificationMode="inter_word"
             android:text="TextView"
             android:textColor="#030000"
             android:textSize="18sp"

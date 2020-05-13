@@ -20,6 +20,7 @@
         <item>ALERLISIN GOTAS</item>
         <item>ALERLISIN SOLUCION</item>
         <item>AMBROXOL</item>
+        <item>AMBROXOL PEDIATRICO</item>
         <item>AMOXI GOBENS</item>
         <item>AMOXICILINA CLAVULANICO 125</item>
         <item>AMOXICILINA CLAVULANICO 250</item>
@@ -72,7 +73,8 @@
         <item>FENOXI METIL PENICILINA</item>
         <item>FLAGYL</item>
         <item>FLUIDIN MUCOLITICO</item>
-        <item>FLUMIL</item>
+        <item>FLUMIL INFANTIL</item>
+        <item>FLUMIL 4% SOLUCION</item>
         <item>FLUTOX</item>
         <item>FOSFOCINA</item>
         <item>FRENATERMIN 2%</item>
@@ -181,6 +183,7 @@
         <item>LOMPER</item>
         <item>MEBENDAZOL</item>
         <item>METRONIDAZOL</item>
+        <item>MYCOSTATIN</item>
         <item>MIDECAMICINA</item>
         <item>MYOXAM</item>
         <item>ORBENIN</item>
@@ -223,6 +226,7 @@
         <item>ACTITHIOL MUCOLITICO INFANTIL</item>
         <item>ACTITHIOL MUCOLITICO 50 ADULTO</item>
         <item>AMBROXOL</item>
+        <item>AMBROXOL PEDIATRICO</item>
         <item>BICASAN</item>
         <item>BISOLVON ANTITUSIVO</item>
         <item>CARBOCISTEINA</item>
@@ -233,11 +237,10 @@
         <item>DEXTROMETORFANO</item>
         <item>DIMEMORFANO</item>
         <item>DINOBROXOL</item>
-        <item>FLUIDIN MUCOLITICO</item>
-        <item>FLUMIL ORAL 2 % Solucion</item>
-        <item>FLUMIL ORAL 4% Solucion</item>
-        <item>FLUMIL INFANTIL</item>
         <item>FLUMIL</item>
+        <item>FLUMIL 4% SOLUCION</item>
+        <item>FLUMIL INFANTIL</item>
+        <item>FLUIDIN MUCOLITICO</item>
         <item>FLUTOX</item>
         <item>INISTON ANTITUSIVO</item>
         <item>INISTON MUCOLITICO</item>
@@ -306,12 +309,10 @@
         <item>ACETAMOL JARABE</item>
         <item>ACETILCISTEINA</item>
         <item>ACTIMOL</item>
-        <item>ACTIMOL</item>
         <item>ADROXEF</item>
         <item>ALBENDAZOL 400MG/20ML</item>
         <item>ALBENDAZOL</item>
         <item>AFOREX SUSPENSION</item>
-        <item>ALCODIC GOTAS PEDIATRICAS</item>
         <item>ALCOSKECTIL 200MG;40MG/5ML</item>
         <item>ALERDRYN</item>
         <item>AMBROX ADULTOS</item>
@@ -319,7 +320,6 @@
         <item>AMBROXOL 15MG/5ML</item>
         <item>AMBROXOL FORTE 30MG/ 5ML</item>
         <item>AMBROXOL INFANTIL</item>
-        <item>AMBROXOL</item>
         <item>AMBROXOL</item>
         <item>AMOXI DIF</item>
         <item>AMOXI DIF 250</item>
@@ -350,7 +350,6 @@
         <item>BROXILIN DUO FUERTE</item>
         <item>BROXILIN DUO</item>
         <item>CEFABIOTIC 100MG/5ML</item>
-        <item>CEFADROXILO</item>
         <item>CEFADROXILO</item>
         <item>CEFIRAX</item>
         <item>CEFIXCRIS 100</item>
@@ -490,7 +489,6 @@
         <item>ACETAMOL GOTAS</item>
         <item>ACETAMOL JARABE</item>
         <item>ACTIMOL</item>
-        <item>ALCODIC GOTAS PEDIATRICAS</item>
         <item>B.B. TERM</item>
         <item>CETAMODIF</item>
         <item>CETOFAR 120MG/ML</item>

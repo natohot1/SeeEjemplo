@@ -207,8 +207,6 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
         return resul_string;
     }
 
-
-
     public static void dosis(double dosis[], int progre, double cada[], double var_jar, double ins_r, TextView most) {
         double primera_dosis, segun_dosis;
         DecimalFormat df = new DecimalFormat("0.0");
@@ -409,8 +407,228 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
         return esBoli;
     }
 
-    public String[][] sacar_datos_en_array (String medicamen,String bandera) throws
-            java.sql.SQLException {
+    public String[][] sacarOrdenados_en_array(String medicamen, String mediComercial, String bandera) throws java.sql.SQLException {
+        String[][] array_inter = new String[20][9];
+        String jarabes_por5ml = "";
+        //<editor-fold desc="SACA LOS DATOS EN array_inter[][]">
+        Cursor c = null;
+        try {
+            c = buscarMed(medicamen);
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
+        c.moveToFirst();
+        int m = 0, j = 0, d = 0;
+
+        while (m <= 19) {
+            array_inter[m][0] = c.getString(m);
+            m++;
+        }
+        c.close();
+        try {
+            c = jar_NombreComerciales(medicamen, bandera);
+        } catch (android.database.SQLException e) {
+            e.printStackTrace();
+        }
+        while (j <= 7) {
+            array_inter[0][j] = c.getString(j);
+            j++;
+        }
+        c.close();
+        //</editor-fold>
+        //SACAR JARABES SEGUN PAIS//////
+        if (bandera.equals("banespana.png")) {
+            jarabes_por5ml = array_inter[10][0];
+        }
+        if (bandera.equals("banbolivia.png")) {
+            jarabes_por5ml = array_inter[9][0];
+        }
+        String[] arrJarpor5ml = jarabes_por5ml.split("-");
+        int largoArrJar5 = arrJarpor5ml.length;
+
+        String[] nue = new String[5];
+        nue[0] = array_inter[0][2];
+        nue[1] = array_inter[0][3];
+        nue[2] = array_inter[0][4];
+        nue[3] = array_inter[0][5];
+        nue[4] = array_inter[0][6];
+        //ORDENAMOS LOS VALORES
+        int contador = 0;
+        // int contadorEsta=0;
+        while (contador < 5) {
+            String interme = ponPrimero(nue[contador], mediComercial);
+            nue[contador] = interme;
+            contador++;
+        }
+        int contadorEsta = estaEnArray(nue, mediComercial);
+
+        //cambiamos de posicion el string de medicamentos
+        String interSeg = nue[0];
+        String interme = nue[contadorEsta];
+        nue[0] = interme;
+        nue[contadorEsta] = interSeg;
+
+        String interPrimDosis = arrJarpor5ml[0];
+        String intermeDosis = arrJarpor5ml[contadorEsta];
+        arrJarpor5ml[0] = intermeDosis;
+        arrJarpor5ml[contadorEsta] = interPrimDosis;
+
+        contador = 0;
+        String jara5 = new String();
+        while (contador < largoArrJar5) {
+
+
+            jara5 = jara5 + "-" + arrJarpor5ml[contador];
+            contador++;
+
+        }
+        Character guion = jara5.charAt(0);
+        char mio = '-';
+        if (guion == mio) {
+            jara5 = jara5.substring(1, jara5.length());
+        }
+        String devJar5 = jara5;
+        array_inter[0][2] = nue[0];
+        array_inter[0][3] = nue[1];
+        array_inter[0][4] = nue[2];
+        array_inter[0][5] = nue[3];
+        array_inter[0][6] = nue[4];
+        if (bandera.equals("banespana.png")) {
+            array_inter[10][0] = jara5;
+        }
+        if (bandera.equals("banbolivia.png")) {
+            array_inter[9][0] = jara5;
+        }
+        int borrar = 1;
+        return array_inter;
+    }
+
+    //10/05/20 FUNCION QUE DEVULVE SRING DONDE EL BUSCADO SE PONE EN PRIMER LUGAR EL BUSCADO SI ESTA
+    //  NECESITA STRING SEPARADO POR "\n", STRING BUSCADO. NECESITA LA FUNCION estaEnNumero
+    public String ponPrimero(String strOrigen, String strBuscado) {
+        String devol = strOrigen;
+        String[] arraOrigen = strOrigen.split("\n");
+        int largo = arraOrigen.length;
+        int posicionQueEsta = estaEnNumero(strOrigen, strBuscado);
+        if (posicionQueEsta != -1) {
+            devol = "";
+            String interme = arraOrigen[posicionQueEsta];
+            String prime = arraOrigen[0];
+            //intercambiamos posiciones
+            arraOrigen[0] = interme;
+            arraOrigen[posicionQueEsta] = prime;
+        }
+
+        int contador = 0;
+        if (posicionQueEsta == 0) {
+            devol = strOrigen;
+        }
+        if (posicionQueEsta > 0) {
+            devol = arraOrigen[0];
+            contador = 1;
+            while (contador < largo) {
+                devol = devol + "\n" + arraOrigen[contador];
+                contador++;
+            }
+        }
+
+
+        return devol;
+    }
+
+    //FUNCION DEVULEVE -1 SI NO HAY UNA PALABRA IGUAL, SINO EL NUMERO DEL ORIGEN DE DATOS LA CUAL VENDRA SEPAARDO POR "\n"
+    private int estaEnNumero(String origenDatos, String medicina) {
+        //primero sacamos las palabras en array
+        int devol = -1;
+        String[] arrOrigen = origenDatos.split("\n");
+        int largoarrOrigen = arrOrigen.length, contador = 0;
+        while (contador < largoarrOrigen) {
+            boolean esta = esIgual(arrOrigen[contador], medicina);
+            if (esta) {
+                devol = contador;
+            }
+            contador++;
+        }
+        return devol;
+    }
+
+    //deveulve el numero donde esta la cadena a buscar NECESITA estaEnBool
+    private int estaEnArray(String[] origendatos, String buscado) {
+        int estaEn = 0;
+        boolean contiene = false;
+        int largoArray = origendatos.length, contador = 0;
+        while (contador < largoArray) {
+            contiene = estaEnBool(origendatos[contador], buscado);
+            if (contiene) {
+                estaEn = contador;
+                break;
+            }
+            contador++;
+        }
+        return estaEn;
+    }
+
+    //FUNCION QUE DVUELVE TRUE SI SON IGUALES NECESITA STRIN SENSILLOS
+    public boolean esIgual(String aComparar, String medicina) {
+        boolean devol = false;
+        aComparar = aComparar.replaceAll("Ñ", "");
+        medicina = medicina.replaceAll("Ñ", "");
+        int largoCompara = aComparar.length(), largoMedicina = medicina.length();
+
+        int contador = 0;
+        Character[] aCompaChar = new Character[largoCompara];
+        Character[] mediChar = new Character[largoMedicina];
+        if (largoCompara == largoMedicina) {
+            while (contador < largoCompara) {
+                aCompaChar[contador] = aComparar.charAt(contador);
+                contador++;
+            }
+            contador = 0;
+            while (contador < largoMedicina) {
+                mediChar[contador] = medicina.charAt(contador);
+                contador++;
+            }
+            contador = 0;
+            if (largoCompara != largoMedicina) {
+                devol = false;
+            } else {
+                while (contador < largoMedicina) {
+                    if (aCompaChar[contador] == mediChar[contador]) {
+                        devol = true;
+                    } else {
+                        devol = false;
+                        break;
+                    }
+                    contador++;
+                }
+            }
+        }
+        return devol;
+    }
+
+    //**************************************NUEVA FUNCION***********************
+    //FUNCION DEVULEVE TRUE SI HAY UNA PALABRA IGUAL DE ORIGEN DE DATOS LA CUAL VENDRA SEPAARDO POR "\n"
+    //NECESITA PARA FUNCIONAR esIgual
+    public boolean estaEnBool(String origenDatos, String medicina) {
+        //primero sacamos las palabras en array
+        boolean devol = false;
+        String[] arrOrigen = origenDatos.split("\n");
+        int largoarrOrigen = arrOrigen.length, contador = 0;
+        while (contador < largoarrOrigen) {
+            boolean esta = esIgual(arrOrigen[contador], medicina);
+            if (esta) {
+                devol = true;
+            }
+            contador++;
+        }
+        return devol;
+    }
+
+
+    //**************************************NUEVA FUNCION***********************
+
+
+    public String[][] sacar_datos_en_array(String medicamen, String bandera) throws java.sql.SQLException {
         String[][] array_inter = new String[20][9];
         Cursor c = null;
         try {
@@ -685,73 +903,14 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
 
     }
 
-    //<editor-fold desc="FUNCION QUE DEVUELVE ARRAY STRING DE 2 VALORES LA POSICION Y LUEGO LA CADENA STRING, STRING ORDENADO. NECESITA 5 STRING
-    //  SEPARADOS POR ALGO COMO COMAS, SALTOS DE LINEA. SON NECESARIAS  FUNCIONES   "esta"  y "contiene"">
-    public String []esta(String mioA,String mio2,String mio3,String mio4,String mio5,String busca){
-        String[] prim=mioA.split("\n");
-        String[] prim2=mio2.split("\n");
-        String[] prim3=mio3.split("\n");
-        String[] prim4=mio4.split("\n");
-        String[] prim5=mio5.split("\n");
-        String[] nue = new String[5];
-        nue[0]=mioA;
-        nue[1]=mio2;
-        nue[2]=mio3;
-        nue[3]=mio4;
-        nue[4]=mio5;
 
 
 
-        int tamano=prim.length, tamano2=prim2.length,tamano3=prim3.length,tamano4=prim4.length,tamano5=prim5.length;
-        String[] devuelve={"0","0","0"};
-        int estaen;
-        String ordenados="";
-        if (tamano>1){
-            estaen=contiene(mioA,busca);
-            if(estaen!=0){
-                devuelve[0]=String.valueOf(estaen);
-                devuelve[1]="1";
-                ordenados=ponerPrimero(mioA,devuelve);
-            }
-
-        }
-        if (tamano2>1){
-            estaen=contiene(mio2,busca);
-            if(estaen!=0) {
-                devuelve[0] = String.valueOf(estaen);
-                devuelve[1] = "2";
-                ordenados=ponerPrimero(mio2,devuelve);
-            }
-        }
-        if (tamano3>1){
-            estaen=contiene(mio3,busca);
-            if(estaen!=0) {
-                devuelve[0] = String.valueOf(estaen);
-                devuelve[1] = "3";
-                ordenados=ponerPrimero(mio3,devuelve);
-            }
-        }
-        if (tamano4>1){
-            estaen=contiene(mio4,busca);
-            if(estaen!=0) {
-                devuelve[0] = String.valueOf(estaen);
-                devuelve[1] = "4";
-                ordenados=ponerPrimero(mio4,devuelve);
-            }
-        }
-        if (tamano5>1){
-            estaen=contiene(mio5,busca);
-            if(estaen!=0) {
-                devuelve[0] = String.valueOf(estaen);
-                devuelve[1] = "5";
-                ordenados=ponerPrimero(mio5,devuelve);
-            }
-        }
-        devuelve[2]=ordenados;
 
 
-        return devuelve;
-    }
+
+
+
 
     //DEVUELVE LA TABLA OH STRING DONDE ESTA, SI ES "0" NO ESTA, NECESITA 5 VALORES
     public int posicion(String valores,String valores2,String valores3,String valores4,String valores5,String aencontrar){
@@ -789,11 +948,69 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
         }
         return ret;
     }
-    private String ponerPrimero(String pasadoIni,String[]devuel){
+
+    //NECSITA STRING SEPARDO POR SALTO DE LINEA, DEVUELVE STRING SEPARADO POR SALTO DE LINEA
+    private String ponPrimDefi(String origenDatos, String buscado) {
+        String devol = new String();
+        String[] array = origenDatos.split("\n");
+        int largo = array.length, conta = 0, enQuePosicion = 0;
+        while (conta < largo) {
+            if (buscado.equals(array[conta])) {
+                enQuePosicion = conta;
+            }
+            conta++;
+        }
+        if (enQuePosicion == 0) {
+            devol = origenDatos;
+        } else {
+            String inter = array[enQuePosicion];
+            String prime = array[0];
+            //cambiamos la posicion
+            array[0] = inter;
+            array[enQuePosicion] = prime;
+        }
+        conta = 0;
+
+        int contaInt = largo;
+        while (conta < largo) {
+            devol = devol + "\n" + array[conta];
+            // contaInt=contaInt-1;
+            conta++;
+        }
+        int larDevol = devol.length();
+
+        String revision = devol.substring(larDevol - 1, larDevol);
+        // if(revision=="\n") {
+        //     devol = devol.substring(0, larDevol - 1);
+        // }
+
+
+        return devol;
+    }
+
+    //DEVULVE STRING CON SALTO DE LINEA PONE EN PRIMER
+    private String ponerPrimero(String origenDatos, String[] devuel) {
+        String[] pasado = origenDatos.split("\n");
+        String dev1 = "";
+        int posi = Integer.parseInt(devuel[0]);
+        int largo = pasado.length;
+        int contador = 0;
+        String sacado = pasado[posi - 1], prime = pasado[0];
+        pasado[0] = sacado;
+        pasado[posi - 1] = prime;
+        while (contador < largo) {
+            dev1 = dev1 + pasado[contador] + "\n";
+            contador++;
+        }
+        return dev1;
+    }
+
+    private String ponerPrimero2(String pasadoIni, String[] devuel) {
         String []pasado=pasadoIni.split("\n");
         String dev1="";
         int posi=Integer.parseInt(devuel[0]),largo=pasado.length,contador=0;
-        String sacado=pasado[posi-1],prime=pasado[0];
+        String sacado = pasado[posi - 1];
+        String prime = pasado[0];
         pasado[0]=sacado;
         pasado[posi-1]=prime;
         while (contador<largo) {
@@ -802,7 +1019,95 @@ public class DatosReaderDbHelper extends SQLiteOpenHelper {
         }
         return dev1;
     }
+
+
     //</editor-fold>
+
+    //*************DESECHOS
+    //<editor-fold desc="FUNCION QUE DEVUELVE ARRAY STRING DE 2 VALORES LA POSICION Y LUEGO LA CADENA STRING, STRING ORDENADO. NECESITA 5 STRING
+    //  SEPARADOS POR ALGO COMO COMAS, SALTOS DE LINEA. SON NECESARIAS  FUNCIONES   "esta"  y "contiene", ademas array de dosis ordenados>
+    public String[] esta(String mioA, String mio2, String mio3, String mio4, String mio5, String busca, String[] arrJar) {
+        String[] prim = mioA.split("\n");
+        String[] prim2 = mio2.split("\n");
+        String[] prim3 = mio3.split("\n");
+        String[] prim4 = mio4.split("\n");
+        String[] prim5 = mio5.split("\n");
+        String[] nue = new String[5];
+        nue[0] = mioA;
+        nue[1] = mio2;
+        nue[2] = mio3;
+        nue[3] = mio4;
+        nue[4] = mio5;
+        //LA POSICION DE A TABLA STRING
+        int striPosi = 0;
+
+        int tamano = prim.length, tamano2 = prim2.length, tamano3 = prim3.length, tamano4 = prim4.length, tamano5 = prim5.length;
+        int estaen;
+        //************************NUEVA FUNCION******************
+        //DETERMINAMOS SI ESTA Y EN QUE POSICION SE ENCUENTRA strPosi2
+        int striPosi2 = 0, contPosi = 0;
+        while (contPosi < 5) {
+            boolean buscados = estaEnBool(nue[contPosi], busca);
+            if (buscados) {
+                striPosi2 = contPosi;
+                break;
+            }
+            contPosi++;
+        }
+
+
+        int lar2 = nue[1].length();
+        int lar3 = nue[2].length();
+        int lar4 = nue[3].length();
+        int lar5 = nue[4].length();
+
+        int largoDatos = 1;
+        int contUltimo = 0;
+        int contadorInt2 = 0;
+
+
+        //<editor-fold desc="DETERMINA CUANTOS LINEAS DE JARABES HAY">
+        if (lar2 > 1) {
+            largoDatos = 2;
+        }
+        if (lar3 > 1) {
+            largoDatos = 3;
+        }
+        if (lar4 > 1) {
+            largoDatos = 4;
+        }
+        if (lar5 > 1) {
+            largoDatos = 5;
+        }
+        //</editor-fold>
+
+        String devuelve2[] = new String[largoDatos];
+
+        //COPIA EN INTERMEDIO EL NUMERO DE STRING QUE CONTIENE EL MEDICAMENTO BUSCADO
+        String intermedio = nue[striPosi2];
+        intermedio = ponPrimDefi(intermedio, busca);
+        String intermedioDosis = arrJar[striPosi2];
+
+        String primero = nue[0];
+        String primeroDosis = arrJar[0];
+
+        nue[0] = intermedio;
+        arrJar[0] = intermedioDosis;
+
+        nue[striPosi2] = primero;
+        arrJar[striPosi2] = primeroDosis;
+
+
+        while (contUltimo < largoDatos) {
+            //SE DEVUELVE SOLO LOS DATOS****************
+            devuelve2[contUltimo] = arrJar[contadorInt2] + "\n" + nue[contadorInt2];
+            contadorInt2++;
+            contUltimo++;
+        }
+
+        return devuelve2;
+    }
+
 
 
 }
