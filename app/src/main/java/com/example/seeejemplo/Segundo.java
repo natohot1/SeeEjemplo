@@ -3,8 +3,6 @@ package com.example.seeejemplo;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -16,17 +14,15 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 public class Segundo extends AppCompatActivity {
     AutoCompleteTextView auto;
-    int position;
     String botonActivo ="todo", clase = "segundo";
     DatosReaderDbHelper manager;
     Button btAntibiotico, btAnalgesicos, btTos,btAlergia,btAsma,btTodo;
     ImageButton btBanera;
-    Bundle datos;
 
-
-    boolean cambios=false;
     Cursor cur_bandera;
     String banString;
     String mediGenerico;
@@ -143,6 +139,7 @@ public class Segundo extends AppCompatActivity {
 
 
         ImageButton bt = (ImageButton) findViewById(R.id.bor);
+        bt.setBackground(this.getResources().getDrawable(R.drawable.animapresionado));
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -311,10 +308,11 @@ public class Segundo extends AppCompatActivity {
         lista.setAdapter(adapterLi);
         adapterLi.notifyDataSetChanged();
         adapterAu.notifyDataSetChanged();
-        btTodo.setBackgroundColor(getResources().getColor(R.color.botnActivo));
-        btTodo.setTextColor(getResources().getColor(R.color.blanco));
+        //  btTodo.setBackgroundColor(getResources().getColor(R.color.botnActivo));
+        btTodo.setTextColor(getResources().getColor(R.color.colorAzul));
         manager.pasarDatos("Segundo",botonActivo);
-        btTodo.setBackgroundResource(R.drawable.boton_redondo_azul);
+        btTodo.setBackground(this.getResources().getDrawable(R.drawable.animapresionado));
+        // btUno.setBackground(this.getResources().getDrawable(R.drawable.animapresionado));
     }
     private void activarAsma() {
        // botonActivo = "asma";
@@ -332,10 +330,10 @@ public class Segundo extends AppCompatActivity {
         lista.setAdapter(adapterLi);
         adapterLi.notifyDataSetChanged();
         adapterAu.notifyDataSetChanged();
-        btAsma.setBackgroundColor(getResources().getColor(R.color.botnActivo));
-        btAsma.setTextColor(getResources().getColor(R.color.blanco));
+        //   btAsma.setBackgroundColor(getResources().getColor(R.color.botnActivo));
+        btAsma.setTextColor(getResources().getColor(R.color.colorAzul));
         manager.pasarDatos("Segundo",botonActivo);
-        btAsma.setBackgroundResource(R.drawable.boton_redondo_azul);
+        btAsma.setBackground(this.getResources().getDrawable(R.drawable.animapresionado));
     }
     private void activarTos() {
        // botonActivo ="tos";
@@ -353,10 +351,10 @@ public class Segundo extends AppCompatActivity {
         lista.setAdapter(adapterLi);
         adapterLi.notifyDataSetChanged();
         adapterAu.notifyDataSetChanged();
-        btTos.setBackgroundColor(getResources().getColor(R.color.botnActivo));
-        btTos.setTextColor(getResources().getColor(R.color.blanco));
+        //     btTos.setBackgroundColor(getResources().getColor(R.color.botnActivo));
+        btTos.setTextColor(getResources().getColor(R.color.colorAzul));
         manager.pasarDatos("Segundo",botonActivo);
-        btTos.setBackgroundResource(R.drawable.boton_redondo_azul);
+        btTos.setBackground(this.getResources().getDrawable(R.drawable.animapresionado));
     }
     private void activarAntibiotico() {
       //  botonActivo ="antibiotico";
@@ -374,10 +372,10 @@ public class Segundo extends AppCompatActivity {
         lista.setAdapter(adapterLi);
         adapterLi.notifyDataSetChanged();
         adapterAu.notifyDataSetChanged();
-        btAntibiotico.setBackgroundColor(getResources().getColor(R.color.botnActivo));
-        btAntibiotico.setTextColor(getResources().getColor(R.color.blanco));
+        //      btAntibiotico.setBackgroundColor(getResources().getColor(R.color.botnActivo));
+        btAntibiotico.setTextColor(getResources().getColor(R.color.colorAzul));
         manager.pasarDatos("Segundo",botonActivo);
-        btAntibiotico.setBackgroundResource(R.drawable.boton_redondo_azul);
+        btAntibiotico.setBackground(this.getResources().getDrawable(R.drawable.animapresionado));
     }
     private void activarAlergia() {
      //   botonActivo ="antialergico";
@@ -395,10 +393,10 @@ public class Segundo extends AppCompatActivity {
         lista.setAdapter(adapterLi);
         adapterLi.notifyDataSetChanged();
         adapterAu.notifyDataSetChanged();
-        btAlergia.setBackgroundColor(getResources().getColor(R.color.botnActivo));
-        btAlergia.setTextColor(getResources().getColor(R.color.blanco));
+        //      btAlergia.setBackgroundColor(getResources().getColor(R.color.botnActivo));
+        btAlergia.setTextColor(getResources().getColor(R.color.colorAzul));
         manager.pasarDatos("Segundo",botonActivo);
-        btAlergia.setBackgroundResource(R.drawable.boton_redondo_azul);
+        btAlergia.setBackground(this.getResources().getDrawable(R.drawable.animapresionado));
     }
     private void activarAnalgesico() {
       //  botonActivo ="analgesico";
@@ -416,30 +414,30 @@ public class Segundo extends AppCompatActivity {
         lista.setAdapter(adapterLi);
         adapterLi.notifyDataSetChanged();
         adapterAu.notifyDataSetChanged();
-        btAnalgesicos.setBackgroundColor(getResources().getColor(R.color.botnActivo));
-        btAnalgesicos.setTextColor(getResources().getColor(R.color.blanco));
+        //     btAnalgesicos.setBackgroundColor(getResources().getColor(R.color.botnActivo));
+        btAnalgesicos.setTextColor(getResources().getColor(R.color.colorAzul));
         manager.pasarDatos("Segundo",botonActivo);
-        btAnalgesicos.setBackgroundResource(R.drawable.boton_redondo_azul);
+        btAnalgesicos.setBackground(this.getResources().getDrawable(R.drawable.animapresionado));
     }
     private void actualizarBotones3(){
-        btTodo.setBackgroundColor(getResources().getColor(R.color.botnInactivo));
+        //  btTodo.setBackgroundColor(getResources().getColor(R.color.botnInactivo));
         btTodo.setTextColor(getResources().getColor(R.color.colorLetBlaneutra));
-        btTodo.setBackgroundResource(R.drawable.boton_redondo_inactivo);
-        btAnalgesicos.setBackgroundColor(getResources().getColor(R.color.botnInactivo));
+        btTodo.setBackgroundResource(R.drawable.animadeselcionado);
+        //  btAnalgesicos.setBackgroundColor(getResources().getColor(R.color.botnInactivo));
         btAnalgesicos.setTextColor(getResources().getColor(R.color.colorLetBlaneutra));
-        btAnalgesicos.setBackgroundResource(R.drawable.boton_redondo_inactivo);
-        btAlergia.setBackgroundColor(getResources().getColor(R.color.botnInactivo));
+        btAnalgesicos.setBackgroundResource(R.drawable.animadeselcionado);
+        //    btAlergia.setBackgroundColor(getResources().getColor(R.color.botnInactivo));
         btAlergia.setTextColor(getResources().getColor(R.color.colorLetBlaneutra));
-        btAlergia.setBackgroundResource(R.drawable.boton_redondo_inactivo);
-        btAsma.setBackgroundColor(getResources().getColor(R.color.botnInactivo));
+        btAlergia.setBackgroundResource(R.drawable.animadeselcionado);
+        //    btAsma.setBackgroundColor(getResources().getColor(R.color.botnInactivo));
         btAsma.setTextColor(getResources().getColor(R.color.colorLetBlaneutra));
-        btAsma.setBackgroundResource(R.drawable.boton_redondo_inactivo);
-        btTos.setBackgroundColor(getResources().getColor(R.color.botnInactivo));
+        btAsma.setBackgroundResource(R.drawable.animadeselcionado);
+        //    btTos.setBackgroundColor(getResources().getColor(R.color.botnInactivo));
         btTos.setTextColor(getResources().getColor(R.color.colorLetBlaneutra));
-        btTos.setBackgroundResource(R.drawable.boton_redondo_inactivo);
-        btAntibiotico.setBackgroundColor(getResources().getColor(R.color.botnInactivo));
+        btTos.setBackgroundResource(R.drawable.animadeselcionado);
+        //     btAntibiotico.setBackgroundColor(getResources().getColor(R.color.botnInactivo));
         btAntibiotico.setTextColor(getResources().getColor(R.color.colorLetBlaneutra));
-        btAntibiotico.setBackgroundResource(R.drawable.boton_redondo_inactivo);
+        btAntibiotico.setBackgroundResource(R.drawable.animadeselcionado);
     }
     public void quitarBotones() {
         btAnalgesicos.setVisibility(View.GONE);

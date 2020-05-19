@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.sql.SQLException;
@@ -48,7 +50,8 @@ public class Main4Activity extends AppCompatActivity {
 
     int controla[]=new int[1];
     //TAMAÑO DE LETRA BOTONES BALNCOS
-    int nio=14;
+    int nio = 16;
+    int nio2 = 14;
 
     ///////////////  NUEVOS VALORES
     Cursor datosMedicamento;
@@ -227,7 +230,8 @@ public class Main4Activity extends AppCompatActivity {
 
 
         btUno.setTextColor(Color.BLUE);
-        btUno.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
+        btUno.setTextSize(nio);
+        btUno.setBackground(this.getResources().getDrawable(R.drawable.animapresionado));
 
         arrayMedica=arrayMedicamento(mediGenerico);
 
@@ -236,26 +240,27 @@ public class Main4Activity extends AppCompatActivity {
 
     }
     //<editor-fold desc="FUNCIONES BOTONES PARA OTRAS PRESENTACIONES">
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void configurarbtdGrave() throws java.sql.SQLException {
         btUno.setTextColor(Color.BLUE);
         btUno.setTextSize(nio);
-        btUno.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
+        btUno.setBackground(this.getResources().getDrawable(R.drawable.animapresionado));
 
-        btDos.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-        btDos.setTextSize(nio);
-        btDos.setTextColor(Color.WHITE);
+        btDos.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+        btDos.setTextSize(nio2);
+        btDos.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
 
-        btTres.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-        btTres.setTextColor(Color.WHITE);
-        btTres.setTextSize(nio);
+        btTres.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+        btTres.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+        btTres.setTextSize(nio2);
 
-        btCuatro.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-        btCuatro.setTextColor(Color.WHITE);
-        btCuatro.setTextSize(nio);
+        btCuatro.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+        btCuatro.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+        btCuatro.setTextSize(nio2);
 
-        btCinco.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-        btCinco.setTextColor(Color.WHITE);
-        btCinco.setTextSize(nio);
+        btCinco.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+        btCinco.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+        btCinco.setTextSize(nio2);
         position=0;
         txOtras.setText("" + jara_arraComercial[position]);
         txJarabe.setText("Jarabe "+jaraDosis[position]+"  mg/5cc");
@@ -269,24 +274,24 @@ public class Main4Activity extends AppCompatActivity {
     }
     private void configurarbtdModerada() throws java.sql.SQLException {
         btDos.setTextColor(Color.BLUE);
-        btDos.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
+        btDos.setBackground(this.getResources().getDrawable(R.drawable.animapresionado));
         btDos.setTextSize(nio);
 
-        btUno.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-        btUno.setTextColor(Color.WHITE);
-        btUno.setTextSize(nio);
+        btUno.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+        btUno.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+        btUno.setTextSize(nio2);
 
-        btTres.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-        btTres.setTextColor(Color.WHITE);
-        btTres.setTextSize(nio);
+        btTres.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+        btTres.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+        btTres.setTextSize(nio2);
 
-        btCuatro.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-        btCuatro.setTextColor(Color.WHITE);
-        btCuatro.setTextSize(nio);
+        btCuatro.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+        btCuatro.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+        btCuatro.setTextSize(nio2);
 
-        btCinco.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-        btCinco.setTextColor(Color.WHITE);
-        btCinco.setTextSize(nio);
+        btCinco.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+        btCinco.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+        btCinco.setTextSize(nio2);
         position=1;
         txOtras.setText("" + jara_arraComercial[position]);
         txJarabe.setText("Jarabe "+jaraDosis[position]+"  mg/5cc");
@@ -299,23 +304,23 @@ public class Main4Activity extends AppCompatActivity {
     }
     private void configurarbtdLeve() throws java.sql.SQLException {
         btTres.setTextColor(Color.BLUE);
-        btTres.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
+        btTres.setBackground(this.getResources().getDrawable(R.drawable.animapresionado));
         btTres.setTextSize(nio);
 
-        btCuatro.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-        btCuatro.setTextColor(Color.WHITE);
-        btCuatro.setTextSize(nio);
+        btCuatro.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+        btCuatro.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+        btCuatro.setTextSize(nio2);
 
-        btCinco.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-        btCinco.setTextColor(Color.WHITE);
-        btCinco.setTextSize(nio);
+        btCinco.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+        btCinco.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+        btCinco.setTextSize(nio2);
 
-        btUno.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-        btUno.setTextColor(Color.WHITE);
-        btUno.setTextSize(nio);
-        btDos.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-        btDos.setTextColor(Color.WHITE);
-        btDos.setTextSize(nio);
+        btUno.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+        btUno.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+        btUno.setTextSize(nio2);
+        btDos.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+        btDos.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+        btDos.setTextSize(nio2);
         //  txGravedad.setText(graveAsma[2]);
         position=2;
         txOtras.setText("" + jara_arraComercial[position]);
@@ -331,23 +336,23 @@ public class Main4Activity extends AppCompatActivity {
     }
     private void configurarbtdLeve2() throws java.sql.SQLException {
         btCuatro.setTextColor(Color.BLUE);
-        btCuatro.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
+        btCuatro.setBackground(this.getResources().getDrawable(R.drawable.animapresionado));
         btCuatro.setTextSize(nio);
 
-        btTres.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-        btTres.setTextColor(Color.WHITE);
-        btTres.setTextSize(nio);
+        btTres.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+        btTres.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+        btTres.setTextSize(nio2);
 
-        btCinco.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-        btCinco.setTextColor(Color.WHITE);
-        btCinco.setTextSize(nio);
+        btCinco.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+        btCinco.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+        btCinco.setTextSize(nio2);
 
-        btUno.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-        btUno.setTextColor(Color.WHITE);
-        btUno.setTextSize(nio);
-        btDos.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-        btDos.setTextColor(Color.WHITE);
-        btDos.setTextSize(nio);
+        btUno.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+        btUno.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+        btUno.setTextSize(nio2);
+        btDos.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+        btDos.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+        btDos.setTextSize(nio2);
         position=3;
         txOtras.setText("" + jara_arraComercial[position]);
         txJarabe.setText("Jarabe "+jaraDosis[position]+"  mg/5cc");
@@ -363,22 +368,22 @@ public class Main4Activity extends AppCompatActivity {
     }
     private void configurarbtdLeve3() throws java.sql.SQLException {
         btCinco.setTextColor(Color.BLUE);
-        btCinco.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
+        btCinco.setBackground(this.getResources().getDrawable(R.drawable.animapresionado));
         btCinco.setTextSize(nio);
 
-        btTres.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-        btTres.setTextColor(Color.WHITE);
-        btTres.setTextSize(nio);
-        btCuatro.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-        btCuatro.setTextColor(Color.WHITE);
-        btCuatro.setTextSize(nio);
+        btTres.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+        btTres.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+        btTres.setTextSize(nio2);
+        btCuatro.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+        btCuatro.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+        btCuatro.setTextSize(nio2);
 
-        btUno.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-        btUno.setTextColor(Color.WHITE);
-        btUno.setTextSize(nio);
-        btDos.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-        btDos.setTextColor(Color.WHITE);
-        btDos.setTextSize(nio);
+        btUno.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+        btUno.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+        btUno.setTextSize(nio2);
+        btDos.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+        btDos.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+        btDos.setTextSize(nio2);
         position=4;
         txOtras.setText("" + jara_arraComercial[position]);
         txJarabe.setText("Jarabe "+jaraDosis[position]+"  mg/5cc");
@@ -400,7 +405,7 @@ public class Main4Activity extends AppCompatActivity {
             btCuatro.setVisibility(View.GONE);
             btCinco.setVisibility(View.GONE);
             btUno.setText(arrayInhaladores[0]+txtBotonMg);
-            btCinco.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
+            btCinco.setBackground(this.getResources().getDrawable(R.drawable.animapresionado));
         }
         if(largo==2){
             btTres.setVisibility(View.GONE);
@@ -408,52 +413,52 @@ public class Main4Activity extends AppCompatActivity {
             btCinco.setVisibility(View.GONE);
             btUno.setText(arrayInhaladores[0]+txtBotonMg);
             btDos.setText(arrayInhaladores[1]+txtBotonMg);
-            btDos.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-            btDos.setTextColor(Color.WHITE);
-            btDos.setTextSize(nio);
+            btDos.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+            btDos.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+            btDos.setTextSize(nio2);
         }
         if (largo==3) {
             btCuatro.setVisibility(View.GONE);
             btCinco.setVisibility(View.GONE);
-            btDos.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-            btDos.setTextColor(Color.WHITE);
-            btDos.setTextSize(nio);
-            btTres.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-            btTres.setTextColor(Color.WHITE);
-            btTres.setTextSize(nio);
+            btDos.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+            btDos.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+            btDos.setTextSize(nio2);
+            btTres.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+            btTres.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+            btTres.setTextSize(nio2);
             btUno.setText(arrayInhaladores[0]+txtBotonMg);
             btDos.setText(arrayInhaladores[1]+txtBotonMg);
             btTres.setText(arrayInhaladores[2]+txtBotonMg);
         }
         if (largo==4) {
             btCinco.setVisibility(View.GONE);
-            btDos.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-            btDos.setTextColor(Color.WHITE);
-            btDos.setTextSize(nio);
-            btTres.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-            btTres.setTextColor(Color.WHITE);
-            btTres.setTextSize(nio);
-            btCuatro.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-            btCuatro.setTextColor(Color.WHITE);
-            btCuatro.setTextSize(nio);
+            btDos.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+            btDos.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+            btDos.setTextSize(nio2);
+            btTres.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+            btTres.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+            btTres.setTextSize(nio2);
+            btCuatro.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+            btCuatro.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+            btCuatro.setTextSize(nio2);
             btCuatro.setText(arrayInhaladores[3]+txtBotonMg);
             btUno.setText(arrayInhaladores[0]+txtBotonMg);
             btDos.setText(arrayInhaladores[1]+txtBotonMg);
             btTres.setText(arrayInhaladores[2]+txtBotonMg);
         }
         if (largo==5) {
-            btDos.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-            btDos.setTextColor(Color.WHITE);
-            btDos.setTextSize(nio);
-            btTres.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-            btTres.setTextColor(Color.WHITE);
-            btTres.setTextSize(nio);
-            btCuatro.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-            btCuatro.setTextColor(Color.WHITE);
-            btCuatro.setTextSize(nio);
-            btCinco.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
-            btCinco.setTextColor(Color.WHITE);
-            btCinco.setTextSize(nio);
+            btDos.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+            btDos.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+            btDos.setTextSize(nio2);
+            btTres.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+            btTres.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+            btTres.setTextSize(nio2);
+            btCuatro.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+            btCuatro.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+            btCuatro.setTextSize(nio2);
+            btCinco.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
+            btCinco.setTextColor(getResources().getColor(R.color.colorLetBlancDif));
+            btCinco.setTextSize(nio2);
             btCinco.setText(arrayInhaladores[4]+txtBotonMg);
             btCuatro.setText(arrayInhaladores[3]+txtBotonMg);
             btUno.setText(arrayInhaladores[0]+txtBotonMg);
@@ -863,6 +868,8 @@ public class Main4Activity extends AppCompatActivity {
         intent.putExtras(bundle);
         startActivity(intent);
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void onClickOtras(View view) throws java.sql.SQLException {
         switch (view.getId()){
             //BOTONES GRAVE A LEVE CONFIGURAR
