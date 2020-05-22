@@ -1,7 +1,6 @@
 package com.example.seeejemplo;
 
 import android.content.Intent;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -9,13 +8,15 @@ import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
 public class FullscreenActivity extends AppCompatActivity {
     TextView texto;
-    private static final int duracion = 1000;
+    private static final int duracion = 2000;
     private static final int tiempo_des = 10;
     private static final int repeticion = 4;
     private int contador = 0;

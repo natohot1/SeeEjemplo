@@ -20,10 +20,10 @@
         android:textAlignment="center"
         android:textColor="#1900EC"
         android:textStyle="bold"
-        app:autoSizeStepGranularity="2sp"
-        app:autoSizeTextType="uniform"
         app:autoSizeMaxTextSize="40sp"
         app:autoSizeMinTextSize="12sp"
+        app:autoSizeStepGranularity="2sp"
+        app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toTopOf="@+id/txdSubtitulo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -98,13 +98,13 @@
         android:layout_marginTop="1dp"
         android:layout_marginBottom="1dp"
         android:autoSizeTextType="uniform"
-        app:autoSizeMaxTextSize="30sp"
-        app:autoSizeMinTextSize="12sp"
         android:gravity="center"
         android:padding="0dp"
         android:text="DOSIS FINAL"
         android:textColor="#5A006D"
         android:textStyle="bold"
+        app:autoSizeMaxTextSize="30sp"
+        app:autoSizeMinTextSize="12sp"
         app:autoSizeStepGranularity="2sp"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toTopOf="@+id/txdCada"
@@ -121,12 +121,12 @@
         android:layout_marginTop="1dp"
         android:layout_marginBottom="1dp"
         android:autoSizeTextType="uniform"
-        app:autoSizeMaxTextSize="30sp"
-        app:autoSizeMinTextSize="12sp"
         android:padding="0dp"
         android:text="@string/cantidad"
         android:textColor="#5A006D"
         android:textStyle="bold"
+        app:autoSizeMaxTextSize="30sp"
+        app:autoSizeMinTextSize="12sp"
         app:autoSizeStepGranularity="2sp"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
@@ -141,13 +141,13 @@
         android:layout_marginTop="1dp"
         android:layout_marginBottom="1dp"
         android:autoSizeTextType="uniform"
-        app:autoSizeMaxTextSize="30sp"
-        app:autoSizeMinTextSize="12sp"
         android:gravity="right"
         android:padding="0dp"
         android:text="cada"
         android:textColor="#5A006D"
         android:textStyle="bold"
+        app:autoSizeMaxTextSize="30sp"
+        app:autoSizeMinTextSize="12sp"
         app:autoSizeStepGranularity="2sp"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
@@ -384,23 +384,25 @@
 
     <ImageButton
         android:id="@+id/btBandera"
-        android:layout_width="50dp"
-        android:layout_height="30dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="1dp"
         android:background="@drawable/banbolivia"
         android:onClick="onClickBandera"
         app:layout_constraintBottom_toTopOf="@+id/guideline17"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline34"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/btdVolver"
-        android:layout_width="50dp"
-        android:layout_height="30dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="1dp"
         android:background="@drawable/atras"
         android:onClick="onClickVolver"
         app:layout_constraintBottom_toTopOf="@+id/guideline17"
+        app:layout_constraintEnd_toStartOf="@+id/guideline32"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -458,6 +460,20 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.19" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline32"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.12" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline34"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.88" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

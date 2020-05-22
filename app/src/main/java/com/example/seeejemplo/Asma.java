@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import androidx.constraintlayout.widget.Guideline;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -14,6 +12,9 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.Guideline;
 
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -254,12 +255,12 @@ public class Asma extends AppCompatActivity {
         graveAsma = gravedadAsma();
         //BOTON GRAVE SELECIONADAO
         btGrave.setTextColor(Color.BLUE);
-        btGrave.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
-        btModerada.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+        btGrave.setBackground(this.getResources().getDrawable(R.drawable.animapresionado));
+        btModerada.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
         btModerada.setTextColor(Color.WHITE);
-        btLeve.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+        btLeve.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
         btLeve.setTextColor(Color.WHITE);
-        btGravedad.setBackground(this.getResources().getDrawable(R.drawable.botonazulredon));
+        btGravedad.setBackground(this.getResources().getDrawable(R.drawable.animapresionado));
         //INDIDE DE GRAVEDAD
         btGravedad.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -278,12 +279,12 @@ public class Asma extends AppCompatActivity {
         cada();
         //BOTON BOTRO1 SELECIONADAO
         btOtra1.setTextColor(Color.BLUE);
-        btOtra1.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
-        btOtra2.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+        btOtra1.setBackground(this.getResources().getDrawable(R.drawable.animapresionado));
+        btOtra2.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
         btOtra2.setTextColor(Color.WHITE);
-        btOtra3.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+        btOtra3.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
         btOtra3.setTextColor(Color.WHITE);
-        btOtra4.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+        btOtra4.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
         btOtra4.setTextColor(Color.WHITE);
 
         // SACAR PAISES TODO********++++++++++++++++
@@ -713,11 +714,11 @@ public class Asma extends AppCompatActivity {
         //BOTON CONSIDERE
 
         if (nebulizador){
-            btConsidere.setBackground(this.getResources().getDrawable(R.drawable.botonazulredon));
+            btConsidere.setBackground(this.getResources().getDrawable(R.drawable.animapresionado));
             btConsidere.setText("CONSIDERE INHALADOR");
         }
         if (inhala){
-            btConsidere.setBackground(this.getResources().getDrawable(R.drawable.botonazulredon));
+            btConsidere.setBackground(this.getResources().getDrawable(R.drawable.animapresionado));
             btConsidere.setText("CONSIDERE NEBULIZADOR");
         }
         String selection = AsmaTabla.CN_medicamento+ " = ? ";
@@ -888,12 +889,12 @@ public class Asma extends AppCompatActivity {
         switch (view.getId()){
             case R.id.btdPri:
                 btOtra1.setTextColor(Color.BLUE);
-                btOtra1.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
-                btOtra2.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+                btOtra1.setBackground(this.getResources().getDrawable(R.drawable.animapresionado));
+                btOtra2.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
                 btOtra2.setTextColor(Color.WHITE);
-                btOtra3.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+                btOtra3.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
                 btOtra3.setTextColor(Color.WHITE);
-                btOtra4.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+                btOtra4.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
                 btOtra4.setTextColor(Color.WHITE);
                 txOtras.setText(arrayNombesComer[2]);
                 position=0;
@@ -906,12 +907,12 @@ public class Asma extends AppCompatActivity {
                 break;
             case R.id.btdSeg:
                 btOtra2.setTextColor(Color.BLUE);
-                btOtra2.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
-                btOtra1.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+                btOtra2.setBackground(this.getResources().getDrawable(R.drawable.animapresionado));
+                btOtra1.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
                 btOtra1.setTextColor(Color.WHITE);
-                btOtra3.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+                btOtra3.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
                 btOtra3.setTextColor(Color.WHITE);
-                btOtra4.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+                btOtra4.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
                 btOtra4.setTextColor(Color.WHITE);
                 txOtras.setText(arrayNombesComer[3]);
                 position=1;
@@ -924,12 +925,12 @@ public class Asma extends AppCompatActivity {
                 break;
             case R.id.btdTer:
                 btOtra3.setTextColor(Color.BLUE);
-                btOtra3.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
-                btOtra1.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+                btOtra3.setBackground(this.getResources().getDrawable(R.drawable.animapresionado));
+                btOtra1.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
                 btOtra1.setTextColor(Color.WHITE);
-                btOtra2.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+                btOtra2.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
                 btOtra2.setTextColor(Color.WHITE);
-                btOtra4.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+                btOtra4.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
                 btOtra4.setTextColor(Color.WHITE);
                 position=2;
                 txOtras.setText(arrayNombesComer[4]);
@@ -942,12 +943,12 @@ public class Asma extends AppCompatActivity {
                 break;
             case R.id.btdCuar:
                 btOtra4.setTextColor(Color.BLUE);
-                btOtra4.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
-                btOtra1.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+                btOtra4.setBackground(this.getResources().getDrawable(R.drawable.animapresionado));
+                btOtra1.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
                 btOtra1.setTextColor(Color.WHITE);
-                btOtra2.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+                btOtra2.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
                 btOtra2.setTextColor(Color.WHITE);
-                btOtra3.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+                btOtra3.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
                 btOtra3.setTextColor(Color.WHITE);
                 position=3;
                 txOtras.setText(arrayNombesComer[5]);
@@ -1003,10 +1004,10 @@ public class Asma extends AppCompatActivity {
             //BOTONES GRAVE A LEVE CONFIGURAR
             case R.id.btdGrave:
                 btGrave.setTextColor(Color.BLUE);
-                btGrave.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
-                btModerada.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+                btGrave.setBackground(this.getResources().getDrawable(R.drawable.animapresionado));
+                btModerada.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
                 btModerada.setTextColor(Color.WHITE);
-                btLeve.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+                btLeve.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
                 btLeve.setTextColor(Color.WHITE);
                 txGravedad.setText(graveAsma[0]);
                 if(nebulizador){
@@ -1024,10 +1025,10 @@ public class Asma extends AppCompatActivity {
                 break;
             case R.id.btdModerada:
                 btModerada.setTextColor(Color.BLUE);
-                btModerada.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
-                btGrave.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+                btModerada.setBackground(this.getResources().getDrawable(R.drawable.animapresionado));
+                btGrave.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
                 btGrave.setTextColor(Color.WHITE);
-                btLeve.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+                btLeve.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
                 btLeve.setTextColor(Color.WHITE);
                 txGravedad.setText(graveAsma[1]);
                 if(nebulizador){
@@ -1045,10 +1046,10 @@ public class Asma extends AppCompatActivity {
                 break;
             case R.id.btdLeve:
                 btLeve.setTextColor(Color.BLUE);
-                btLeve.setBackground(this.getResources().getDrawable(R.drawable.redondeado));
-                btGrave.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+                btLeve.setBackground(this.getResources().getDrawable(R.drawable.animapresionado));
+                btGrave.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
                 btGrave.setTextColor(Color.WHITE);
-                btModerada.setBackground(this.getResources().getDrawable(R.drawable.refodogris));
+                btModerada.setBackground(this.getResources().getDrawable(R.drawable.animadeselcionado));
                 btModerada.setTextColor(Color.WHITE);
                 txGravedad.setText(graveAsma[2]);
                 if(inhala && salbuta){
